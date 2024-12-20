@@ -54,7 +54,10 @@ export class NeuroloraServer {
               },
               outputPath: {
                 type: 'string',
-                description: 'Path where to save the output markdown file',
+                description:
+                  'Path where to save the output markdown file (must be inside the input directory)',
+                pattern: '^/.*',
+                examples: ['/path/to/project/src/FULL_CODE_SRC_2024-12-20.md'],
               },
               ignorePatterns: {
                 type: 'array',
@@ -65,7 +68,7 @@ export class NeuroloraServer {
                 optional: true,
               },
             },
-            required: ['directory'],
+            required: ['directory', 'outputPath'],
           },
         },
       ],
@@ -81,15 +84,8 @@ export class NeuroloraServer {
         const directory = String(args.directory);
         const dirName = directory.split('/').pop()?.toUpperCase() || 'PROJECT';
 
-        // If outputPath is not provided or doesn't match the format, use the standard format
-        let outputPath = String(args.outputPath || '');
-        if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
-          // Use absolute path in current directory
-          outputPath = path.resolve(process.cwd(), `FULL_CODE_${dirName}.md`);
-        } else {
-          // Convert to absolute path if relative
-          outputPath = path.resolve(outputPath);
-        }
+        // Convert to absolute path if relative
+        const outputPath = path.resolve(String(args.outputPath));
 
         const options: CodeCollectorOptions = {
           directory,
@@ -159,12 +155,9 @@ export class NeuroloraServer {
     }
 
     // Write output file using safe file system operations
-    const outputPath =
-      validatedOptions.outputPath ||
-      `FULL_CODE_${validatedOptions.directory.split('/').pop()?.toUpperCase() || 'PROJECT'}.md`;
-    await safeWriteFile(outputPath, markdown);
+    await safeWriteFile(validatedOptions.outputPath, markdown);
 
-    return `Successfully collected ${files.length} files. Output saved to: ${outputPath}`;
+    return `Successfully collected ${files.length} files. Output saved to: ${validatedOptions.outputPath}`;
   }
 
   /**

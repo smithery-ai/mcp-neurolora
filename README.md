@@ -82,14 +82,22 @@ Simply provide the arguments in JSON format:
 }
 ```
 
-Note: If outputPath is not provided, the file will be automatically saved in the input directory with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+Important: Always specify the outputPath to save the file inside the directory being collected. For example:
+
+```json
+{
+  "directory": "/path/to/project/src",
+  "outputPath": "/path/to/project/src/FULL_CODE_SRC_2024-12-20.md",
+  "ignorePatterns": ["*.log", "temp/", "__pycache__", "*.pyc", ".git"]
+}
+```
+
+This ensures that the documentation is kept alongside the code it documents. The file name should follow the format `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
 
 - DIRNAME is the uppercase name of your input directory
 - YYYY-MM-DD is the current date
 
-For example, if your input directory is `/path/to/project/src`, the output file will be saved as `/path/to/project/src/FULL_CODE_SRC_2024-12-20.md`.
-
-The file is always saved using absolute paths to ensure reliable operation in any environment.
+Always use absolute paths to ensure reliable operation in any environment.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

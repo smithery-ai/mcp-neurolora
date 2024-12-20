@@ -2,7 +2,7 @@
 
 export interface CodeCollectorOptions {
   directory: string;
-  outputPath?: string;
+  outputPath: string;
   ignorePatterns?: string[];
 }
 

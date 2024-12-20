@@ -1,0 +1,75 @@
+import { CodeCollectorOptions } from '../types/index.js';
+import path from 'path';
+import { promises as fs } from 'fs';
+
+/**
+ * Validate directory path exists and is accessible
+ */
+export async function validateDirectory(directory: string): Promise<string> {
+  try {
+    const stats = await fs.stat(directory);
+    if (!stats.isDirectory()) {
+      throw new Error('Path is not a directory');
+    }
+    return path.resolve(directory);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Invalid directory: ${error.message}`);
+    }
+    throw new Error('Invalid directory: Unknown error');
+  }
+}
+
+/**
+ * Validate output path is writable
+ */
+export async function validateOutputPath(outputPath: string): Promise<string> {
+  try {
+    const dir = path.dirname(outputPath);
+    await fs.access(dir, fs.constants.W_OK);
+    return path.resolve(outputPath);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Invalid output path: ${error.message}`);
+    }
+    throw new Error('Invalid output path: Unknown error');
+  }
+}
+
+/**
+ * Validate ignore patterns are valid
+ */
+export function validateIgnorePatterns(patterns?: string[]): string[] {
+  if (!patterns) {
+    return [];
+  }
+
+  return patterns.filter(pattern => {
+    if (typeof pattern !== 'string') {
+      console.warn(`Invalid ignore pattern: ${pattern}, must be string`);
+      return false;
+    }
+    if (pattern.trim().length === 0) {
+      console.warn('Empty ignore pattern will be skipped');
+      return false;
+    }
+    return true;
+  });
+}
+
+/**
+ * Validate all code collector options
+ */
+export async function validateOptions(
+  options: CodeCollectorOptions
+): Promise<CodeCollectorOptions> {
+  const validatedDirectory = await validateDirectory(options.directory);
+  const validatedOutputPath = await validateOutputPath(options.outputPath);
+  const validatedIgnorePatterns = validateIgnorePatterns(options.ignorePatterns);
+
+  return {
+    directory: validatedDirectory,
+    outputPath: validatedOutputPath,
+    ignorePatterns: validatedIgnorePatterns,
+  };
+}

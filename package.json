@@ -1,0 +1,40 @@
+{
+  "name": "mcp-neurolora",
+  "version": "1.0.0",
+  "description": "An MCP server for collecting and documenting code from directories",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "mcp-neurolora": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "start": "node build/index.js",
+    "dev": "ts-node-esm src/index.ts",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "mcp",
+    "documentation",
+    "code-collection"
+  ],
+  "author": "aindreyway",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

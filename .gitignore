@@ -33,5 +33,8 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# Temporary files
+.tmp/
+
 # Internal documentation
 PROJECT_SUMMARY.md

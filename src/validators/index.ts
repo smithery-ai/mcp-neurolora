@@ -74,8 +74,18 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in the same directory we're collecting from
-    outputPath = path.resolve(validatedDirectory, `FULL_CODE_${dirName}_${date}.md`);
+    // Save in .tmp directory in project root
+    const projectRoot = path.resolve(__dirname, '../..');
+    const tmpDir = path.resolve(projectRoot, '.tmp');
+
+    // Create .tmp directory if it doesn't exist
+    try {
+      await fs.mkdir(tmpDir, { recursive: true });
+    } catch (error) {
+      console.warn(`Failed to create .tmp directory: ${error}`);
+    }
+
+    outputPath = path.resolve(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

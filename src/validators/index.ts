@@ -105,8 +105,9 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in current working directory
-    outputPath = path.join(process.cwd(), `FULL_CODE_${dirName}_${date}.md`);
+    // Save in project root directory
+    const projectRoot = path.dirname(validatedDirectory);
+    outputPath = path.join(projectRoot, `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

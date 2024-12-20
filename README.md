@@ -82,12 +82,12 @@ Simply provide the arguments in JSON format:
 }
 ```
 
-Note: If outputPath is not provided, the file will be automatically saved in the current working directory with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+Note: If outputPath is not provided, the file will be automatically saved in the parent directory of the input directory with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
 
 - DIRNAME is the uppercase name of your input directory
 - YYYY-MM-DD is the current date
 
-The file is created in the directory where the command is executed, following the same behavior as the original Python implementation.
+For example, if your input directory is `/path/to/project/src`, the output file will be saved as `/path/to/project/FULL_CODE_SRC_2024-12-20.md`.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

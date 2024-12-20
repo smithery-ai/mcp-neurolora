@@ -82,12 +82,12 @@ Simply provide the arguments in JSON format:
 }
 ```
 
-Note: If outputPath is not provided, the file will be automatically saved in the user's home directory under `.neurolora/FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+Note: If outputPath is not provided, the file will be automatically saved in a `.neurolora` directory within the input directory, with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
 
 - DIRNAME is the uppercase name of your input directory
 - YYYY-MM-DD is the current date
 
-The `.neurolora` directory is automatically created in your home directory and is used for storing temporary files that will be used for further processing.
+The `.neurolora` directory is automatically created in the same directory as your input files, making it easy to find and manage the generated documentation alongside your code.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

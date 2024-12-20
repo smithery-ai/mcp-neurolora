@@ -5,6 +5,7 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
+import path from 'path';
 import { CodeCollectorOptions } from './types/index.js';
 import { collectFiles } from './utils/fs.js';
 import { safeWriteFile } from './utils/safe-fs.js';
@@ -83,7 +84,11 @@ export class NeuroloraServer {
         // If outputPath is not provided or doesn't match the format, use the standard format
         let outputPath = String(args.outputPath || '');
         if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
-          outputPath = `FULL_CODE_${dirName}.md`;
+          // Use absolute path in current directory
+          outputPath = path.resolve(process.cwd(), `FULL_CODE_${dirName}.md`);
+        } else {
+          // Convert to absolute path if relative
+          outputPath = path.resolve(outputPath);
         }
 
         const options: CodeCollectorOptions = {

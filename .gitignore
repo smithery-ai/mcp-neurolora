@@ -36,6 +36,7 @@ Thumbs.db
 
 # Temporary files
 .tmp/
+FULL_CODE_*.md
 
 # Internal documentation
 PROJECT_SUMMARY.md

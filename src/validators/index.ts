@@ -22,22 +22,34 @@ export async function validateDirectory(directory: string): Promise<string> {
 }
 
 /**
- * Validate output path is writable
+ * Validate and ensure output path is writable
  */
 export async function validateOutputPath(outputPath?: string): Promise<string> {
   if (!outputPath) {
     throw new Error('Output path is required');
   }
+
+  const resolvedPath = path.resolve(outputPath);
+  const dir = path.dirname(resolvedPath);
+
+  // Create directory if it doesn't exist
   try {
-    const dir = path.dirname(outputPath);
+    await fs.mkdir(dir, { recursive: true });
+  } catch (error) {
+    console.warn(`Failed to create directory: ${error}`);
+  }
+
+  // Check if directory is writable
+  try {
     await fs.access(dir, fs.constants.W_OK);
-    return path.resolve(outputPath);
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(`Invalid output path: ${error.message}`);
+      throw new Error(`Directory is not writable: ${error.message}`);
     }
-    throw new Error('Invalid output path: Unknown error');
+    throw new Error('Directory is not writable: Unknown error');
   }
+
+  return resolvedPath;
 }
 
 /**
@@ -79,13 +91,6 @@ export async function validateOptions(
     const tmpDir = path.join(os.tmpdir(), 'neurolora');
 
     outputPath = path.join(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
-  }
-
-  // Create output directory if it doesn't exist
-  try {
-    await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  } catch (error) {
-    console.warn(`Failed to create output directory: ${error}`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

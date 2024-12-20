@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import os from 'os';
 import { CodeCollectorOptions } from '../types/index.js';
 
 /**
@@ -105,12 +106,12 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in project root directory
-    const projectRoot = path.dirname(validatedDirectory);
-    outputPath = path.join(projectRoot, `FULL_CODE_${dirName}_${date}.md`);
+    // Save in user's Desktop directory
+    const userDesktop = path.join(os.homedir(), 'Desktop');
+    outputPath = path.join(userDesktop, `FULL_CODE_${dirName}_${date}.md`);
 
     // Log paths for debugging
-    console.log('Project root:', projectRoot);
+    console.log('User desktop:', userDesktop);
     console.log('Directory name:', dirName);
     console.log('Generated output path:', outputPath);
     console.log('Process cwd:', process.cwd());

@@ -46,23 +46,33 @@ Add this to your Cline/Sonnet configuration:
 }
 ```
 
-After adding the configuration, ask your assistant to:
+After adding the configuration to your settings file (usually at `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json` for VSCode or `~/Library/Application Support/Claude/claude_desktop_config.json` for Claude desktop app), ask your assistant to:
 
-1. Install base MCP servers by running the `install_base_servers` tool
+1. Install base MCP servers by running the `install_base_servers` tool with the path to your settings file
 2. The tool will automatically add all necessary base servers to your configuration
+
+Example request:
+"Please install the base MCP servers for my environment"
 
 > **Note:** This server uses `npx` for direct npm package execution, which is optimal for Node.js/TypeScript MCP servers, providing seamless integration with the npm ecosystem and TypeScript tooling.
 
 ## Base MCP Servers
 
-The following base servers will be installed:
+The following base servers will be automatically installed and configured:
 
-- fetch: Basic HTTP request functionality
-- puppeteer: Browser automation capabilities
-- sequential-thinking: Advanced problem-solving tools
-- github: GitHub integration features
-- git: Git operations support
-- shell: Basic shell command execution with common commands (ls, cat, pwd, grep, wc, touch, find)
+- fetch: Basic HTTP request functionality for accessing web resources
+- puppeteer: Browser automation capabilities for web interaction and testing
+- sequential-thinking: Advanced problem-solving tools for complex tasks
+- github: GitHub integration features for repository management
+- git: Git operations support for version control
+- shell: Basic shell command execution with common commands:
+  - ls: List directory contents
+  - cat: Display file contents
+  - pwd: Print working directory
+  - grep: Search text patterns
+  - wc: Count words, lines, characters
+  - touch: Create empty files
+  - find: Search for files
 
 ## 🎯 What Your Assistant Can Do
 

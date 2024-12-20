@@ -82,12 +82,12 @@ Simply provide the arguments in JSON format:
 }
 ```
 
-Note: If outputPath is not provided, the file will be automatically saved in the `.tmp` directory with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+Note: If outputPath is not provided, the file will be automatically saved in the system's temporary directory under `neurolora/FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
 
 - DIRNAME is the uppercase name of your input directory
 - YYYY-MM-DD is the current date
 
-The `.tmp` directory is created automatically in the project root and is ignored by git. This directory is intended for temporary files that will be used for further processing.
+The temporary directory is automatically created and managed by the system, making it ideal for files that will be used for further processing.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

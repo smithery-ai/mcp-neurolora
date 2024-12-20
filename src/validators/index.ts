@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import os from 'os';
 import { CodeCollectorOptions } from '../types/index.js';
 
 /**
@@ -74,8 +75,8 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in .tmp directory in current working directory
-    const tmpDir = path.resolve(process.cwd(), '.tmp');
+    // Save in system temp directory
+    const tmpDir = path.resolve(os.tmpdir(), 'neurolora');
 
     // Create .tmp directory if it doesn't exist
     try {

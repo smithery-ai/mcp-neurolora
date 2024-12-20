@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import os from 'os';
 import { CodeCollectorOptions } from '../types/index.js';
 
 /**
@@ -35,17 +34,33 @@ export async function validateOutputPath(outputPath?: string): Promise<string> {
     : path.resolve(process.cwd(), outputPath);
   const dir = path.dirname(resolvedPath);
 
+  console.log('Validating output path:', outputPath);
+  console.log('Resolved path:', resolvedPath);
+  console.log('Directory:', dir);
+  console.log('Current working directory:', process.cwd());
+
   // Create directory if it doesn't exist
   try {
+    console.log('Creating directory:', dir);
     await fs.mkdir(dir, { recursive: true });
-  } catch (error) {
-    console.warn(`Failed to create directory: ${error}`);
+    console.log('Directory created successfully');
+  } catch (error: unknown) {
+    const err = error as { code?: string; message?: string };
+    console.warn(`Failed to create directory: ${err.message || error}`);
+    console.warn('Error code:', err.code);
+    console.warn('Error message:', err.message);
   }
 
   // Check if directory is writable
   try {
+    console.log('Checking write access to:', dir);
     await fs.access(dir, fs.constants.W_OK);
-  } catch (error) {
+    console.log('Directory is writable');
+  } catch (error: unknown) {
+    const err = error as { code?: string; message?: string };
+    console.warn('Write access check failed');
+    console.warn('Error code:', err.code);
+    console.warn('Error message:', err.message);
     if (error instanceof Error) {
       throw new Error(`Directory is not writable: ${error.message}`);
     }
@@ -90,13 +105,8 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in the same directory as the input
-    const tmpDir = path.join(validatedDirectory, '.neurolora');
-    outputPath = path.join(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
-
-    // Log the paths for debugging
-    console.log('Temp directory:', tmpDir);
-    console.log('Output path:', outputPath);
+    // Save in current working directory
+    outputPath = path.join(process.cwd(), `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

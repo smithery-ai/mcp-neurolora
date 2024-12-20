@@ -5,9 +5,9 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
-import { promises as fs } from 'fs';
 import { CodeCollectorOptions } from './types/index.js';
 import { collectFiles } from './utils/fs.js';
+import { safeWriteFile } from './utils/safe-fs.js';
 import { validateOptions } from './validators/index.js';
 
 /**
@@ -153,11 +153,11 @@ export class NeuroloraServer {
       markdown += '\n```\n\n';
     }
 
-    // Write output file
+    // Write output file using safe file system operations
     const outputPath =
       validatedOptions.outputPath ||
       `FULL_CODE_${validatedOptions.directory.split('/').pop()?.toUpperCase() || 'PROJECT'}.md`;
-    await fs.writeFile(outputPath, markdown, 'utf-8');
+    await safeWriteFile(outputPath, markdown);
 
     return `Successfully collected ${files.length} files. Output saved to: ${outputPath}`;
   }

@@ -82,12 +82,15 @@ Simply provide the arguments in JSON format:
 }
 ```
 
-Note: If outputPath is not provided, the file will be automatically saved on your Desktop with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+Note: If outputPath is not provided, the file will be automatically saved in the current working directory with the name `FULL_CODE_DIRNAME.md`, where DIRNAME is the uppercase name of your input directory.
 
-- DIRNAME is the uppercase name of your input directory
-- YYYY-MM-DD is the current date
+For security reasons, files can only be written to:
 
-For example, if your input directory is `/path/to/project/src`, the output file will be saved as `~/Desktop/FULL_CODE_SRC_2024-12-20.md`.
+- Your home directory and its subdirectories
+- System temporary directory
+- Current working directory
+
+If you specify a path outside these locations, the operation will fail with an "Access denied" error.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

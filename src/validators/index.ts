@@ -22,53 +22,13 @@ export async function validateDirectory(directory: string): Promise<string> {
 }
 
 /**
- * Validate and ensure output path is writable
+ * Validate output path format
  */
-export async function validateOutputPath(outputPath?: string): Promise<string> {
+export function validateOutputPath(outputPath?: string): string {
   if (!outputPath) {
     throw new Error('Output path is required');
   }
-
-  // Always use absolute paths
-  const resolvedPath = path.isAbsolute(outputPath)
-    ? outputPath
-    : path.resolve(process.cwd(), outputPath);
-  const dir = path.dirname(resolvedPath);
-
-  console.log('Validating output path:', outputPath);
-  console.log('Resolved path:', resolvedPath);
-  console.log('Directory:', dir);
-  console.log('Current working directory:', process.cwd());
-
-  // Create directory if it doesn't exist
-  try {
-    console.log('Creating directory:', dir);
-    await fs.mkdir(dir, { recursive: true });
-    console.log('Directory created successfully');
-  } catch (error: unknown) {
-    const err = error as { code?: string; message?: string };
-    console.warn(`Failed to create directory: ${err.message || error}`);
-    console.warn('Error code:', err.code);
-    console.warn('Error message:', err.message);
-  }
-
-  // Check if directory is writable
-  try {
-    console.log('Checking write access to:', dir);
-    await fs.access(dir, fs.constants.W_OK);
-    console.log('Directory is writable');
-  } catch (error: unknown) {
-    const err = error as { code?: string; message?: string };
-    console.warn('Write access check failed');
-    console.warn('Error code:', err.code);
-    console.warn('Error message:', err.message);
-    if (error instanceof Error) {
-      throw new Error(`Directory is not writable: ${error.message}`);
-    }
-    throw new Error('Directory is not writable: Unknown error');
-  }
-
-  return resolvedPath;
+  return path.resolve(outputPath);
 }
 
 /**
@@ -106,17 +66,8 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in user's Desktop directory
-    const userDesktop = path.join(os.homedir(), 'Desktop');
-    outputPath = path.join(userDesktop, `FULL_CODE_${dirName}_${date}.md`);
-
-    // Log paths for debugging
-    console.log('User desktop:', userDesktop);
-    console.log('Directory name:', dirName);
-    console.log('Generated output path:', outputPath);
-    console.log('Process cwd:', process.cwd());
-    console.log('Process uid:', process.getuid?.());
-    console.log('Process gid:', process.getgid?.());
+    // Save in current working directory
+    outputPath = path.join(process.cwd(), `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

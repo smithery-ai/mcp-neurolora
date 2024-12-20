@@ -74,9 +74,8 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in .tmp directory in project root
-    const projectRoot = path.resolve(__dirname, '../..');
-    const tmpDir = path.resolve(projectRoot, '.tmp');
+    // Save in .tmp directory in current working directory
+    const tmpDir = path.resolve(process.cwd(), '.tmp');
 
     // Create .tmp directory if it doesn't exist
     try {

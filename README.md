@@ -68,7 +68,7 @@ Collects all code from a directory into a single markdown file with syntax highl
 Parameters:
 
 - `directory` (required): Directory path to collect code from
-- `outputPath` (required): Path where to save the output markdown file
+- `outputPath` (optional): Path where to save the output markdown file
 - `ignorePatterns` (optional): Array of patterns to ignore (similar to .gitignore)
 
 Example usage:
@@ -78,12 +78,16 @@ Simply provide the arguments in JSON format:
 ```json
 {
   "directory": "/path/to/project",
-  "outputPath": "FULL_CODE_PROJECT.md",
   "ignorePatterns": ["*.log", "temp/", "__pycache__", "*.pyc", ".git"]
 }
 ```
 
-Note: The output file will be automatically named as `FULL_CODE_DIRNAME.md`, where DIRNAME is the name of your input directory. For example, if your directory is `/path/to/my-project`, the output file will be `FULL_CODE_my-project.md`.
+Note: If outputPath is not provided, the file will be automatically saved in the input directory with the name `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+
+- DIRNAME is the uppercase name of your input directory
+- YYYY-MM-DD is the current date
+
+For example, if your directory is `/path/to/my-project` and today is December 20, 2024, the output file will be `/path/to/my-project/FULL_CODE_MY-PROJECT_2024-12-20.md`.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

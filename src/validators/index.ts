@@ -1,6 +1,6 @@
-import { CodeCollectorOptions } from '../types/index.js';
-import path from 'path';
 import { promises as fs } from 'fs';
+import path from 'path';
+import { CodeCollectorOptions } from '../types/index.js';
 
 /**
  * Validate directory path exists and is accessible
@@ -72,7 +72,10 @@ export async function validateOptions(
   // Generate default output path if not provided or doesn't match format
   let outputPath = options.outputPath || '';
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
-    outputPath = `FULL_CODE_${dirName}.md`;
+    // Get current date in YYYY-MM-DD format
+    const date = new Date().toISOString().split('T')[0];
+    // Save in the same directory we're collecting from
+    outputPath = path.join(validatedDirectory, `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

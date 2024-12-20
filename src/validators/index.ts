@@ -90,8 +90,9 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in system temp directory with absolute path
-    const tmpDir = path.join(os.tmpdir(), 'neurolora');
+    // Save in user's home directory
+    const homeDir = os.homedir();
+    const tmpDir = path.join(homeDir, '.neurolora');
     outputPath = path.join(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
 
     // Log the paths for debugging

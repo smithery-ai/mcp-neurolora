@@ -98,6 +98,14 @@ Your assistant will:
 2. Run the install_base_servers tool
 3. Configure all necessary servers automatically
 
+After the installation is complete:
+
+1. Close VSCode completely (Cmd+Q on macOS, Alt+F4 on Windows)
+2. Reopen VSCode
+3. The new servers will be ready to use
+
+> **Important:** A complete restart of VSCode is required after installing the base servers for them to be properly initialized.
+
 > **Note:** This server uses `npx` for direct npm package execution, which is optimal for Node.js/TypeScript MCP servers, providing seamless integration with the npm ecosystem and TypeScript tooling.
 
 ## Base MCP Servers

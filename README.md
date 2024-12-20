@@ -73,17 +73,17 @@ Parameters:
 
 Example usage:
 
-```typescript
-await use_mcp_tool({
-  server_name: 'aindreyway-mcp-neurolora',
-  tool_name: 'collect_code',
-  arguments: {
-    directory: '/path/to/project',
-    outputPath: '/path/to/output.md',
-    ignorePatterns: ['*.log', 'temp/'],
-  },
-});
+Simply provide the arguments in JSON format:
+
+```json
+{
+  "directory": "/path/to/project",
+  "outputPath": "/path/to/output.md",
+  "ignorePatterns": ["*.log", "temp/"]
+}
 ```
+
+The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 
 ## 🔧 Features
 

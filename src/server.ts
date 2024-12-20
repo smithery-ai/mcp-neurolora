@@ -5,10 +5,10 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from '@modelcontextprotocol/sdk/types.js';
-import { collectFiles } from './utils/fs.js';
-import { validateOptions } from './validators/index.js';
 import { promises as fs } from 'fs';
 import { CodeCollectorOptions } from './types/index.js';
+import { collectFiles } from './utils/fs.js';
+import { validateOptions } from './validators/index.js';
 
 /**
  * Main MCP server class for code collection functionality
@@ -64,7 +64,7 @@ export class NeuroloraServer {
                 optional: true,
               },
             },
-            required: ['directory', 'outputPath'],
+            required: ['directory'],
           },
         },
       ],
@@ -77,9 +77,18 @@ export class NeuroloraServer {
 
       try {
         const args = request.params.arguments as Record<string, unknown>;
+        const directory = String(args.directory);
+        const dirName = directory.split('/').pop()?.toUpperCase() || 'PROJECT';
+
+        // If outputPath is not provided or doesn't match the format, use the standard format
+        let outputPath = String(args.outputPath || '');
+        if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
+          outputPath = `FULL_CODE_${dirName}.md`;
+        }
+
         const options: CodeCollectorOptions = {
-          directory: String(args.directory),
-          outputPath: String(args.outputPath),
+          directory,
+          outputPath,
           ignorePatterns: args.ignorePatterns as string[] | undefined,
         };
         const result = await this.handleCollectCode(options);
@@ -145,9 +154,12 @@ export class NeuroloraServer {
     }
 
     // Write output file
-    await fs.writeFile(validatedOptions.outputPath, markdown, 'utf-8');
+    const outputPath =
+      validatedOptions.outputPath ||
+      `FULL_CODE_${validatedOptions.directory.split('/').pop()?.toUpperCase() || 'PROJECT'}.md`;
+    await fs.writeFile(outputPath, markdown, 'utf-8');
 
-    return `Successfully collected ${files.length} files. Output saved to: ${validatedOptions.outputPath}`;
+    return `Successfully collected ${files.length} files. Output saved to: ${outputPath}`;
   }
 
   /**

@@ -23,7 +23,10 @@ export async function validateDirectory(directory: string): Promise<string> {
 /**
  * Validate output path is writable
  */
-export async function validateOutputPath(outputPath: string): Promise<string> {
+export async function validateOutputPath(outputPath?: string): Promise<string> {
+  if (!outputPath) {
+    throw new Error('Output path is required');
+  }
   try {
     const dir = path.dirname(outputPath);
     await fs.access(dir, fs.constants.W_OK);
@@ -64,7 +67,15 @@ export async function validateOptions(
   options: CodeCollectorOptions
 ): Promise<CodeCollectorOptions> {
   const validatedDirectory = await validateDirectory(options.directory);
-  const validatedOutputPath = await validateOutputPath(options.outputPath);
+  const dirName = validatedDirectory.split('/').pop()?.toUpperCase() || 'PROJECT';
+
+  // Generate default output path if not provided or doesn't match format
+  let outputPath = options.outputPath || '';
+  if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
+    outputPath = `FULL_CODE_${dirName}.md`;
+  }
+
+  const validatedOutputPath = await validateOutputPath(outputPath);
   const validatedIgnorePatterns = validateIgnorePatterns(options.ignorePatterns);
 
   return {

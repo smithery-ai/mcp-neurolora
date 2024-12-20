@@ -78,10 +78,12 @@ Simply provide the arguments in JSON format:
 ```json
 {
   "directory": "/path/to/project",
-  "outputPath": "/path/to/output.md",
-  "ignorePatterns": ["*.log", "temp/"]
+  "outputPath": "FULL_CODE_PROJECT.md",
+  "ignorePatterns": ["*.log", "temp/", "__pycache__", "*.pyc", ".git"]
 }
 ```
+
+Note: The output file will be automatically named as `FULL_CODE_DIRNAME.md`, where DIRNAME is the name of your input directory. For example, if your directory is `/path/to/my-project`, the output file will be `FULL_CODE_my-project.md`.
 
 The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
 

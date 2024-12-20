@@ -1,10 +1,10 @@
 # MCP Neurolora
 
 ![MCP Server](https://img.shields.io/badge/MCP-Server-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-green)
+![Version](https://img.shields.io/badge/version-1.2.0-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-An intelligent MCP server that provides tools for collecting and documenting code from directories, creating comprehensive markdown files with syntax highlighting and navigation.
+An intelligent MCP server that provides tools for installing base MCP servers and collecting code from directories.
 
 ## 🚀 Quick Start
 
@@ -46,20 +46,60 @@ Add this to your Cline/Sonnet configuration:
 }
 ```
 
-That's it! The assistant will handle everything automatically.
+After adding the configuration, ask your assistant to:
+
+1. Install base MCP servers by running the `install_base_servers` tool
+2. The tool will automatically add all necessary base servers to your configuration
 
 > **Note:** This server uses `npx` for direct npm package execution, which is optimal for Node.js/TypeScript MCP servers, providing seamless integration with the npm ecosystem and TypeScript tooling.
+
+## Base MCP Servers
+
+The following base servers will be installed:
+
+- fetch: Basic HTTP request functionality
+- puppeteer: Browser automation capabilities
+- sequential-thinking: Advanced problem-solving tools
+- github: GitHub integration features
+- git: Git operations support
+- shell: Basic shell command execution with common commands (ls, cat, pwd, grep, wc, touch, find)
 
 ## 🎯 What Your Assistant Can Do
 
 Ask your assistant to:
 
+- "Install base MCP servers for my environment"
 - "Collect code from my project directory"
 - "Create documentation for my codebase"
 - "Generate a markdown file with all my code"
 - "Export my project files with syntax highlighting"
 
 ## 🛠 Available Tools
+
+### install_base_servers
+
+Installs base MCP servers to your configuration file. This tool helps set up essential MCP servers for your environment.
+
+Parameters:
+
+- `configPath` (required): Path to the MCP settings configuration file
+
+Example usage:
+
+```json
+{
+  "configPath": "/path/to/cline_mcp_settings.json"
+}
+```
+
+The tool will install the following base servers if they're not already present:
+
+- fetch: Basic HTTP request functionality
+- puppeteer: Browser automation capabilities
+- sequential-thinking: Advanced problem-solving tools
+- github: GitHub integration features
+- git: Git operations support
+- shell: Basic shell command execution
 
 ### collect_code
 
@@ -105,6 +145,7 @@ The tool will collect all code files from the specified directory, ignoring any 
 
 The server automatically:
 
+- Installs and configures base MCP servers
 - Collects code from specified directories
 - Generates well-formatted markdown documentation
 - Supports syntax highlighting for various programming languages

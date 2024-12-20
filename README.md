@@ -6,53 +6,97 @@
 
 An intelligent MCP server that provides tools for installing base MCP servers and collecting code from directories.
 
-## 🚀 Quick Start
+## 🚀 Installation Guide
 
-### Prerequisites
+Don't worry if you don't have anything installed yet! Just follow these steps or ask your assistant to help you with the installation.
 
-1. Make sure you have Node.js installed (version 18 or higher):
+### Step 1: Install Node.js
 
+#### macOS
+
+1. Install Homebrew if not installed:
    ```bash
-   node --version
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+2. Install Node.js 18:
+   ```bash
+   brew install node@18
+   echo 'export PATH="/opt/homebrew/opt/node@18/bin:$PATH"' >> ~/.zshrc
+   source ~/.zshrc
    ```
 
-2. Install or update npm (comes with Node.js):
+#### Windows
 
-   ```bash
-   npm install -g npm@latest
-   ```
+1. Download Node.js 18 LTS from [nodejs.org](https://nodejs.org/)
+2. Run the installer
+3. Open a new terminal to apply changes
 
-3. Verify npx is available:
-   ```bash
-   npx --version
-   ```
-   If not found, install it:
-   ```bash
-   npm install -g npx
-   ```
+#### Linux (Ubuntu/Debian)
 
-### Configuration
-
-Add this to your Cline/Sonnet configuration:
-
-```json
-"aindreyway-mcp-neurolora": {
-  "command": "npx",
-  "args": ["-y", "@aindreyway/mcp-neurolora@latest"],
-  "disabled": false,
-  "env": {
-    "NODE_OPTIONS": "--max-old-space-size=256"
-  }
-}
+```bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
-After adding the configuration to your settings file (usually at `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json` for VSCode or `~/Library/Application Support/Claude/claude_desktop_config.json` for Claude desktop app), ask your assistant to:
+### Step 2: Install uv and uvx
 
-1. Install base MCP servers by running the `install_base_servers` tool with the path to your settings file
-2. The tool will automatically add all necessary base servers to your configuration
+#### All Operating Systems
 
-Example request:
+1. Install uv:
+
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+2. Install uvx:
+   ```bash
+   uv pip install uvx
+   ```
+
+### Step 3: Verify Installation
+
+Run these commands to verify everything is installed:
+
+```bash
+node --version  # Should show v18.x.x
+npm --version   # Should show 9.x.x or higher
+uv --version    # Should show uv installed
+uvx --version   # Should show uvx installed
+```
+
+### Step 4: Configure MCP Server
+
+Your assistant will help you:
+
+1. Find your Cline settings file:
+
+   - VSCode: `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+   - Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Windows VSCode: `%APPDATA%/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
+   - Windows Claude: `%APPDATA%/Claude/claude_desktop_config.json`
+
+2. Add this configuration:
+   ```json
+   "aindreyway-mcp-neurolora": {
+     "command": "npx",
+     "args": ["-y", "@aindreyway/mcp-neurolora@latest"],
+     "disabled": false,
+     "env": {
+       "NODE_OPTIONS": "--max-old-space-size=256"
+     }
+   }
+   ```
+
+### Step 5: Install Base Servers
+
+Simply ask your assistant:
 "Please install the base MCP servers for my environment"
+
+Your assistant will:
+
+1. Find your settings file
+2. Run the install_base_servers tool
+3. Configure all necessary servers automatically
 
 > **Note:** This server uses `npx` for direct npm package execution, which is optimal for Node.js/TypeScript MCP servers, providing seamless integration with the npm ecosystem and TypeScript tooling.
 

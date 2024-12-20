@@ -29,7 +29,10 @@ export async function validateOutputPath(outputPath?: string): Promise<string> {
     throw new Error('Output path is required');
   }
 
-  const resolvedPath = path.resolve(outputPath);
+  // Always use absolute paths
+  const resolvedPath = path.isAbsolute(outputPath)
+    ? outputPath
+    : path.resolve(process.cwd(), outputPath);
   const dir = path.dirname(resolvedPath);
 
   // Create directory if it doesn't exist
@@ -89,8 +92,11 @@ export async function validateOptions(
     const date = new Date().toISOString().split('T')[0];
     // Save in system temp directory with absolute path
     const tmpDir = path.join(os.tmpdir(), 'neurolora');
-
     outputPath = path.join(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
+
+    // Log the paths for debugging
+    console.log('Temp directory:', tmpDir);
+    console.log('Output path:', outputPath);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

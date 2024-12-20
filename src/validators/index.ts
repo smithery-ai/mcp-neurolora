@@ -78,14 +78,14 @@ export async function validateOptions(
     // Save in system temp directory with absolute path
     const tmpDir = path.join(os.tmpdir(), 'neurolora');
 
-    // Create .tmp directory if it doesn't exist
-    try {
-      await fs.mkdir(tmpDir, { recursive: true });
-    } catch (error) {
-      console.warn(`Failed to create .tmp directory: ${error}`);
-    }
-
     outputPath = path.join(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
+  }
+
+  // Create output directory if it doesn't exist
+  try {
+    await fs.mkdir(path.dirname(outputPath), { recursive: true });
+  } catch (error) {
+    console.warn(`Failed to create output directory: ${error}`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

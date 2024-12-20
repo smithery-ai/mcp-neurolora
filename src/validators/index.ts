@@ -75,7 +75,7 @@ export async function validateOptions(
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
     // Save in the same directory we're collecting from
-    outputPath = path.join(validatedDirectory, `FULL_CODE_${dirName}_${date}.md`);
+    outputPath = path.resolve(validatedDirectory, `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

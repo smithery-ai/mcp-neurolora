@@ -40,9 +40,7 @@ Add this to your Cline/Sonnet configuration:
   "command": "npx",
   "args": ["-y", "--node-arg=--max-old-space-size=256", "@aindreyway/mcp-neurolora@latest"],
   "disabled": false,
-  "env": {
-    "NODE_OPTIONS": "--no-experimental-fetch"
-  }
+  "env": {}
 }
 ```
 

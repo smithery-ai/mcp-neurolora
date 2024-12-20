@@ -38,9 +38,11 @@ Add this to your Cline/Sonnet configuration:
 ```json
 "aindreyway-mcp-neurolora": {
   "command": "npx",
-  "args": ["-y", "--node-arg=--max-old-space-size=256", "@aindreyway/mcp-neurolora@latest"],
+  "args": ["-y", "@aindreyway/mcp-neurolora@latest"],
   "disabled": false,
-  "env": {}
+  "env": {
+    "NODE_OPTIONS": "--max-old-space-size=256"
+  }
 }
 ```
 

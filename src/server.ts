@@ -18,7 +18,7 @@ export class NeuroloraServer {
 
   constructor() {
     this.server = new Server({
-      name: 'aindreyway-mcp-neurolora',
+      name: '@aindreyway/mcp-neurolora',
       version: '1.0.0',
       capabilities: {
         tools: {},

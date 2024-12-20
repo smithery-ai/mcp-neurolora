@@ -36,7 +36,7 @@ An intelligent MCP server that provides tools for collecting and documenting cod
 Add this to your Cline/Sonnet configuration:
 
 ```json
-"mcp-neurolora": {
+"aindreyway-mcp-neurolora": {
   "command": "npx",
   "args": ["-y", "--node-arg=--max-old-space-size=256", "@aindreyway/mcp-neurolora@latest"],
   "disabled": false,
@@ -75,7 +75,7 @@ Example usage:
 
 ```typescript
 await use_mcp_tool({
-  server_name: 'mcp-neurolora',
+  server_name: 'aindreyway-mcp-neurolora',
   tool_name: 'collect_code',
   arguments: {
     directory: '/path/to/project',

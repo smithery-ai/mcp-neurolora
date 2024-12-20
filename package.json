@@ -1,5 +1,5 @@
 {
-  "name": "mcp-neurolora",
+  "name": "@aindreyway/mcp-neurolora",
   "version": "1.0.0",
   "description": "An MCP server for collecting and documenting code from directories",
   "type": "module",

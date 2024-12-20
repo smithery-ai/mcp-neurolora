@@ -75,8 +75,8 @@ export async function validateOptions(
   if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
     // Get current date in YYYY-MM-DD format
     const date = new Date().toISOString().split('T')[0];
-    // Save in system temp directory
-    const tmpDir = path.resolve(os.tmpdir(), 'neurolora');
+    // Save in system temp directory with absolute path
+    const tmpDir = path.join(os.tmpdir(), 'neurolora');
 
     // Create .tmp directory if it doesn't exist
     try {
@@ -85,7 +85,7 @@ export async function validateOptions(
       console.warn(`Failed to create .tmp directory: ${error}`);
     }
 
-    outputPath = path.resolve(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
+    outputPath = path.join(tmpDir, `FULL_CODE_${dirName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

@@ -108,6 +108,14 @@ export async function validateOptions(
     // Save in project root directory
     const projectRoot = path.dirname(validatedDirectory);
     outputPath = path.join(projectRoot, `FULL_CODE_${dirName}_${date}.md`);
+
+    // Log paths for debugging
+    console.log('Project root:', projectRoot);
+    console.log('Directory name:', dirName);
+    console.log('Generated output path:', outputPath);
+    console.log('Process cwd:', process.cwd());
+    console.log('Process uid:', process.getuid?.());
+    console.log('Process gid:', process.getgid?.());
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);

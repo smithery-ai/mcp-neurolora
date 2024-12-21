@@ -17,6 +17,8 @@
     "local": "cross-env MCP_ENV=local npm run dev",
     "local:build": "cross-env MCP_ENV=local npm run build",
     "local:start": "cross-env MCP_ENV=local npm run start",
+    "update-version": "node scripts/update-version.js",
+    "version": "npm run update-version && git add -A",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

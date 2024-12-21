@@ -1,22 +1,39 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { CodeCollectorOptions } from '../types/index.js';
+import { DEFAULT_IGNORE_PATTERNS } from '../utils/fs.js';
 
 /**
- * Validate directory path exists and is accessible
+ * Validate input path exists and is accessible
  */
-export async function validateDirectory(directory: string): Promise<string> {
-  try {
-    const stats = await fs.stat(directory);
-    if (!stats.isDirectory()) {
-      throw new Error('Path is not a directory');
+export async function validateInput(input: string | string[]): Promise<string | string[]> {
+  if (Array.isArray(input)) {
+    // Проверяем каждый путь в массиве
+    const validatedPaths = await Promise.all(
+      input.map(async filePath => {
+        try {
+          const stats = await fs.stat(filePath);
+          if (!stats.isFile() && !stats.isDirectory()) {
+            throw new Error(`Invalid path: ${filePath} is neither a file nor a directory`);
+          }
+          return filePath;
+        } catch (error) {
+          throw new Error(`Invalid path: ${(error as Error).message}`);
+        }
+      })
+    );
+    return validatedPaths;
+  } else {
+    // Проверяем одиночный путь
+    try {
+      const stats = await fs.stat(input);
+      if (!stats.isFile() && !stats.isDirectory()) {
+        throw new Error('Path is neither a file nor a directory');
+      }
+      return input;
+    } catch (error) {
+      throw new Error(`Invalid path: ${(error as Error).message}`);
     }
-    return path.resolve(directory);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Invalid directory: ${error.message}`);
-    }
-    throw new Error('Invalid directory: Unknown error');
   }
 }
 
@@ -57,23 +74,30 @@ export function validateIgnorePatterns(patterns?: string[]): string[] {
 export async function validateOptions(
   options: CodeCollectorOptions
 ): Promise<CodeCollectorOptions> {
-  const validatedDirectory = await validateDirectory(options.directory);
-  const dirName = validatedDirectory.split('/').pop()?.toUpperCase() || 'PROJECT';
+  const validatedInput = await validateInput(options.input);
 
-  // Generate default output path if not provided or doesn't match format
+  // Определяем имя для выходного файла
+  const inputName = Array.isArray(options.input)
+    ? 'MULTIPLE_FILES'
+    : path.basename(options.input).toUpperCase();
+
+  // Get current date in YYYY-MM-DD format
+  const date = new Date().toISOString().split('T')[0];
+
+  // Always save in project root directory
   let outputPath = options.outputPath || '';
-  if (!outputPath || !outputPath.startsWith('FULL_CODE_')) {
-    // Get current date in YYYY-MM-DD format
-    const date = new Date().toISOString().split('T')[0];
-    // Save in current working directory
-    outputPath = path.join(process.cwd(), `FULL_CODE_${dirName}_${date}.md`);
+  if (!outputPath) {
+    const projectRoot = process.cwd();
+    outputPath = path.join(projectRoot, `PROMPT_FULL_CODE_${inputName}_${date}.md`);
   }
 
   const validatedOutputPath = await validateOutputPath(outputPath);
-  const validatedIgnorePatterns = validateIgnorePatterns(options.ignorePatterns);
+  const validatedIgnorePatterns = validateIgnorePatterns(
+    options.ignorePatterns || DEFAULT_IGNORE_PATTERNS
+  );
 
   return {
-    directory: validatedDirectory,
+    input: validatedInput,
     outputPath: validatedOutputPath,
     ignorePatterns: validatedIgnorePatterns,
   };

@@ -4,7 +4,7 @@
 ![Version](https://img.shields.io/badge/version-1.2.0-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-An intelligent MCP server that provides tools for installing base MCP servers and collecting code from directories.
+An intelligent MCP server that provides tools for code analysis using OpenAI API, code collection, and documentation generation.
 
 ## 🚀 Installation Guide
 
@@ -77,12 +77,16 @@ Your assistant will help you:
 
 2. Add this configuration:
    ```json
-   "aindreyway-mcp-neurolora": {
-     "command": "npx",
-     "args": ["-y", "@aindreyway/mcp-neurolora@latest"],
-     "disabled": false,
-     "env": {
-       "NODE_OPTIONS": "--max-old-space-size=256"
+   {
+     "mcpServers": {
+       "aindreyway-mcp-neurolora": {
+         "command": "npx",
+         "args": ["-y", "@aindreyway/mcp-neurolora@latest"],
+         "env": {
+           "NODE_OPTIONS": "--max-old-space-size=256",
+           "OPENAI_API_KEY": "your_api_key_here"
+         }
+       }
      }
    }
    ```
@@ -130,38 +134,43 @@ The following base servers will be automatically installed and configured:
 
 Ask your assistant to:
 
+- "Analyze my code and suggest improvements"
 - "Install base MCP servers for my environment"
 - "Collect code from my project directory"
 - "Create documentation for my codebase"
 - "Generate a markdown file with all my code"
-- "Export my project files with syntax highlighting"
 
 ## 🛠 Available Tools
 
-### install_base_servers
+### analyze_code
 
-Installs base MCP servers to your configuration file. This tool helps set up essential MCP servers for your environment.
+Analyzes code using OpenAI API and generates detailed feedback with improvement suggestions.
 
 Parameters:
 
-- `configPath` (required): Path to the MCP settings configuration file
+- `codePath` (required): Path to the code file or directory to analyze
 
 Example usage:
 
 ```json
 {
-  "configPath": "/path/to/cline_mcp_settings.json"
+  "codePath": "/path/to/your/code.ts"
 }
 ```
 
-The tool will install the following base servers if they're not already present:
+The tool will:
 
-- fetch: Basic HTTP request functionality
-- puppeteer: Browser automation capabilities
-- sequential-thinking: Advanced problem-solving tools
-- github: GitHub integration features
-- git: Git operations support
-- shell: Basic shell command execution
+1. Analyze your code using OpenAI API
+2. Generate detailed feedback with:
+   - Issues and recommendations
+   - Best practices violations
+   - Impact analysis
+   - Steps to fix
+3. Create two output files in your project:
+   - LAST_RESPONSE_OPENAI.txt - Human-readable analysis
+   - LAST_RESPONSE_OPENAI_GITHUB_FORMAT.json - Structured data for GitHub issues
+
+> Note: Requires OpenAI API key in environment configuration
 
 ### collect_code
 
@@ -175,17 +184,6 @@ Parameters:
 
 Example usage:
 
-Simply provide the arguments in JSON format:
-
-```json
-{
-  "directory": "/path/to/project",
-  "ignorePatterns": ["*.log", "temp/", "__pycache__", "*.pyc", ".git"]
-}
-```
-
-Important: Always specify the outputPath to save the file inside the directory being collected. For example:
-
 ```json
 {
   "directory": "/path/to/project/src",
@@ -194,33 +192,46 @@ Important: Always specify the outputPath to save the file inside the directory b
 }
 ```
 
-This ensures that the documentation is kept alongside the code it documents. The file name should follow the format `FULL_CODE_DIRNAME_YYYY-MM-DD.md`, where:
+### install_base_servers
 
-- DIRNAME is the uppercase name of your input directory
-- YYYY-MM-DD is the current date
+Installs base MCP servers to your configuration file.
 
-Always use absolute paths to ensure reliable operation in any environment.
+Parameters:
 
-The tool will collect all code files from the specified directory, ignoring any files that match the patterns, and create a markdown file with syntax highlighting and navigation.
+- `configPath` (required): Path to the MCP settings configuration file
+
+Example usage:
+
+```json
+{
+  "configPath": "/path/to/cline_mcp_settings.json"
+}
+```
 
 ## 🔧 Features
 
-The server automatically:
+The server provides:
 
-- Installs and configures base MCP servers
-- Collects code from specified directories
-- Generates well-formatted markdown documentation
-- Supports syntax highlighting for various programming languages
-- Creates table of contents with anchors
-- Handles large codebases efficiently:
-  - Memory-efficient file processing
-  - Configurable file size limits
-  - Smart file filtering
-  - Limited heap size (256MB)
-- Provides flexible ignore patterns
-- Supports UTF-8 encoding
+- Code Analysis:
 
-## 📝 License
+  - OpenAI API integration
+  - Structured feedback
+  - Best practices recommendations
+  - GitHub issues generation
+
+- Code Collection:
+
+  - Directory traversal
+  - Syntax highlighting
+  - Navigation generation
+  - Pattern-based filtering
+
+- Base Server Management:
+  - Automatic installation
+  - Configuration handling
+  - Version management
+
+## 📄 License
 
 MIT License - feel free to use this in your projects!
 

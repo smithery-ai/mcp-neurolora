@@ -1,8 +1,24 @@
 // Types for code collection functionality
 
+/**
+ * Options for code collection
+ */
 export interface CodeCollectorOptions {
-  directory: string;
+  /**
+   * Input path(s) to collect code from.
+   * Must be absolute paths, e.g. '/Users/username/project/src'
+   */
+  input: string | string[];
+
+  /**
+   * Path where to save the output file.
+   * Must be an absolute path, e.g. '/Users/username/project/output.md'
+   */
   outputPath: string;
+
+  /**
+   * Optional patterns to ignore when collecting files
+   */
   ignorePatterns?: string[];
 }
 

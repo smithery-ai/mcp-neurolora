@@ -1,5 +1,4 @@
-import { Stats } from 'fs';
-import { promises as fs } from 'fs';
+import { promises as fs, Stats } from 'fs';
 import path from 'path';
 import { FileInfo, LanguageMapping } from '../types/index.js';
 
@@ -63,6 +62,32 @@ export const DEFAULT_IGNORE_PATTERNS = [
   'build',
   '.idea',
   '.vscode',
+  'coverage',
+  '.next',
+  '.nuxt',
+  '.cache',
+  '*.log',
+  '*.lock',
+  'package-lock.json',
+  'yarn.lock',
+  'pnpm-lock.yaml',
+  '.DS_Store',
+  'Thumbs.db',
+  '*.swp',
+  '*.swo',
+  '*.bak',
+  '*.tmp',
+  '*.temp',
+  '*.o',
+  '*.obj',
+  '*.class',
+  '*.exe',
+  '*.dll',
+  '*.so',
+  '*.dylib',
+  '*.min.js',
+  '*.min.css',
+  '*.map',
 ];
 
 /**
@@ -142,39 +167,107 @@ export async function readFileContent(filePath: string): Promise<string> {
 }
 
 /**
- * Collect all files from a directory that match criteria
+ * Process a single file and return its info
  */
-export async function collectFiles(
-  directory: string,
+async function processFile(filePath: string, baseDir: string): Promise<FileInfo | null> {
+  // Используем path.join для объединения путей
+  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+  const relativePath = path.relative(baseDir, fullPath);
+
+  try {
+    const stats = await fs.stat(fullPath);
+    if (!stats.isFile()) {
+      return null;
+    }
+
+    const content = await readFileContent(fullPath);
+    return {
+      relativePath,
+      content,
+      language: getLanguage(fullPath),
+    };
+  } catch (error) {
+    console.error(`Error processing file ${filePath}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Process a directory recursively
+ */
+async function processDirectory(
+  dirPath: string,
+  baseDir: string,
   ignorePatterns: string[]
 ): Promise<FileInfo[]> {
   const files: FileInfo[] = [];
-  const baseDir = path.resolve(directory);
+  // Убеждаемся, что dirPath абсолютный
+  const absoluteDirPath = path.isAbsolute(dirPath) ? dirPath : path.join(process.cwd(), dirPath);
+  const entries = await fs.readdir(absoluteDirPath, { withFileTypes: true });
 
-  async function processDirectory(currentPath: string) {
-    const entries = await fs.readdir(currentPath, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(absoluteDirPath, entry.name);
 
-    for (const entry of entries) {
-      const fullPath = path.join(currentPath, entry.name);
-      const relativePath = path.relative(baseDir, fullPath);
+    if (await shouldIgnoreFile(fullPath, ignorePatterns)) {
+      continue;
+    }
 
-      if (await shouldIgnoreFile(fullPath, ignorePatterns)) {
-        continue;
-      }
-
-      if (entry.isDirectory()) {
-        await processDirectory(fullPath);
-      } else if (entry.isFile()) {
-        const content = await readFileContent(fullPath);
-        files.push({
-          relativePath,
-          content,
-          language: getLanguage(fullPath),
-        });
+    if (entry.isDirectory()) {
+      const subDirFiles = await processDirectory(fullPath, baseDir, ignorePatterns);
+      files.push(...subDirFiles);
+    } else if (entry.isFile()) {
+      const fileInfo = await processFile(fullPath, baseDir);
+      if (fileInfo) {
+        files.push(fileInfo);
       }
     }
   }
 
-  await processDirectory(baseDir);
+  return files;
+}
+
+/**
+ * Collect files from input (directory, file, or array of files)
+ */
+export async function collectFiles(
+  input: string | string[],
+  ignorePatterns: string[]
+): Promise<FileInfo[]> {
+  const files: FileInfo[] = [];
+  const inputs = Array.isArray(input) ? input : [input];
+  const projectRoot = process.cwd();
+
+  console.log('Project root:', projectRoot);
+  console.log('Input paths:', inputs);
+
+  // Преобразуем все пути в абсолютные относительно текущей директории
+  const resolvedInputs = inputs.map(item => {
+    const resolvedPath = path.isAbsolute(item) ? item : path.join(projectRoot, item);
+    console.log(`Resolving path: ${item} -> ${resolvedPath}`);
+    return resolvedPath;
+  });
+
+  // Всегда используем корень проекта как базовую директорию
+  const baseDir = projectRoot;
+  console.log('Base directory:', baseDir);
+
+  for (const fullPath of resolvedInputs) {
+    try {
+      const stats = await fs.stat(fullPath);
+
+      if (stats.isDirectory()) {
+        const dirFiles = await processDirectory(fullPath, fullPath, ignorePatterns);
+        files.push(...dirFiles);
+      } else if (stats.isFile()) {
+        const fileInfo = await processFile(fullPath, baseDir);
+        if (fileInfo) {
+          files.push(fileInfo);
+        }
+      }
+    } catch (error) {
+      console.error(`Error processing ${fullPath}:`, error);
+    }
+  }
+
   return files.sort((a, b) => a.relativePath.localeCompare(b.relativePath));
 }

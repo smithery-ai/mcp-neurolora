@@ -9,9 +9,20 @@ export const codeCollectorTool: Tool = {
   inputSchema: {
     type: 'object',
     properties: {
-      directory: {
-        type: 'string',
-        description: 'Directory path to collect code from',
+      input: {
+        oneOf: [
+          {
+            type: 'string',
+            description: 'Path to directory or file to collect code from',
+          },
+          {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            description: 'List of file paths to collect code from',
+          },
+        ],
       },
       outputPath: {
         type: 'string',
@@ -28,15 +39,15 @@ export const codeCollectorTool: Tool = {
         optional: true,
       },
     },
-    required: ['directory', 'outputPath'],
+    required: ['input', 'outputPath'],
   },
   handler: async (args: Record<string, unknown>) => {
     try {
-      const directory = String(args.directory);
+      const input = Array.isArray(args.input) ? args.input.map(String) : String(args.input);
       const outputPath = path.resolve(String(args.outputPath));
 
       const options: CodeCollectorOptions = {
-        directory,
+        input,
         outputPath,
         ignorePatterns: args.ignorePatterns as string[] | undefined,
       };

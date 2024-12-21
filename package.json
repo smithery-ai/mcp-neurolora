@@ -1,6 +1,6 @@
 {
   "name": "@aindreyway/mcp-neurolora",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An MCP server for collecting and documenting code from directories",
   "type": "module",
   "main": "build/index.js",
@@ -13,7 +13,11 @@
     "dev": "ts-node-esm src/index.ts",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "format": "prettier --write src/**/*.ts",
+    "local": "cross-env MCP_ENV=local npm run dev",
+    "local:build": "cross-env MCP_ENV=local npm run build",
+    "local:start": "cross-env MCP_ENV=local npm run start",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",
@@ -23,12 +27,16 @@
   "author": "aindreyway",
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.4.0"
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "@octokit/rest": "21.0.2",
+    "openai": "4.77.0",
+    "tiktoken": "1.0.18"
   },
   "devDependencies": {
     "@types/node": "^20.8.2",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "cross-env": "7.0.3",
     "eslint": "^8.50.0",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",

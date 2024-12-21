@@ -1,7 +1,7 @@
 # MCP Neurolora
 
 ![MCP Server](https://img.shields.io/badge/MCP-Server-blue)
-![Version](https://img.shields.io/badge/version-1.2.3-green)
+![Version](https://img.shields.io/badge/version-1.3.0-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 An intelligent MCP server that provides tools for code analysis using OpenAI API, code collection, and documentation generation.

@@ -105,7 +105,7 @@ export class NeuroloraServer {
     // Initialize server
     this.server = new Server({
       name: this.config.name,
-      version: '1.2.3',
+      version: '1.3.0',
       capabilities: {
         tools: {},
       },

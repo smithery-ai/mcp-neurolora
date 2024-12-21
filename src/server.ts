@@ -32,7 +32,7 @@ export class NeuroloraServer {
     // Инициализация сервера с учетом режима работы
     this.server = new Server({
       name: serverName,
-      version: '1.0.0',
+      version: '1.2.3',
       capabilities: {
         tools: {},
       },

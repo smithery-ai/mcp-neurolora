@@ -50,7 +50,10 @@ async function analyzeWithOpenAI(
       );
     }
 
-    const fullPrompt = `${CODE_ANALYSIS_PROMPT}${codeContent}`;
+    const fullPrompt = CODE_ANALYSIS_PROMPT.replace(
+      'Code to analyze:\n---',
+      `Code to analyze:\n---\n${codeContent}`
+    );
     const messages: ChatCompletionMessageParam[] = [{ role: 'user', content: fullPrompt }];
 
     // Создаем файлы анализа

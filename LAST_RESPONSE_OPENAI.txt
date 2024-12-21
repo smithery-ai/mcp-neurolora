@@ -1,0 +1,153 @@
+Recommended Fixes and Improvements
+
+1. [ ] ISSUE WARNING: Mixed Language in Code Comments and Messages
+
+Title: Inconsistent Use of English and Russian in Code Comments and Logs
+
+Description: The code contains comments and log messages in both English and Russian. This inconsistency can lead to confusion and misunderstandings among team members who may not be fluent in both languages, impacting collaboration and code maintainability.
+
+Best Practice Violation: Code comments and messages should be written in a consistent language, preferably English in international projects, to ensure clear communication and understanding across the development team.
+
+Impact:
+- Reduced code maintainability
+- Communication barriers within the development team
+- Increased risk of misinterpretation of code functionality
+- Difficulty in onboarding new team members
+
+Steps to Fix:
+1. Translate all Russian comments and log messages into English.
+2. Establish a code style guideline specifying the language for all comments and messages.
+3. Conduct a code review to ensure consistency in language usage throughout the codebase.
+
+Labels: maintainability, priority-medium, effort-small
+
+---
+
+2. [ ] ISSUE IMPROVE: Single Responsibility Principle Violation in `NeuroloraServer` Class
+
+Title: `NeuroloraServer` Class Handles Multiple Responsibilities
+
+Description: The `NeuroloraServer` class manages server initialization, request handling, error handling, reconnection logic, and signal processing. This violates the Single Responsibility Principle (SRP) by combining multiple responsibilities into a single class, making it harder to maintain and extend.
+
+Best Practice Violation: SOLID principles—specifically the Single Responsibility Principle—state that a class should have only one reason to change, focusing on a single functionality aspect.
+
+Impact:
+- Increased code complexity
+- Difficulty in unit testing individual components
+- Challenges in maintaining and scaling the application
+- Higher risk of introducing bugs during modifications
+
+Steps to Fix:
+1. Refactor `NeuroloraServer` to delegate responsibilities to separate classes or modules (e.g., ErrorHandler, ReconnectionManager, SignalHandler).
+2. Implement dependency injection to decouple components and enhance testability.
+3. Update the existing code to use the new modular classes, ensuring each class has a single responsibility.
+
+Labels: architecture, maintainability, scalability, priority-medium, effort-medium
+
+---
+
+3. [ ] ISSUE WARNING: Changing Working Directory with `process.chdir()`
+
+Title: Use of `process.chdir()` May Lead to Unintended Side Effects
+
+Description: The `run` method changes the process's current working directory using `process.chdir()`. Modifying the global working directory can affect file path resolutions throughout the application and any loaded modules, potentially causing unexpected behavior.
+
+Best Practice Violation: Global state changes should be avoided to prevent side effects. Instead, file operations should use absolute paths or paths relative to a specific base directory.
+
+Impact:
+- Unpredictable file system behavior
+- Potential for file not found errors or incorrect file reads/writes
+- Difficulties in debugging and maintenance
+- Reduced portability across different environments
+
+Steps to Fix:
+1. Remove the `process.chdir(serverDir);` line from the `run` method.
+2. Use absolute paths or properly managed relative paths for file operations.
+3. Ensure all modules and components operate relative to a defined base directory without relying on the global working directory.
+
+Labels: architecture, reliability, maintainability, priority-high, effort-small
+
+---
+
+4. [ ] ISSUE ERROR: Potential Undefined `currentTransport` in Error Handler
+
+Title: `currentTransport` May Be Undefined When Handling Errors
+
+Description: In the server's `onerror` handler, `this.currentTransport` is accessed for reconnection attempts. If an error occurs before `this.currentTransport` is initialized (e.g., before `run` is called), this could lead to an undefined variable reference, causing the error handler to fail.
+
+Best Practice Violation: Variables should be properly initialized before use, and error handlers should account for all possible states to prevent further exceptions during error processing.
+
+Impact:
+- Unhandled exceptions within the error handler
+- Failure to recover from initial errors
+- Server crash or unexpected termination
+- Degradation of application reliability
+
+Steps to Fix:
+1. Initialize `this.currentTransport` in the constructor or before any potential errors can occur.
+2. Add a check in the error handler to verify that `this.currentTransport` is defined before attempting reconnection.
+3. Implement a fallback mechanism if `currentTransport` is undefined, such as logging the error and safely terminating the process.
+
+Labels: reliability, bug, priority-high, effort-small
+
+---
+
+5. [ ] ISSUE WARNING: Exposing Internal Error Messages to Clients
+
+Title: Returning Detailed Error Messages May Reveal Sensitive Information
+
+Description: When an error occurs during tool execution, the server returns the error message directly to the client:
+
+```typescript
+return {
+  content: [
+    {
+      type: 'text',
+      text: `Error executing tool: ${(error as Error).message}`,
+    },
+  ],
+  isError: true,
+};
+```
+
+This practice exposes internal error details to the client, which may include sensitive information about the server's implementation.
+
+Best Practice Violation: Error messages sent to clients should be generic to prevent leaking internal implementation details. Detailed errors should be logged server-side for debugging purposes.
+
+Impact:
+- Potential security vulnerabilities through information disclosure
+- Attackers gaining insights into server architecture and weaknesses
+- Reduced user trust due to technical error messages
+- Compliance issues with data protection policies
+
+Steps to Fix:
+1. Modify the error response to provide a generic message, e.g., "An error occurred while executing the tool."
+2. Log the detailed error message and stack trace on the server for developers.
+3. Implement an error handling strategy that categorizes errors and responds with appropriate client messages.
+
+Labels: security, reliability, priority-high, effort-small
+
+---
+
+6. [ ] ISSUE WARNING: Asynchronous Operations in Signal Handlers May Not Complete
+
+Title: Asynchronous Cleanup in Signal Handlers May Be Interrupted by `process.exit()`
+
+Description: The signal handlers for graceful shutdown perform asynchronous operations (e.g., `await this.server.close()`), but call `process.exit(0);` immediately after. In Node.js, calling `process.exit()` does not wait for pending asynchronous operations to complete, potentially aborting the cleanup process.
+
+Best Practice Violation: Signal handlers should complete all necessary cleanup operations before exiting the process to ensure resources are properly released.
+
+Impact:
+- Incomplete cleanup leading to resource leaks
+- Corruption of in-flight data or incomplete transactions
+- Issues upon subsequent restarts due to improperly closed resources
+- Decreased application reliability
+
+Steps to Fix:
+1. Remove the `process.exit(0);` call from the signal handlers.
+2. Allow the Node.js event loop to exit naturally after all asynchronous operations have completed.
+3. If an explicit exit is required, ensure it is called only after confirming that all cleanup operations have finished.
+
+Labels: reliability, priority-medium, effort-small
+
+---

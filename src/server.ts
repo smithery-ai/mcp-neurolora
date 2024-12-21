@@ -21,17 +21,90 @@ const ENV = {
   timeoutMs: parseInt(process.env.TIMEOUT_MS || '300000'),
 };
 
-export class NeuroloraServer {
-  private server: Server;
-  private isLocal: boolean;
+/**
+ * Server configuration and state management
+ */
+class ServerConfig {
+  public readonly isLocal: boolean;
+  public readonly name: string;
+  public readonly baseDir: string;
 
   constructor() {
     this.isLocal = ENV.isLocal;
-    const serverName = this.isLocal ? 'local-mcp-neurolora' : '@aindreyway/mcp-neurolora';
+    this.name = this.isLocal ? 'local-mcp-neurolora' : '@aindreyway/mcp-neurolora';
+    this.baseDir = process.argv[1] ? path.dirname(process.argv[1]) : process.cwd();
+  }
+}
 
-    // Инициализация сервера с учетом режима работы
+/**
+ * Error handler for MCP server
+ */
+class ErrorHandler {
+  constructor(private readonly config: ServerConfig) {}
+
+  public formatError(error: Error): string {
+    return this.config.isLocal
+      ? `${error.message}\n${error.stack}`
+      : 'An error occurred while processing the request';
+  }
+
+  public logError(error: unknown, context?: string): void {
+    const prefix = this.config.isLocal ? '[LOCAL VERSION][MCP Error]' : '[MCP Error]';
+    console.error(prefix, context ? `[${context}]` : '', error);
+  }
+}
+
+/**
+ * Connection manager for MCP server
+ */
+class ConnectionManager {
+  private currentTransport: any;
+
+  constructor(
+    private readonly server: Server,
+    private readonly errorHandler: ErrorHandler
+  ) {}
+
+  public async connect(transport: any): Promise<void> {
+    this.currentTransport = transport;
+    await this.reconnect();
+  }
+
+  private async reconnect(retryCount = 0, maxRetries = 3): Promise<void> {
+    try {
+      await this.server.connect(this.currentTransport);
+      console.error('✅ Neurolora MCP server connected successfully');
+    } catch (error) {
+      this.errorHandler.logError(error, 'reconnect');
+      if (retryCount < maxRetries) {
+        console.error(`Retrying connection (${retryCount + 1}/${maxRetries})...`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await this.reconnect(retryCount + 1, maxRetries);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  public async disconnect(): Promise<void> {
+    await this.server.close();
+    console.error('Server closed successfully');
+  }
+}
+
+export class NeuroloraServer {
+  private readonly server: Server;
+  private readonly config: ServerConfig;
+  private readonly errorHandler: ErrorHandler;
+  private readonly connectionManager: ConnectionManager;
+
+  constructor() {
+    this.config = new ServerConfig();
+    this.errorHandler = new ErrorHandler(this.config);
+
+    // Initialize server
     this.server = new Server({
-      name: serverName,
+      name: this.config.name,
       version: '1.2.3',
       capabilities: {
         tools: {},
@@ -39,30 +112,29 @@ export class NeuroloraServer {
       timeout: ENV.timeoutMs,
     });
 
-    // Дополнительная отладочная информация в локальном режиме
-    if (this.isLocal) {
+    this.connectionManager = new ConnectionManager(this.server, this.errorHandler);
+
+    // Show debug info in local mode
+    if (this.config.isLocal) {
       console.error('[LOCAL VERSION] Running in development mode');
       console.error(`[LOCAL VERSION] Storage path: ${ENV.storagePath}`);
       console.error(`[LOCAL VERSION] Max tokens: ${ENV.maxTokens}`);
       console.error(`[LOCAL VERSION] Timeout: ${ENV.timeoutMs}ms`);
     }
 
+    this.initializeHandlers();
+  }
+
+  private initializeHandlers(): void {
     // Register tools
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => {
-      return { tools };
-    });
+    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
 
     // Handle tool calls
     this.server.setRequestHandler(CallToolRequestSchema, async request => {
       const tool = tools.find(t => t.name === request.params.name);
       if (!tool) {
         return {
-          content: [
-            {
-              type: 'text',
-              text: `Unknown tool: ${request.params.name}`,
-            },
-          ],
+          content: [{ type: 'text', text: `Unknown tool: ${request.params.name}` }],
           isError: true,
         };
       }
@@ -71,84 +143,60 @@ export class NeuroloraServer {
         const handler = tool?.handler as ToolHandler;
         return handler(request.params.arguments || {});
       } catch (error) {
+        this.errorHandler.logError(error, 'tool execution');
         return {
-          content: [
-            {
-              type: 'text',
-              text: `Error executing tool: ${(error as Error).message}`,
-            },
-          ],
+          content: [{ type: 'text', text: this.errorHandler.formatError(error as Error) }],
           isError: true,
         };
       }
     });
 
-    // Error handling с учетом режима работы
+    // Error handling
     this.server.onerror = async error => {
-      const prefix = this.isLocal ? '[LOCAL VERSION][MCP Error]' : '[MCP Error]';
-      console.error(prefix, error);
-
-      // Если это ошибка подключения, пробуем переподключиться
+      this.errorHandler.logError(error);
       if (error instanceof Error && error.message.includes('connection')) {
-        console.error('Connection error detected, attempting to reconnect...');
-        try {
-          await this.server.close();
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          await this.reconnect(this.currentTransport);
-        } catch (reconnectError) {
-          console.error('Failed to reconnect:', reconnectError);
-        }
+        await this.handleConnectionError();
       }
     };
   }
 
-  /**
-   * Start the MCP server
-   */
-  private currentTransport: any;
-
-  private async reconnect(transport: any, retryCount = 0, maxRetries = 3) {
-    this.currentTransport = transport;
+  private async handleConnectionError(): Promise<void> {
+    console.error('Connection error detected, attempting to reconnect...');
     try {
-      await this.server.connect(transport);
-      console.error('✅ Neurolora MCP server connected successfully');
+      await this.server.close();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await this.connectionManager.connect(this.connectionManager['currentTransport']);
     } catch (error) {
-      if (retryCount < maxRetries) {
-        console.error(`Retrying connection (${retryCount + 1}/${maxRetries})...`);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Ждем секунду перед повторной попыткой
-        await this.reconnect(transport, retryCount + 1, maxRetries);
-      } else {
-        throw error;
-      }
+      this.errorHandler.logError(error, 'reconnection');
     }
   }
 
-  async run(transport: any) {
-    // Устанавливаем рабочую директорию в директорию запуска сервера
-    const serverDir = process.argv[1] ? path.dirname(process.argv[1]) : process.cwd();
-    process.chdir(serverDir);
-    console.error('Neurolora MCP server running from:', serverDir);
-
+  private async handleShutdown(signal: string): Promise<void> {
+    console.error(`\nReceived ${signal}, shutting down...`);
     try {
-      await this.reconnect(transport);
+      await this.connectionManager.disconnect();
+      // Allow async operations to complete before exiting
+      setTimeout(() => process.exit(0), 1000);
     } catch (error) {
-      console.error('Failed to connect after retries:', error);
+      this.errorHandler.logError(error, 'shutdown');
       process.exit(1);
     }
+  }
 
-    // Обработка сигналов для graceful shutdown
-    const signals = ['SIGINT', 'SIGTERM', 'SIGHUP'];
-    signals.forEach(signal => {
-      process.on(signal, async () => {
-        console.error(`\nReceived ${signal}, shutting down...`);
-        try {
-          await this.server.close();
-          console.error('Server closed successfully');
-        } catch (error) {
-          console.error('Error during shutdown:', error);
-        }
-        process.exit(0);
+  async run(transport: any): Promise<void> {
+    console.error('Neurolora MCP server running from:', this.config.baseDir);
+
+    try {
+      await this.connectionManager.connect(transport);
+
+      // Setup signal handlers
+      const signals = ['SIGINT', 'SIGTERM', 'SIGHUP'];
+      signals.forEach(signal => {
+        process.on(signal, () => this.handleShutdown(signal));
       });
-    });
+    } catch (error) {
+      this.errorHandler.logError(error, 'startup');
+      process.exit(1);
+    }
   }
 }

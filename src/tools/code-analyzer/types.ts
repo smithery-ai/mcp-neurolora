@@ -9,7 +9,7 @@ export interface CodeIssue {
 
 // Options for code analyzer
 export interface AnalyzeCodeOptions {
-  mode: 'analyze';
+  mode?: 'analyze';
   /**
    * Path to the code file to analyze.
    * Must be an absolute path, e.g. '/Users/username/project/src/code.ts'
@@ -18,11 +18,16 @@ export interface AnalyzeCodeOptions {
   /**
    * Path where to save the output files.
    * Must be an absolute path to the project root directory.
-   * Example: If your project is at '/Users/username/project',
-   * then outputPath should be '/Users/username/project'.
-   * All analysis files will be created in the project root.
    */
   outputPath: string;
+  /**
+   * Maximum tokens to use for analysis
+   */
+  maxTokens?: number;
+  /**
+   * Temperature for OpenAI API
+   */
+  temperature?: number;
 }
 
 // Results

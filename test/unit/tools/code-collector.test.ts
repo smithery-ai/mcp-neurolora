@@ -1,5 +1,6 @@
 import { jest, describe, test, expect, beforeAll, beforeEach, afterAll } from '@jest/globals';
-import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.js';
+import type { CodeCollectorHandler, CodeCollectorOptions } from '@src/types/code-collector.js';
+import { codeCollectorHandler } from '@src/tools/code-collector/handler.js';
 
 // Mock chalk module
 jest.mock('chalk', () => {
@@ -11,8 +12,8 @@ jest.mock('chalk', () => {
 });
 
 // Import mocks first
-const { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } = await import('../../__mocks__/external-services.mock.js');
-const { TestContext } = await import('../../helpers/test-utils.js');
+const { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } = await import('@test/__mocks__/external-services.mock.js');
+const { TestContext } = await import('@test/helpers/test-utils.js');
 
 type Context = {
   setup: () => Promise<void>;
@@ -112,7 +113,7 @@ describe('Code Collector Tool', () => {
         codeCollectorHandler.handleCollectCode({
           input: '/test/input',
           outputPath: '/test/output',
-        })
+        } as CodeCollectorOptions)
       ).rejects.toThrow('Read error');
 
       // Verify error handling
@@ -200,7 +201,7 @@ describe('Code Collector Tool', () => {
         codeCollectorHandler.handleCollectCode({
           input: '/test/input',
           outputPath: '/test/output',
-        })
+        } as CodeCollectorOptions)
       ).rejects.toThrow('File size exceeds limit');
     });
   });

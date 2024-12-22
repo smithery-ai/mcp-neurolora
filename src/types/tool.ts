@@ -1,6 +1,13 @@
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+export interface ToolHandler {
+  handle: (args: unknown) => Promise<any>;
+}
 
-export type ToolHandler = Tool['handler'];
+export interface Tool {
+  name: string;
+  description: string;
+  inputSchema: unknown;
+  handler?: ToolHandler;
+}
 
 export interface ToolResult {
   content: Array<{

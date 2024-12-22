@@ -3,6 +3,7 @@ import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
+import type { Tool } from '../src/types/tool.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,12 +43,18 @@ describe('MCP Tools Integration Tests', () => {
   });
 
   // Test each tool
-  tools.forEach(tool => {
-    describe(`Tool: ${tool.name}`, () => {
-      test(`${tool.name} has required properties`, () => {
-        expect(tool.name).toBeDefined();
-        expect(tool.description).toBeDefined();
-        expect(tool.inputSchema).toBeDefined();
+  (tools as Tool[]).forEach((tool: Tool) => {
+    const typedTool: Tool = {
+      name: tool.name,
+      description: tool.description,
+      inputSchema: tool.inputSchema,
+      handler: tool.handler
+    };
+    describe(`Tool: ${typedTool.name}`, () => {
+      test(`${typedTool.name} has required properties`, () => {
+        expect(typedTool.name).toBeDefined();
+        expect(typedTool.description).toBeDefined();
+        expect(typedTool.inputSchema).toBeDefined();
         expect(tool.handler).toBeDefined();
       });
 
@@ -55,12 +62,12 @@ describe('MCP Tools Integration Tests', () => {
         `${tool.name} handler works with minimal valid input`,
         async () => {
           // Skip test if handler is not properly initialized
-          if (!tool.handler || typeof tool.handler.handle !== 'function') {
-            logger.warn(`Handler not properly initialized for tool: ${tool.name}`);
+          if (!typedTool?.handler?.handle || typeof typedTool?.handler?.handle !== 'function') {
+            logger.warn(`Handler not properly initialized for tool: ${typedTool.name}`);
             return;
           }
 
-          const handler = initializeToolHandler(tool.handler);
+          const handler = initializeToolHandler(typedTool.handler);
           let testArgs = {};
 
           // Prepare test arguments based on tool
@@ -106,12 +113,12 @@ describe('MCP Tools Integration Tests', () => {
 
       test(`${tool.name} handler properly handles errors`, async () => {
         // Skip test if handler is not properly initialized
-        if (!tool.handler || typeof tool.handler.handle !== 'function') {
-          logger.warn(`Handler not properly initialized for tool: ${tool.name}`);
+        if (!typedTool?.handler?.handle || typeof typedTool?.handler?.handle !== 'function') {
+          logger.warn(`Handler not properly initialized for tool: ${typedTool.name}`);
           return;
         }
 
-        const handler = initializeToolHandler(tool.handler);
+        const handler = initializeToolHandler(typedTool.handler);
         const invalidArgs = {};
 
         const result = await handler.handle(invalidArgs);
@@ -121,9 +128,11 @@ describe('MCP Tools Integration Tests', () => {
       });
 
       // Test tool-specific functionality
-      if (tool.name === 'collect_code') {
+      if (tool.name === 'collect_code' && tool.handler?.handle) {
         test('collect_code handles multiple files', async () => {
-          const handler = initializeToolHandler(tool.handler);
+          const handler = initializeToolHandler({
+            handle: tool.handler!.handle.bind(tool.handler)
+          });
           const testFile2 = path.join(testDir, 'test2.js');
           await fs.writeFile(testFile2, createTestFile('const x = 42;'));
 
@@ -138,9 +147,11 @@ describe('MCP Tools Integration Tests', () => {
         });
       }
 
-      if (tool.name === 'analyze_code') {
+      if (tool.name === 'analyze_code' && tool.handler?.handle) {
         test('analyze_code provides detailed analysis', async () => {
-          const handler = initializeToolHandler(tool.handler);
+          const handler = initializeToolHandler({
+            handle: tool.handler!.handle.bind(tool.handler)
+          });
           const result = await handler.handle({
             input: path.join(testDir, 'test.js'),
             outputPath: baseDir,
@@ -159,21 +170,27 @@ describe('MCP Tools Integration Tests', () => {
   test(
     'collect_code and analyze_code work together',
     async () => {
-      const collectTool = tools.find(t => t.name === 'collect_code');
-      const analyzeTool = tools.find(t => t.name === 'analyze_code');
+      const collectTool: Tool = tools.find(t => t.name === 'collect_code') as Tool;
+      const analyzeTool: Tool = tools.find(t => t.name === 'analyze_code') as Tool;
 
       expect(collectTool).toBeDefined();
       expect(analyzeTool).toBeDefined();
 
-      // Skip test if handlers are not properly initialized
-      if (!collectTool.handler || !analyzeTool.handler) {
+      // Skip test if tools or handlers are not properly initialized
+      if (!collectTool?.handler || !analyzeTool?.handler || 
+          typeof collectTool.handler.handle !== 'function' || 
+          typeof analyzeTool.handler.handle !== 'function') {
         logger.warn('Tool handlers not properly initialized');
         return;
       }
 
-      // Initialize handlers
-      const collectHandler = initializeToolHandler(collectTool.handler);
-      const analyzeHandler = initializeToolHandler(analyzeTool.handler);
+      // Initialize handlers with proper typing
+      const collectHandler = initializeToolHandler({
+        handle: collectTool.handler.handle.bind(collectTool.handler)
+      });
+      const analyzeHandler = initializeToolHandler({
+        handle: analyzeTool.handler.handle.bind(analyzeTool.handler)
+      });
 
       // First collect code
       const collectResult = await collectHandler.handle({

@@ -21,11 +21,13 @@ describe('Code Collector Tool', () => {
   const sampleProjectDir = path.join(baseDir, 'test', 'sample', 'project-structure');
   const outputDir = path.join(baseDir, 'test', 'output');
 
-  // Вспомогательные функции
-  async function getCollectedFileContent(fileName) {
+  // Helper functions
+  async function getCollectedFileContent(fileName: string): Promise<string> {
     const files = await fs.readdir(outputDir);
     const collectedFile = files.find(f => f.startsWith('PROMPT_ANALYZE_' + fileName));
-    expect(collectedFile).toBeDefined();
+    if (!collectedFile) {
+      throw new Error(`File not found for ${fileName}`);
+    }
     return fs.readFile(path.join(outputDir, collectedFile), 'utf-8');
   }
 

@@ -1,55 +1,26 @@
 import { jest } from '@jest/globals';
 
-// Define mock function types with parameters and return types
-type OpenAICreateFn = {
-  (): Promise<{
-    choices: Array<{ message: { content: string } }>;
-  }>;
-};
-
-type GitHubIssueFn = {
-  (): Promise<{
-    data: { number: number; html_url: string };
-  }>;
-};
-
-type GitHubListFn = {
-  (): Promise<{
-    data: any[];
-  }>;
-};
-
-type GitHubRepoFn = {
-  (): Promise<{
-    data: { default_branch: string; owner?: { login: string }; name?: string };
-  }>;
-};
-
-// File system operation types
-
 // Define function types
-interface OpenAICreate {
-  (): Promise<{ choices: { message: { content: string } }[] }>;
-}
+type OpenAIResponse = {
+  choices: Array<{ message: { content: string } }>;
+};
 
-interface GitHubIssueCreate {
-  (): Promise<{ data: { number: number; html_url: string } }>;
-}
+type GitHubIssueResponse = {
+  data: { number: number; html_url: string };
+};
 
-interface GitHubIssueList {
-  (): Promise<{ data: any[] }>;
-}
+type GitHubListResponse = {
+  data: any[];
+};
 
-interface GitHubRepoGet {
-  (): Promise<{ data: { default_branch: string; owner?: { login: string }; name?: string } }>;
-}
+type GitHubRepoResponse = {
+  data: { default_branch: string; owner?: { login: string }; name?: string };
+};
 
 interface MockOpenAI {
   chat: {
     completions: {
-      create: jest.Mock<() => Promise<{
-        choices: Array<{ message: { content: string } }>;
-      }>>;
+      create: jest.MockedFunction<() => Promise<OpenAIResponse>>;
     };
   };
 }
@@ -57,17 +28,11 @@ interface MockOpenAI {
 interface MockGitHub {
   rest: {
     issues: {
-      create: jest.Mock<() => Promise<{
-        data: { number: number; html_url: string };
-      }>>;
-      list: jest.Mock<() => Promise<{
-        data: any[];
-      }>>;
+      create: jest.MockedFunction<() => Promise<GitHubIssueResponse>>;
+      list: jest.MockedFunction<() => Promise<GitHubListResponse>>;
     };
     repos: {
-      get: jest.Mock<() => Promise<{
-        data: { default_branch: string; owner?: { login: string }; name?: string };
-      }>>;
+      get: jest.MockedFunction<() => Promise<GitHubRepoResponse>>;
     };
   };
 }
@@ -93,30 +58,22 @@ interface MockFsPromises {
 }
 
 interface MockFs {
-  promises: MockFsPromises;
-}
-
-interface ProgressStart {
-  (): void;
-}
-
-interface ProgressUpdate {
-  (progress: number): void;
-}
-
-interface ProgressComplete {
-  (): void;
-}
-
-interface ProgressFail {
-  (message?: string): void;
+  promises: {
+    readFile: jest.MockedFunction<FsReadFileFn>;
+    writeFile: jest.MockedFunction<FsWriteFileFn>;
+    mkdir: jest.MockedFunction<FsMkdirFn>;
+    readdir: jest.MockedFunction<FsReaddirFn>;
+    stat: jest.MockedFunction<FsStatFn>;
+    access: jest.MockedFunction<FsAccessFn>;
+    rm: jest.MockedFunction<FsRmFn>;
+  };
 }
 
 interface MockProgressTracker {
-  start: jest.Mock;
-  update: jest.Mock;
-  complete: jest.Mock;
-  fail: jest.Mock;
+  start: jest.MockedFunction<() => void>;
+  update: jest.MockedFunction<(progress: number) => void>;
+  complete: jest.MockedFunction<() => void>;
+  fail: jest.MockedFunction<(message?: string) => void>;
 }
 
 /**

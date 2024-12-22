@@ -1,20 +1,37 @@
-import { jest } from '@jest/globals';
+import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { ProgressTracker } from '../../../src/utils/progress-tracker.js';
+
 // Mock chalk module
-jest.mock('chalk', () => ({
-  green: (str: string) => str,
-  yellow: (str: string) => str,
-  red: (str: string) => str
-}));
+jest.mock('chalk', () => {
+  const chalkFn = (str: string) => str;
+  chalkFn.green = (str: string) => str;
+  chalkFn.yellow = (str: string) => str;
+  chalkFn.red = (str: string) => str;
+  return chalkFn;
+});
+
+// Define types for progress functions
+interface ProgressOptions {
+  width?: number;
+  prefix?: string;
+  silent?: boolean;
+}
+
+type ShowProgressFn = (percentage: number, options?: ProgressOptions) => Promise<void>;
+type ClearProgressFn = (content: string, silent?: boolean) => Promise<void>;
 
 // Mock progress module
-jest.mock('../../../src/utils/progress.js', () => ({
+jest.mock('../../../src/utils/progress.ts', () => ({
   __esModule: true,
-  showProgress: jest.fn(),
-  clearProgress: jest.fn()
+  showProgress: jest.fn<ShowProgressFn>().mockResolvedValue(undefined),
+  clearProgress: jest.fn<ClearProgressFn>().mockResolvedValue(undefined)
 }));
 
-const { showProgress, clearProgress } = await import('../../../src/utils/progress.js');
+// Import and type assert the mocked functions
+const { showProgress, clearProgress } = jest.mocked({
+  showProgress: jest.fn<ShowProgressFn>().mockResolvedValue(undefined),
+  clearProgress: jest.fn<ClearProgressFn>().mockResolvedValue(undefined)
+});
 
 describe('Progress Tracker', () => {
   let tracker: ProgressTracker;
@@ -53,7 +70,7 @@ describe('Progress Tracker', () => {
 
       // Проверяем, что showProgress был вызван с правильными параметрами
       expect(showProgress).toHaveBeenCalled();
-      const lastCall = (showProgress as jest.Mock).mock.calls.slice(-1)[0];
+      const lastCall = showProgress.mock.calls[showProgress.mock.calls.length - 1];
       expect(lastCall[1]).toEqual(
         expect.objectContaining({
           width: 20,
@@ -145,7 +162,7 @@ describe('Progress Tracker', () => {
       jest.advanceTimersByTime(60000);
 
       // Проверяем последний вызов showProgress
-      const lastCall = (showProgress as jest.Mock).mock.calls.slice(-1)[0];
+      const lastCall = showProgress.mock.calls[showProgress.mock.calls.length - 1];
       expect(lastCall[0]).toBe(50); // Ожидаем 50% прогресса
     });
 
@@ -157,7 +174,7 @@ describe('Progress Tracker', () => {
       jest.advanceTimersByTime(300000);
 
       // Проверяем последний вызов showProgress
-      const lastCall = (showProgress as jest.Mock).mock.calls.slice(-1)[0];
+      const lastCall = showProgress.mock.calls[showProgress.mock.calls.length - 1];
       expect(lastCall[0]).toBeLessThanOrEqual(100);
     });
   });

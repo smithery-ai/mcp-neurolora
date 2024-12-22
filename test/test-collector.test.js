@@ -1,9 +1,21 @@
 import { jest, describe, test, expect, beforeAll, afterAll, afterEach } from '@jest/globals';
 import path from 'path';
-import { promises as fs } from 'fs';
+import { promises as fs } from 'node:fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-jest.mock('../src/tools/code-collector/handler.js');
-jest.mock('../src/server.js');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Mock external modules
+jest.mock('../src/tools/code-collector/handler.js', () => ({
+  __esModule: true,
+  handleCollectCode: jest.fn()
+}));
+jest.mock('../src/server.js', () => ({
+  __esModule: true,
+  ConnectionManager: jest.fn()
+}));
 
 const { handleCollectCode } = await import('../src/tools/code-collector/handler.js');
 const { ConnectionManager } = await import('../src/server.js');

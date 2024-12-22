@@ -1,11 +1,29 @@
 import { jest, describe, test, expect, beforeAll } from '@jest/globals';
 import path from 'path';
-import { promises as fs } from 'fs';
+import { promises as fs } from 'node:fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-jest.mock('../src/tools/code-analyzer/handler.js');
-jest.mock('../src/server.js');
-jest.mock('@modelcontextprotocol/sdk/server/index.js');
-jest.mock('@modelcontextprotocol/sdk/server/stdio.js');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Mock external modules
+jest.mock('../src/tools/code-analyzer/handler.js', () => ({
+  __esModule: true,
+  handleAnalyzeCode: jest.fn()
+}));
+jest.mock('../src/server.js', () => ({
+  __esModule: true,
+  ConnectionManager: jest.fn()
+}));
+jest.mock('@modelcontextprotocol/sdk/server/index.js', () => ({
+  __esModule: true,
+  Server: jest.fn()
+}));
+jest.mock('@modelcontextprotocol/sdk/server/stdio.js', () => ({
+  __esModule: true,
+  StdioServerTransport: jest.fn()
+}));
 
 const { handleAnalyzeCode } = await import('../src/tools/code-analyzer/handler.js');
 const { ConnectionManager } = await import('../src/server.js');

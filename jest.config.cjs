@@ -2,9 +2,6 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  transformIgnorePatterns: [
-    'node_modules/(?!(@modelcontextprotocol|chalk|@dqbd/tiktoken)/.*)'
-  ],
   extensionsToTreatAsEsm: ['.ts', '.tsx', '.mts'],
   transform: {
     '^.+\\.[jt]sx?$': [
@@ -18,6 +15,7 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     '^(\\.{1,2}/.*)\\.mjs$': '$1',
+    '^(\\.{1,2}/.*)\\.ts$': '$1',
     '^@src/(.*)$': '<rootDir>/src/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',
@@ -25,7 +23,10 @@ module.exports = {
     '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1',
     '^chalk$': '<rootDir>/test/__mocks__/chalk.ts'
   },
-  moduleDirectories: ['node_modules', 'src'],
+  moduleDirectories: ['node_modules', '.', 'src'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(@modelcontextprotocol|chalk|@dqbd/tiktoken)/.*)'
+  ],
   testMatch: [
     '<rootDir>/test/**/*.test.ts',
     '<rootDir>/test/**/*.test.js',

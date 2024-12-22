@@ -194,7 +194,12 @@ export function generateTestData() {
 /**
  * Test context manager
  */
-export class TestContext {
+export interface Context {
+  setup: () => Promise<void>;
+  cleanup: () => Promise<void>;
+}
+
+export class TestContext implements Context {
   private tempFiles: string[] = [];
   private cleanupFns: (() => Promise<void>)[] = [];
 

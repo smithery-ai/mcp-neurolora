@@ -2,13 +2,31 @@ import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals
 import { ProgressTracker } from '../../../src/utils/progress-tracker.js';
 
 // Mock chalk module
-jest.mock('chalk', () => {
-  const chalk = (str: string) => str;
-  chalk.green = (str: string) => str;
-  chalk.yellow = (str: string) => str;
-  chalk.red = (str: string) => str;
-  return { default: chalk, ...chalk };
-});
+jest.mock('chalk', () => ({
+  __esModule: true,
+  green: (str: string) => str,
+  yellow: (str: string) => str,
+  red: (str: string) => str,
+  blue: (str: string) => str,
+  gray: (str: string) => str,
+  white: (str: string) => str,
+  bgRed: (str: string) => str,
+  bgGreen: (str: string) => str,
+  bgYellow: (str: string) => str,
+  bgBlue: (str: string) => str,
+  default: {
+    green: (str: string) => str,
+    yellow: (str: string) => str,
+    red: (str: string) => str,
+    blue: (str: string) => str,
+    gray: (str: string) => str,
+    white: (str: string) => str,
+    bgRed: (str: string) => str,
+    bgGreen: (str: string) => str,
+    bgYellow: (str: string) => str,
+    bgBlue: (str: string) => str
+  }
+}));
 
 // Define types for progress functions
 interface ProgressOptions {

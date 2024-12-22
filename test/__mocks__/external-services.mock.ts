@@ -17,7 +17,7 @@ type GitHubRepoResponse = {
   data: { default_branch: string; owner?: { login: string }; name?: string };
 };
 
-interface MockOpenAI {
+export interface MockOpenAI {
   chat: {
     completions: {
       create: jest.MockedFunction<() => Promise<OpenAIResponse>>;
@@ -25,7 +25,7 @@ interface MockOpenAI {
   };
 }
 
-interface MockGitHub {
+export interface MockGitHub {
   rest: {
     issues: {
       create: jest.MockedFunction<() => Promise<GitHubIssueResponse>>;
@@ -57,7 +57,7 @@ interface MockFsPromises {
   rm: jest.Mock<FsRmFn>;
 }
 
-interface MockFs {
+export interface MockFs {
   promises: {
     readFile: jest.MockedFunction<FsReadFileFn>;
     writeFile: jest.MockedFunction<FsWriteFileFn>;
@@ -69,7 +69,7 @@ interface MockFs {
   };
 }
 
-interface MockProgressTracker {
+export interface MockProgressTracker {
   start: jest.MockedFunction<() => void>;
   update: jest.MockedFunction<(progress: number) => void>;
   complete: jest.MockedFunction<() => void>;
@@ -138,46 +138,66 @@ export const mockGitHub: MockGitHub = {
  */
 export const mockFs: MockFs = {
   promises: {
-    readFile: jest.fn<FsReadFileFn>(),
-    writeFile: jest.fn<FsWriteFileFn>(),
-    mkdir: jest.fn<FsMkdirFn>(),
-    readdir: jest.fn<FsReaddirFn>(),
-    stat: jest.fn<FsStatFn>(),
-    access: jest.fn<FsAccessFn>(),
-    rm: jest.fn<FsRmFn>(),
+    readFile: jest.fn<FsReadFileFn>().mockResolvedValue(''),
+    writeFile: jest.fn<FsWriteFileFn>().mockResolvedValue(),
+    mkdir: jest.fn<FsMkdirFn>().mockResolvedValue(),
+    readdir: jest.fn<FsReaddirFn>().mockResolvedValue([]),
+    stat: jest.fn<FsStatFn>().mockResolvedValue({
+      isFile: () => true,
+      isDirectory: () => false,
+      size: 1024
+    }),
+    access: jest.fn<FsAccessFn>().mockResolvedValue(),
+    rm: jest.fn<FsRmFn>().mockResolvedValue(),
   },
 };
 
 /**
  * Mock MCP Server
  */
-export const mockMcpServer = {
-  connect: jest.fn(),
-  disconnect: jest.fn(),
-  setRequestHandler: jest.fn(),
-  sendRequest: jest.fn(),
-  onRequest: jest.fn(),
-  onerror: jest.fn(),
+export interface MockMcpServer {
+  connect: jest.MockedFunction<() => Promise<void>>;
+  disconnect: jest.MockedFunction<() => Promise<void>>;
+  setRequestHandler: jest.MockedFunction<(handler: (req: unknown) => Promise<unknown>) => void>;
+  sendRequest: jest.MockedFunction<(req: unknown) => Promise<unknown>>;
+  onRequest: jest.MockedFunction<(handler: (req: unknown) => Promise<unknown>) => void>;
+  onerror: jest.MockedFunction<(error: Error) => void>;
+}
+
+export const mockMcpServer: MockMcpServer = {
+  connect: jest.fn<() => Promise<void>>().mockResolvedValue(),
+  disconnect: jest.fn<() => Promise<void>>().mockResolvedValue(),
+  setRequestHandler: jest.fn<(handler: (req: unknown) => Promise<unknown>) => void>(),
+  sendRequest: jest.fn<(req: unknown) => Promise<unknown>>().mockResolvedValue({}),
+  onRequest: jest.fn<(handler: (req: unknown) => Promise<unknown>) => void>(),
+  onerror: jest.fn<(error: Error) => void>(),
 };
 
 /**
  * Mock Logger
  */
-export const mockLogger = {
-  info: jest.fn(),
-  error: jest.fn(),
-  warn: jest.fn(),
-  debug: jest.fn(),
+export interface MockLogger {
+  info: jest.MockedFunction<(message: string, ...args: any[]) => void>;
+  error: jest.MockedFunction<(message: string, ...args: any[]) => void>;
+  warn: jest.MockedFunction<(message: string, ...args: any[]) => void>;
+  debug: jest.MockedFunction<(message: string, ...args: any[]) => void>;
+}
+
+export const mockLogger: MockLogger = {
+  info: jest.fn<(message: string, ...args: any[]) => void>(),
+  error: jest.fn<(message: string, ...args: any[]) => void>(),
+  warn: jest.fn<(message: string, ...args: any[]) => void>(),
+  debug: jest.fn<(message: string, ...args: any[]) => void>(),
 };
 
 /**
  * Mock Progress Tracker
  */
 export const mockProgressTracker: MockProgressTracker = {
-  start: jest.fn(),
-  update: jest.fn(),
-  complete: jest.fn(),
-  fail: jest.fn(),
+  start: jest.fn<() => void>(),
+  update: jest.fn<(progress: number) => void>(),
+  complete: jest.fn<() => void>(),
+  fail: jest.fn<(message?: string) => void>(),
 };
 
 /**

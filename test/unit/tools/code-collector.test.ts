@@ -1,24 +1,16 @@
 import { jest, describe, test, expect, beforeAll, beforeEach, afterAll } from '@jest/globals';
-import type { CodeCollectorHandler, CodeCollectorOptions } from '@src/types/code-collector.js';
-import { codeCollectorHandler } from '@src/tools/code-collector/handler.js';
+import type { CodeCollectorHandler, CodeCollectorOptions } from '../../../src/types/code-collector.js';
+import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.js';
+// Import mocks first
+import { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } from '../../__mocks__/external-services.mock.js';
+import type { MockFs, MockProgressTracker } from '../../__mocks__/external-services.mock.js';
+import { TestContext } from '../../helpers/test-utils.js';
+import type { Context } from '../../helpers/test-utils.js';
 
 // Mock chalk module
-jest.mock('chalk', () => {
-  const chalk = (str: string) => str;
-  chalk.green = (str: string) => str;
-  chalk.yellow = (str: string) => str;
-  chalk.red = (str: string) => str;
-  return { default: chalk, ...chalk };
-});
+jest.mock('chalk');
 
-// Import mocks first
-const { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } = await import('@test/__mocks__/external-services.mock.js');
-const { TestContext } = await import('@test/helpers/test-utils.js');
-
-type Context = {
-  setup: () => Promise<void>;
-  cleanup: () => Promise<void>;
-};
+// Context type is imported from test-utils.js
 
 // Setup mocks
 jest.mock('fs/promises', () => ({
@@ -28,6 +20,7 @@ jest.mock('fs/promises', () => ({
 
 jest.mock('../../../src/utils/progress-tracker.js', () => ({
   __esModule: true,
+  default: jest.fn().mockImplementation(() => mockProgressTracker),
   ProgressTracker: jest.fn().mockImplementation(() => mockProgressTracker)
 }));
 
@@ -55,7 +48,7 @@ describe('Code Collector Tool', () => {
       const outputDir = '/test/output';
 
       mockFs.promises.readdir.mockImplementationOnce(async () => ['file1.ts', 'file2.ts']);
-      mockFs.promises.stat.mockImplementation(async (path: string) => ({
+      mockFs.promises.stat.mockImplementation(async (path: string): Promise<{ isFile: () => boolean; isDirectory: () => boolean }> => ({
           isFile: () => path.endsWith('.ts'),
           isDirectory: () => !path.endsWith('.ts'),
         }));

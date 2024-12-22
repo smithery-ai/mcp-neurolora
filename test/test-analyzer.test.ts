@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeAll } from '@jest/globals';
-import * as path from 'path';
-import * as fs from 'fs/promises';
+import path from 'node:path';
+import { promises as fs } from 'node:fs';
 import type { AnalyzeCodeOptions } from '../src/tools/code-analyzer/types.js';
 import type { ErrorHandler } from '../src/server.js';
 

@@ -38,7 +38,7 @@ describe('Code Collector Tool', () => {
       });
 
       const content = await getCollectedFileContent('APP');
-      expect(content).toContain('export function add');
+      expect(content).toContain('export function calculate');
       expect(content).not.toMatch(/### .*\.git\/.*/);
     });
 
@@ -49,7 +49,7 @@ describe('Code Collector Tool', () => {
       });
 
       const content = await getCollectedFileContent('PROJECT-STRUCTURE');
-      expect(content).toContain('export function add');
+      expect(content).toContain('export function calculate');
       expect(content).not.toMatch(/### .*\.git\/.*/);
       expect(content).not.toContain('repositoryformatversion');
     });
@@ -66,7 +66,7 @@ describe('Code Collector Tool', () => {
         });
 
         const content = await getCollectedFileContent('COMBINED');
-        expect(content).toContain('export function add');
+        expect(content).toContain('export function calculate');
         expect(content).toContain('export const multiply');
         expect(content).not.toMatch(/### .*\.git\/.*/);
       } finally {
@@ -85,7 +85,7 @@ describe('Code Collector Tool', () => {
       const content = await getCollectedFileContent('PROJECT-STRUCTURE');
 
       // Проверяем наличие функционального кода
-      expect(content).toContain('export function add');
+      expect(content).toContain('export function calculate');
 
       // Проверяем отсутствие файлов из .git
       expect(content).not.toMatch(/### .*\.git\/.*/);

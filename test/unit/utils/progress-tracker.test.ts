@@ -1,8 +1,8 @@
-import { ProgressTracker } from '../../../src/utils/progress-tracker';
-import { clearProgress, showProgress } from '../../../src/utils/progress';
+import { ProgressTracker } from '../../../src/utils/progress-tracker.js';
+import { clearProgress, showProgress } from '../../../src/utils/progress.js';
 
 // Mock progress module
-jest.mock('../../../src/utils/progress', () => {
+jest.mock('../../../src/utils/progress.js', () => {
   const showProgress = jest.fn();
   const clearProgress = jest.fn();
   return {

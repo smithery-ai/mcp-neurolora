@@ -4,6 +4,7 @@ import { jest, beforeAll } from '@jest/globals';
 
 beforeAll(() => {
   process.env.NODE_ENV = 'test';
+  ConnectionManager.resetInstance();
 });
 
 interface MockTransport {

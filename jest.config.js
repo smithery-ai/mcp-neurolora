@@ -4,7 +4,8 @@ export default {
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^(\\.{1,2}/.*)\\.js$': '$1.ts',
+    '^(\\.{1,2}/.*)\\.mjs$': '$1.ts',
     '^@src/(.*)$': '<rootDir>/src/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',

@@ -8,7 +8,7 @@ import {
 import { TestContext } from '../../helpers/test-utils';
 
 jest.mock('fs/promises', () => mockFs.promises);
-jest.mock('../../../src/utils/progress-tracker', () => ({
+jest.mock('../../../src/utils/progress-tracker.js', () => ({
   ProgressTracker: jest.fn().mockImplementation(() => mockProgressTracker),
 }));
 

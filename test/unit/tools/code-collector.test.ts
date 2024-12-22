@@ -1,6 +1,7 @@
 import { jest, describe, test, expect, beforeAll, beforeEach, afterAll } from '@jest/globals';
 import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.js';
 import type { Mock } from 'jest-mock';
+import chalk from 'chalk';
 
 // Import mocks first
 const { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } = await import('../../__mocks__/external-services.mock.js');
@@ -45,14 +46,12 @@ describe('Code Collector Tool', () => {
       const inputDir = '/test/input';
       const outputDir = '/test/output';
 
-      mockFs.promises.readdir.mockResolvedValueOnce(['file1.ts', 'file2.ts']);
-      mockFs.promises.stat.mockImplementation((path: string) =>
-        Promise.resolve({
+      mockFs.promises.readdir.mockImplementationOnce(async () => ['file1.ts', 'file2.ts']);
+      mockFs.promises.stat.mockImplementation(async (path: string) => ({
           isFile: () => path.endsWith('.ts'),
           isDirectory: () => !path.endsWith('.ts'),
-        })
-      );
-      mockFs.promises.readFile.mockImplementation((path: string) => {
+        }));
+      mockFs.promises.readFile.mockImplementation(async (path: string) => {
         if (path.endsWith('file1.ts')) {
           return Promise.resolve('const x = 1;');
         }
@@ -81,7 +80,7 @@ describe('Code Collector Tool', () => {
 
     it('should handle empty directories', async () => {
       // Setup
-      mockFs.promises.readdir.mockResolvedValueOnce([]);
+      mockFs.promises.readdir.mockImplementationOnce(async () => []);
 
       // Execute
       const result = await codeCollectorHandler.handleCollectCode({
@@ -98,7 +97,7 @@ describe('Code Collector Tool', () => {
 
     it('should handle file reading errors', async () => {
       // Setup
-      mockFs.promises.readdir.mockResolvedValueOnce(['error.ts']);
+      mockFs.promises.readdir.mockImplementationOnce(async () => ['error.ts']);
       mockFs.promises.readFile.mockRejectedValueOnce(new Error('Read error'));
 
       // Execute and verify
@@ -115,7 +114,7 @@ describe('Code Collector Tool', () => {
 
     it('should respect ignore patterns', async () => {
       // Setup
-      mockFs.promises.readdir.mockResolvedValueOnce(['file.ts', 'node_modules']);
+      mockFs.promises.readdir.mockImplementationOnce(async () => ['file.ts', 'node_modules']);
 
       // Execute
       const result = await codeCollectorHandler.handleCollectCode({
@@ -136,8 +135,8 @@ describe('Code Collector Tool', () => {
     it('should handle large directories recursively', async () => {
       // Setup
       mockFs.promises.readdir
-        .mockResolvedValueOnce(['dir1', 'file1.ts'])
-        .mockResolvedValueOnce(['file2.ts', 'file3.ts']);
+        .mockImplementationOnce(async () => ['dir1', 'file1.ts'])
+        .mockImplementationOnce(async () => ['file2.ts', 'file3.ts']);
 
       mockFs.promises.stat.mockImplementation((path: string) =>
         Promise.resolve({
@@ -160,7 +159,7 @@ describe('Code Collector Tool', () => {
 
     it('should handle symlinks safely', async () => {
       // Setup
-      mockFs.promises.readdir.mockResolvedValueOnce(['link.ts']);
+      mockFs.promises.readdir.mockImplementationOnce(async () => ['link.ts']);
       mockFs.promises.stat.mockImplementation(() =>
         Promise.resolve({
           isFile: () => true,
@@ -182,7 +181,7 @@ describe('Code Collector Tool', () => {
 
     it('should handle file size limits', async () => {
       // Setup
-      mockFs.promises.readdir.mockResolvedValueOnce(['large.ts']);
+      mockFs.promises.readdir.mockImplementationOnce(async () => ['large.ts']);
       mockFs.promises.stat.mockResolvedValueOnce({
         isFile: () => true,
         isDirectory: () => false,

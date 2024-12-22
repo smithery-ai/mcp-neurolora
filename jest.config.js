@@ -1,45 +1,32 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
+  preset: 'ts-jest/presets/default-esm',
+  testEnvironment: 'node',
+  extensionsToTreatAsEsm: ['.ts'],
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^@src/(.*)$': '<rootDir>/src/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@test/(.*)$': '<rootDir>/test/$1',
+    '^openai$': '<rootDir>/test/__mocks__/openai.ts'
+  },
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: 'tsconfig.json',
         useESM: true,
-        isolatedModules: true,
-        diagnostics: {
-          ignoreCodes: [1343],
-        },
-      },
-    ],
-    '^.+\\.jsx?$': [
-      'babel-jest',
-      {
-        presets: ['@babel/preset-env'],
-      },
-    ],
+        tsconfig: 'tsconfig.json'
+      }
+    ]
   },
-  testEnvironment: 'node',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(uuid|@modelcontextprotocol|tiktoken|@dqbd/tiktoken)/)',
+  moduleDirectories: ['node_modules', 'src'],
+  testMatch: [
+    '<rootDir>/test/**/*.test.ts',
+    '<rootDir>/test/**/*.test.js',
+    '<rootDir>/test/**/*.spec.ts',
+    '<rootDir>/test/**/*.spec.js'
   ],
-  moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^@src/(.*)$': '<rootDir>/src/$1',
-    '^../build/(.*)$': '<rootDir>/src/$1',
-    '^../src/(.*)$': '<rootDir>/src/$1',
-    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
-    '^@test/(.*)$': '<rootDir>/test/$1',
-    '^@/(.*)$': '<rootDir>/$1',
-    '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1',
-    '^@modelcontextprotocol/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/$1',
-    '\\.js$': '',
-    '^openai$': '<rootDir>/test/__mocks__/openai.ts'
-  },
-  extensionsToTreatAsEsm: ['.ts'],
   testTimeout: 30000,
-
-  // Улучшенный вывод
   verbose: true,
   silent: false,
   reporters: [
@@ -52,8 +39,8 @@ export default {
         includeFailureMsg: true,
         includeSuiteFailure: true,
         includeConsoleLog: true,
-        useCssFile: true,
-      },
+        useCssFile: true
+      }
     ],
     [
       'jest-junit',
@@ -63,13 +50,11 @@ export default {
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
         ancestorSeparator: ' › ',
-        usePathForSuiteName: true,
-      },
+        usePathForSuiteName: true
+      }
     ],
-    ['jest-summary-reporter', {}],
+    ['jest-summary-reporter', {}]
   ],
-
-  // Покрытие кода
   collectCoverage: true,
   coverageDirectory: './test-report/coverage',
   coverageReporters: ['text-summary', 'html', 'lcov'],
@@ -79,11 +64,9 @@ export default {
       statements: 50,
       branches: 50,
       functions: 50,
-      lines: 50,
-    },
+      lines: 50
+    }
   },
-
-  // Настройки для тестового окружения
   setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
   testPathIgnorePatterns: [
     '/node_modules/',
@@ -92,21 +75,10 @@ export default {
     '/test-report/',
     '/test/__mocks__/'
   ],
-  maxWorkers: '50%',
-
-  // Настройки для ESM
-  moduleDirectories: ['node_modules', 'src'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      tsconfig: 'tsconfig.json'
-    }
-  },
-  preset: 'ts-jest/presets/default-esm',
-  testMatch: [
-    '<rootDir>/test/**/*.test.ts',
-    '<rootDir>/test/**/*.test.js',
-    '<rootDir>/test/**/*.spec.ts',
-    '<rootDir>/test/**/*.spec.js'
-  ]
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/test/',
+    '/__mocks__/'
+  ],
+  maxWorkers: '50%'
 };

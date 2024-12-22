@@ -7,6 +7,23 @@ import { jest } from '@jest/globals';
 process.env.NODE_ENV = 'test';
 process.env.MCP_ENV = 'test';
 
+// Check required environment variables
+const requiredEnvVars = {
+  OPENAI_API_KEY: 'OpenAI API key is required for tests. Set OPENAI_API_KEY or mock the OpenAI API.',
+  MCP_CONFIG_PATH: 'MCP config path is required for tests. Set MCP_CONFIG_PATH or provide a test config.',
+};
+
+// Only check env vars if we're not in CI environment (allow CI to handle its own env vars)
+if (process.env.CI !== 'true') {
+  Object.entries(requiredEnvVars).forEach(([key, message]) => {
+    if (!process.env[key]) {
+      console.error(`Error: ${message}`);
+      console.error('To skip this check in CI, set CI=true');
+      process.exit(1);
+    }
+  });
+}
+
 // Mock console methods to reduce noise in tests
 global.console = {
   ...console,

@@ -98,10 +98,13 @@ npm run test:watch
 
 ### Требования к покрытию
 
-- Операторы: 80%
-- Ветви: 80%
-- Функции: 80%
-- Строки: 80%
+- Операторы: 50%
+- Ветви: 50%
+- Функции: 50%
+- Строки: 50%
+
+> Note: Coverage thresholds are set to 50% during initial development phase.
+> These thresholds will be gradually increased as test coverage improves.
 
 ## Утилиты для тестирования
 

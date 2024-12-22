@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeAll, afterAll, afterEach } from '@jest/globals';
-import path from 'node:path';
-import { promises as fs } from 'node:fs';
+import * as path from 'path';
+import * as fs from 'fs/promises';
 
 // Mock external modules
 jest.mock('../src/tools/code-collector/handler.js', () => ({

@@ -3,11 +3,11 @@ import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.
 
 // Mock chalk module
 jest.mock('chalk', () => {
-  const chalkFn = (str: string) => str;
-  chalkFn.green = (str: string) => str;
-  chalkFn.yellow = (str: string) => str;
-  chalkFn.red = (str: string) => str;
-  return chalkFn;
+  const chalk = (str: string) => str;
+  chalk.green = (str: string) => str;
+  chalk.yellow = (str: string) => str;
+  chalk.red = (str: string) => str;
+  return { default: chalk, ...chalk };
 });
 
 // Import mocks first

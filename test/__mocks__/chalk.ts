@@ -10,34 +10,33 @@ interface ChalkColor {
   bgGreen: (text: string) => string;
   bgYellow: (text: string) => string;
   bgBlue: (text: string) => string;
+  bold: (text: string) => string;
+  dim: (text: string) => string;
 }
 
-const createChalkFn = (): ChalkColor => {
-  const fn = ((text: string) => text) as ChalkColor;
-  
-  const colors = {
-    red: (text: string) => text,
-    green: (text: string) => text,
-    yellow: (text: string) => text,
-    blue: (text: string) => text,
-    white: (text: string) => text,
-    gray: (text: string) => text,
-    bgRed: (text: string) => text,
-    bgGreen: (text: string) => text,
-    bgYellow: (text: string) => text,
-    bgBlue: (text: string) => text,
-  };
-
-  Object.assign(fn, colors);
-  return fn;
+const colors = {
+  red: (text: string) => text,
+  green: (text: string) => text,
+  yellow: (text: string) => text,
+  blue: (text: string) => text,
+  white: (text: string) => text,
+  gray: (text: string) => text,
+  bgRed: (text: string) => text,
+  bgGreen: (text: string) => text,
+  bgYellow: (text: string) => text,
+  bgBlue: (text: string) => text,
+  bold: (text: string) => text,
+  dim: (text: string) => text
 };
 
-const chalk = createChalkFn();
+const mockChalk = ((text: string) => text) as ChalkColor;
+Object.assign(mockChalk, colors);
 
 export const {
   red, green, yellow, blue,
   white, gray,
-  bgRed, bgGreen, bgYellow, bgBlue
-} = chalk;
+  bgRed, bgGreen, bgYellow, bgBlue,
+  bold, dim
+} = mockChalk;
 
-export default chalk;
+export default mockChalk;

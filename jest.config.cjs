@@ -1,7 +1,6 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts', '.tsx', '.mts'],
   transform: {
     '^.+\\.[jt]sx?$': [
@@ -14,7 +13,6 @@ module.exports = {
     ]
   },
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],
   },
@@ -24,6 +22,7 @@ module.exports = {
       tsconfig: 'tsconfig.json'
     }
   },
+  injectGlobals: true,
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     '^(\\.{1,2}/.*)\\.mjs$': '$1',
@@ -33,7 +32,8 @@ module.exports = {
     '^@test/(.*)$': '<rootDir>/test/$1',
     '^openai$': '<rootDir>/test/__mocks__/openai.ts',
     '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1',
-    '^chalk$': '<rootDir>/test/__mocks__/chalk.ts'
+    '^chalk$': '<rootDir>/test/__mocks__/chalk.ts',
+    '^@jest/globals$': '<rootDir>/node_modules/@jest/globals/build/index.js'
   },
   moduleDirectories: ['node_modules', '.', 'src'],
   transformIgnorePatterns: [

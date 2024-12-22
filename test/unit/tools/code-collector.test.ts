@@ -139,12 +139,12 @@ describe('Code Collector Tool', () => {
         .mockImplementationOnce(async () => ['dir1', 'file1.ts'])
         .mockImplementationOnce(async () => ['file2.ts', 'file3.ts']);
 
-      mockFs.promises.stat.mockImplementation((path: string) =>
-        Promise.resolve({
+      mockFs.promises.stat.mockImplementation(async (path: string) => ({
           isFile: () => path.endsWith('.ts'),
           isDirectory: () => path.includes('dir1'),
-        })
-      );
+          size: 1024,
+          isSymbolicLink: () => false
+        }));
 
       // Execute
       const result = await codeCollectorHandler.handleCollectCode({
@@ -161,13 +161,12 @@ describe('Code Collector Tool', () => {
     it('should handle symlinks safely', async () => {
       // Setup
       mockFs.promises.readdir.mockImplementationOnce(async () => ['link.ts']);
-      mockFs.promises.stat.mockImplementation(() =>
-        Promise.resolve({
+      mockFs.promises.stat.mockImplementation(async () => ({
           isFile: () => true,
           isDirectory: () => false,
           isSymbolicLink: () => true,
-        })
-      );
+          size: 1024
+        }));
 
       // Execute
       const result = await codeCollectorHandler.handleCollectCode({
@@ -186,7 +185,8 @@ describe('Code Collector Tool', () => {
       mockFs.promises.stat.mockResolvedValueOnce({
         isFile: () => true,
         isDirectory: () => false,
-        size: 2 * 1024 * 1024, // 2MB
+        isSymbolicLink: () => false,
+        size: 2 * 1024 * 1024 // 2MB
       });
 
       // Execute and verify

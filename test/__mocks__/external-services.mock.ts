@@ -1,4 +1,4 @@
-import { jest, expect } from '@jest/globals';
+import { jest } from '@jest/globals';
 import type { OpenAIClient, OpenAICreateFn } from '../types/openai.js';
 import type { 
   GitHubClient, 
@@ -10,12 +10,14 @@ import type {
   GitHubRepoGetFn
 } from '../types/github.js';
 
+type JestMockFunction<T extends (...args: any[]) => any> = jest.MockedFunction<T>;
+
 // Import all types from separate type definition files
 
 export interface MockOpenAI {
   chat: {
     completions: {
-      create: jest.MockedFunction<OpenAICreateFn>;
+      create: JestMockFunction<OpenAICreateFn>;
     };
   };
 }
@@ -23,11 +25,11 @@ export interface MockOpenAI {
 export interface MockGitHub {
   rest: {
     issues: {
-      create: jest.MockedFunction<GitHubIssueCreateFn>;
-      list: jest.MockedFunction<GitHubIssueListFn>;
+      create: JestMockFunction<GitHubIssueCreateFn>;
+      list: JestMockFunction<GitHubIssueListFn>;
     };
     repos: {
-      get: jest.MockedFunction<GitHubRepoGetFn>;
+      get: JestMockFunction<GitHubRepoGetFn>;
     };
   };
 }
@@ -38,8 +40,12 @@ type FsReadFileFn = (path: string, encoding?: string) => Promise<string>;
 type FsWriteFileFn = (path: string, data: string) => Promise<void>;
 type FsMkdirFn = (path: string) => Promise<void>;
 type FsReaddirFn = (path: string) => Promise<string[]>;
-type FsStatFn = (path: string) => Promise<{ isFile: () => boolean; isDirectory: () => boolean; size?: number }>;
-type FsAccessFn = (path: string) => Promise<void>;
+type FsStatFn = (path: string) => Promise<{ 
+  isFile: () => boolean; 
+  isDirectory: () => boolean; 
+  isSymbolicLink: () => boolean;
+  size: number;
+}>;type FsAccessFn = (path: string) => Promise<void>;
 type FsRmFn = (path: string) => Promise<void>;
 
 interface MockFsPromises {
@@ -85,18 +91,28 @@ export type MockProgressTracker = jest.Mocked<ProgressTracker>;
 export const mockOpenAI: jest.Mocked<OpenAIClient> = {
   chat: {
     completions: {
-      create: jest.fn<OpenAICreateFn>().mockImplementation(async () => ({
+      create: jest.fn().mockImplementation(async () => ({
         choices: [
           {
             message: {
               content: 'Mock OpenAI response',
+              role: 'assistant',
             },
+            index: 0,
+            finish_reason: 'stop',
           },
         ],
+        created: Date.now(),
+        model: 'gpt-3.5-turbo',
+        usage: {
+          prompt_tokens: 100,
+          completion_tokens: 50,
+          total_tokens: 150,
+        },
       })),
     },
   },
-};
+} as jest.Mocked<OpenAIClient>;
 
 /**
  * Mock GitHub API
@@ -138,6 +154,7 @@ export const mockFs: MockFs = {
     stat: jest.fn<FsStatFn>().mockImplementation(async () => ({
       isFile: () => true,
       isDirectory: () => false,
+      isSymbolicLink: () => false,
       size: 1024
     })),
     access: jest.fn<FsAccessFn>().mockImplementation(async () => undefined),
@@ -149,12 +166,12 @@ export const mockFs: MockFs = {
  * Mock MCP Server
  */
 export interface MockMcpServer {
-  connect: jest.MockedFunction<() => Promise<void>>;
-  disconnect: jest.MockedFunction<() => Promise<void>>;
-  setRequestHandler: jest.MockedFunction<(handler: (req: unknown) => Promise<unknown>) => void>;
-  sendRequest: jest.MockedFunction<(req: unknown) => Promise<unknown>>;
-  onRequest: jest.MockedFunction<(handler: (req: unknown) => Promise<unknown>) => void>;
-  onerror: jest.MockedFunction<(error: Error) => void>;
+  connect: JestMockFunction<() => Promise<void>>;
+  disconnect: JestMockFunction<() => Promise<void>>;
+  setRequestHandler: JestMockFunction<(handler: (req: unknown) => Promise<unknown>) => void>;
+  sendRequest: JestMockFunction<(req: unknown) => Promise<unknown>>;
+  onRequest: JestMockFunction<(handler: (req: unknown) => Promise<unknown>) => void>;
+  onerror: JestMockFunction<(error: Error) => void>;
 }
 
 export const mockMcpServer: MockMcpServer = {
@@ -282,16 +299,18 @@ export function setupDefaultMocks() {
 /**
  * Create mock error
  */
-export function createMockError(code: string, message: string) {
-  const error = new Error(message);
-  error.name = code;
-  return error;
+/**
+ * Mock API response types
+ */
+interface ApiResponse<T = any> {
+  status: number;
+  data: T;
+  headers: Record<string, string>;
+  config: Record<string, any>;
+  statusText: string;
 }
 
-/**
- * Mock API response
- */
-export function mockApiResponse(status: number, data: any) {
+export function mockApiResponse<T>(status: number, data: T): ApiResponse<T> {
   return {
     status,
     data,
@@ -299,4 +318,14 @@ export function mockApiResponse(status: number, data: any) {
     config: {},
     statusText: status === 200 ? 'OK' : 'Error',
   };
+}
+
+/**
+ * Mock error with code
+ */
+export function createMockError(code: string, message: string): Error & { code: string } {
+  const error = new Error(message) as Error & { code: string };
+  error.code = code;
+  error.name = code;
+  return error;
 }

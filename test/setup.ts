@@ -1,12 +1,14 @@
-import { jest, expect, it, describe, beforeEach, afterEach } from '@jest/globals';
+import { jest, expect, describe, it, beforeAll, beforeEach, afterAll, afterEach } from '@jest/globals';
 
 // Make Jest globals available
 Object.assign(global, {
   jest,
   expect,
-  it,
   describe,
+  it,
+  beforeAll,
   beforeEach,
+  afterAll,
   afterEach
 });
 

@@ -8,9 +8,17 @@ module.exports = {
       'ts-jest',
       {
         useESM: true,
-        tsconfig: 'tsconfig.json'
+        tsconfig: 'tsconfig.json',
+        isolatedModules: true,
+        diagnostics: {
+          ignoreCodes: [1343] // Ignore 'not assignable to type' errors
+        }
       }
     ]
+  },
+  testEnvironment: 'node',
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons'],
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',

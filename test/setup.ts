@@ -3,6 +3,10 @@ import { jest } from '@jest/globals';
 // Make jest available globally
 (global as any).jest = jest;
 
+// Import expect from jest package for proper initialization
+import * as jestExpect from 'expect';
+(global as any).expect = jestExpect;
+
 // Setup environment variables for tests
 process.env.NODE_ENV = 'test';
 process.env.MCP_ENV = 'test';

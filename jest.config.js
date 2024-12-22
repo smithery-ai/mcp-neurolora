@@ -90,6 +90,18 @@ export default {
   maxWorkers: '50%',
 
   // Настройки для ESM
-  resolver: undefined,
   moduleDirectories: ['node_modules', 'src'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+      tsconfig: 'tsconfig.json'
+    }
+  },
+  preset: 'ts-jest/presets/default-esm',
+  testMatch: [
+    '<rootDir>/test/**/*.test.ts',
+    '<rootDir>/test/**/*.test.js',
+    '<rootDir>/test/**/*.spec.ts',
+    '<rootDir>/test/**/*.spec.js'
+  ]
 };

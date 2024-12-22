@@ -1,7 +1,12 @@
 import { jest, describe, test, expect, beforeAll, beforeEach, afterAll } from '@jest/globals';
 import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.js';
 import type { Mock } from 'jest-mock';
-import chalk from 'chalk';
+// Mock chalk module
+jest.mock('chalk', () => ({
+  green: (str: string) => str,
+  yellow: (str: string) => str,
+  red: (str: string) => str
+}));
 
 // Import mocks first
 const { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } = await import('../../__mocks__/external-services.mock.js');

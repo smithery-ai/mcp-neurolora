@@ -2,14 +2,9 @@ import { jest } from '@jest/globals';
 import { ProgressTracker } from '../../../src/utils/progress-tracker.js';
 // Mock chalk module
 jest.mock('chalk', () => ({
-  default: Object.assign(
-    (str: string) => str,
-    {
-      green: (str: string) => str,
-      yellow: (str: string) => str,
-      red: (str: string) => str
-    }
-  )
+  green: (str: string) => str,
+  yellow: (str: string) => str,
+  red: (str: string) => str
 }));
 
 // Mock progress module

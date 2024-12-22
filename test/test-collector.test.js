@@ -1,10 +1,6 @@
 import { jest, describe, test, expect, beforeAll, afterAll, afterEach } from '@jest/globals';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // Mock external modules
 jest.mock('../src/tools/code-collector/handler.js', () => ({

@@ -1,8 +1,36 @@
 import { jest } from '@jest/globals';
-import type { Mock } from 'jest-mock';
 
-type MockFunction<T> = jest.Mock<ReturnType<T>, Parameters<T>>;
+// Define mock function types with parameters and return types
+type OpenAICreateFn = () => Promise<{
+  choices: Array<{ message: { content: string } }>;
+}>;
 
+type GitHubIssueFn = () => Promise<{
+  data: { number: number; html_url: string };
+}>;
+
+type GitHubListFn = () => Promise<{
+  data: any[];
+}>;
+
+type GitHubRepoFn = () => Promise<{
+  data: { default_branch: string; owner?: { login: string }; name?: string };
+}>;
+
+type FsStatFn = () => Promise<{
+  isFile: () => boolean;
+  isDirectory: () => boolean;
+  size?: number;
+}>;
+
+type FsReaddirFn = () => Promise<string[]>;
+type FsReadFileFn = () => Promise<string>;
+type FsWriteFileFn = () => Promise<void>;
+type FsMkdirFn = () => Promise<void>;
+type FsAccessFn = () => Promise<void>;
+type FsRmFn = () => Promise<void>;
+
+// Define function types
 interface OpenAICreate {
   (): Promise<{ choices: { message: { content: string } }[] }>;
 }
@@ -22,7 +50,7 @@ interface GitHubRepoGet {
 interface MockOpenAI {
   chat: {
     completions: {
-      create: MockFunction<OpenAICreate>;
+      create: jest.Mock;
     };
   };
 }
@@ -30,11 +58,11 @@ interface MockOpenAI {
 interface MockGitHub {
   rest: {
     issues: {
-      create: MockFunction<GitHubIssueCreate>;
-      list: MockFunction<GitHubIssueList>;
+      create: jest.Mock;
+      list: jest.Mock;
     };
     repos: {
-      get: MockFunction<GitHubRepoGet>;
+      get: jest.Mock;
     };
   };
 }
@@ -68,13 +96,13 @@ interface FsRm {
 }
 
 interface MockFsPromises {
-  readFile: MockFunction<FsReadFile>;
-  writeFile: MockFunction<FsWriteFile>;
-  mkdir: MockFunction<FsMkdir>;
-  readdir: MockFunction<FsReaddir>;
-  stat: MockFunction<FsStat>;
-  access: MockFunction<FsAccess>;
-  rm: MockFunction<FsRm>;
+  readFile: jest.Mock;
+  writeFile: jest.Mock;
+  mkdir: jest.Mock;
+  readdir: jest.Mock;
+  stat: jest.Mock;
+  access: jest.Mock;
+  rm: jest.Mock;
 }
 
 interface MockFs {
@@ -98,10 +126,10 @@ interface ProgressFail {
 }
 
 interface MockProgressTracker {
-  start: MockFunction<ProgressStart>;
-  update: MockFunction<ProgressUpdate>;
-  complete: MockFunction<ProgressComplete>;
-  fail: MockFunction<ProgressFail>;
+  start: jest.Mock;
+  update: jest.Mock;
+  complete: jest.Mock;
+  fail: jest.Mock;
 }
 
 /**
@@ -114,7 +142,7 @@ interface MockProgressTracker {
 export const mockOpenAI: MockOpenAI = {
   chat: {
     completions: {
-      create: jest.fn().mockResolvedValue({
+      create: jest.fn<OpenAICreateFn>().mockResolvedValue({
         choices: [
           {
             message: {
@@ -133,18 +161,18 @@ export const mockOpenAI: MockOpenAI = {
 export const mockGitHub: MockGitHub = {
   rest: {
     issues: {
-      create: jest.fn<Promise<{ data: { number: number; html_url: string } }>, []>().mockResolvedValue({
+      create: jest.fn<GitHubIssueFn>().mockResolvedValue({
         data: {
           number: 1,
           html_url: 'https://github.com/test/test/issues/1',
         },
       }),
-      list: jest.fn<Promise<{ data: any[] }>, []>().mockResolvedValue({
+      list: jest.fn<GitHubListFn>().mockResolvedValue({
         data: [],
       }),
     },
     repos: {
-      get: jest.fn<Promise<{ data: { default_branch: string } }>, []>().mockResolvedValue({
+      get: jest.fn<GitHubRepoFn>().mockResolvedValue({
         data: {
           default_branch: 'main',
         },
@@ -158,13 +186,13 @@ export const mockGitHub: MockGitHub = {
  */
 export const mockFs: MockFs = {
   promises: {
-    readFile: jest.fn(),
-    writeFile: jest.fn(),
-    mkdir: jest.fn(),
-    readdir: jest.fn(),
-    stat: jest.fn(),
-    access: jest.fn(),
-    rm: jest.fn(),
+    readFile: jest.fn<FsReadFileFn>(),
+    writeFile: jest.fn<FsWriteFileFn>(),
+    mkdir: jest.fn<FsMkdirFn>(),
+    readdir: jest.fn<FsReaddirFn>(),
+    stat: jest.fn<FsStatFn>(),
+    access: jest.fn<FsAccessFn>(),
+    rm: jest.fn<FsRmFn>(),
   },
 };
 

@@ -1,34 +1,31 @@
 import { jest } from '@jest/globals';
 
 // Define mock function types with parameters and return types
-type OpenAICreateFn = () => Promise<{
-  choices: Array<{ message: { content: string } }>;
-}>;
+type OpenAICreateFn = {
+  (): Promise<{
+    choices: Array<{ message: { content: string } }>;
+  }>;
+};
 
-type GitHubIssueFn = () => Promise<{
-  data: { number: number; html_url: string };
-}>;
+type GitHubIssueFn = {
+  (): Promise<{
+    data: { number: number; html_url: string };
+  }>;
+};
 
-type GitHubListFn = () => Promise<{
-  data: any[];
-}>;
+type GitHubListFn = {
+  (): Promise<{
+    data: any[];
+  }>;
+};
 
-type GitHubRepoFn = () => Promise<{
-  data: { default_branch: string; owner?: { login: string }; name?: string };
-}>;
+type GitHubRepoFn = {
+  (): Promise<{
+    data: { default_branch: string; owner?: { login: string }; name?: string };
+  }>;
+};
 
-type FsStatFn = () => Promise<{
-  isFile: () => boolean;
-  isDirectory: () => boolean;
-  size?: number;
-}>;
-
-type FsReaddirFn = () => Promise<string[]>;
-type FsReadFileFn = () => Promise<string>;
-type FsWriteFileFn = () => Promise<void>;
-type FsMkdirFn = () => Promise<void>;
-type FsAccessFn = () => Promise<void>;
-type FsRmFn = () => Promise<void>;
+// File system operation types
 
 // Define function types
 interface OpenAICreate {
@@ -50,7 +47,9 @@ interface GitHubRepoGet {
 interface MockOpenAI {
   chat: {
     completions: {
-      create: jest.Mock;
+      create: jest.Mock<() => Promise<{
+        choices: Array<{ message: { content: string } }>;
+      }>>;
     };
   };
 }
@@ -58,51 +57,39 @@ interface MockOpenAI {
 interface MockGitHub {
   rest: {
     issues: {
-      create: jest.Mock;
-      list: jest.Mock;
+      create: jest.Mock<() => Promise<{
+        data: { number: number; html_url: string };
+      }>>;
+      list: jest.Mock<() => Promise<{
+        data: any[];
+      }>>;
     };
     repos: {
-      get: jest.Mock;
+      get: jest.Mock<() => Promise<{
+        data: { default_branch: string; owner?: { login: string }; name?: string };
+      }>>;
     };
   };
 }
 
-interface FsReadFile {
-  (path: string): Promise<string>;
-}
+// Mock file system interfaces
 
-interface FsWriteFile {
-  (path: string, data: string): Promise<void>;
-}
-
-interface FsMkdir {
-  (path: string): Promise<void>;
-}
-
-interface FsReaddir {
-  (path: string): Promise<string[]>;
-}
-
-interface FsStat {
-  (path: string): Promise<{ isFile: () => boolean; isDirectory: () => boolean; size?: number }>;
-}
-
-interface FsAccess {
-  (path: string): Promise<void>;
-}
-
-interface FsRm {
-  (path: string): Promise<void>;
-}
+type FsReadFileFn = (path: string, encoding?: string) => Promise<string>;
+type FsWriteFileFn = (path: string, data: string) => Promise<void>;
+type FsMkdirFn = (path: string) => Promise<void>;
+type FsReaddirFn = (path: string) => Promise<string[]>;
+type FsStatFn = (path: string) => Promise<{ isFile: () => boolean; isDirectory: () => boolean; size?: number }>;
+type FsAccessFn = (path: string) => Promise<void>;
+type FsRmFn = (path: string) => Promise<void>;
 
 interface MockFsPromises {
-  readFile: jest.Mock;
-  writeFile: jest.Mock;
-  mkdir: jest.Mock;
-  readdir: jest.Mock;
-  stat: jest.Mock;
-  access: jest.Mock;
-  rm: jest.Mock;
+  readFile: jest.Mock<FsReadFileFn>;
+  writeFile: jest.Mock<FsWriteFileFn>;
+  mkdir: jest.Mock<FsMkdirFn>;
+  readdir: jest.Mock<FsReaddirFn>;
+  stat: jest.Mock<FsStatFn>;
+  access: jest.Mock<FsAccessFn>;
+  rm: jest.Mock<FsRmFn>;
 }
 
 interface MockFs {
@@ -142,7 +129,9 @@ interface MockProgressTracker {
 export const mockOpenAI: MockOpenAI = {
   chat: {
     completions: {
-      create: jest.fn<OpenAICreateFn>().mockResolvedValue({
+      create: jest.fn<() => Promise<{
+        choices: Array<{ message: { content: string } }>;
+      }>>().mockResolvedValue({
         choices: [
           {
             message: {
@@ -161,18 +150,24 @@ export const mockOpenAI: MockOpenAI = {
 export const mockGitHub: MockGitHub = {
   rest: {
     issues: {
-      create: jest.fn<GitHubIssueFn>().mockResolvedValue({
+      create: jest.fn<() => Promise<{
+        data: { number: number; html_url: string };
+      }>>().mockResolvedValue({
         data: {
           number: 1,
           html_url: 'https://github.com/test/test/issues/1',
         },
       }),
-      list: jest.fn<GitHubListFn>().mockResolvedValue({
+      list: jest.fn<() => Promise<{
+        data: any[];
+      }>>().mockResolvedValue({
         data: [],
       }),
     },
     repos: {
-      get: jest.fn<GitHubRepoFn>().mockResolvedValue({
+      get: jest.fn<() => Promise<{
+        data: { default_branch: string; owner?: { login: string }; name?: string };
+      }>>().mockResolvedValue({
         data: {
           default_branch: 'main',
         },

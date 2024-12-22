@@ -9,16 +9,20 @@ module.exports = {
       {
         useESM: true,
         tsconfig: 'tsconfig.json',
-        isolatedModules: true,
-        diagnostics: {
-          ignoreCodes: [1343] // Ignore 'not assignable to type' errors
-        }
+        isolatedModules: true
       }
     ]
   },
   testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
   testEnvironmentOptions: {
     customExportConditions: ['node', 'node-addons'],
+  },
+  globals: {
+    'ts-jest': {
+      useESM: true,
+      tsconfig: 'tsconfig.json'
+    }
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',

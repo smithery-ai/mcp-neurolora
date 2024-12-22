@@ -1,11 +1,14 @@
-import { jest } from '@jest/globals';
+import { jest, expect, it, describe, beforeEach, afterEach } from '@jest/globals';
 
-// Make jest available globally
-(global as any).jest = jest;
-
-// Import expect from jest package for proper initialization
-import * as jestExpect from 'expect';
-(global as any).expect = jestExpect;
+// Make Jest globals available
+Object.assign(global, {
+  jest,
+  expect,
+  it,
+  describe,
+  beforeEach,
+  afterEach
+});
 
 // Setup environment variables for tests
 process.env.NODE_ENV = 'test';

@@ -1,11 +1,11 @@
-import { codeCollectorHandler } from '../../../src/tools/code-collector/handler';
+import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.js';
 import {
   mockFs,
   mockProgressTracker,
   resetMocks,
   setupDefaultMocks,
-} from '../../__mocks__/external-services.mock';
-import { TestContext } from '../../helpers/test-utils';
+} from '../../__mocks__/external-services.mock.js';
+import { TestContext } from '../../helpers/test-utils.js';
 
 jest.mock('fs/promises', () => mockFs.promises);
 jest.mock('../../../src/utils/progress-tracker.js', () => ({

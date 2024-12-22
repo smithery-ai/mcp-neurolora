@@ -1,5 +1,5 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { ErrorHandler, ConnectionManager } from '../src/server';
+import { ErrorHandler, ConnectionManager } from '../src/server.js';
 import { jest, beforeAll } from '@jest/globals';
 
 beforeAll(() => {

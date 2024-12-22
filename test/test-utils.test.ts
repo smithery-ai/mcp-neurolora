@@ -1,4 +1,4 @@
-import { TestContext } from './helpers/test-utils';
+import { TestContext } from './helpers/test-utils.js';
 import fs from 'fs/promises';
 import path from 'path';
 

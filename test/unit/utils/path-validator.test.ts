@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { isPathAllowed, validateAndNormalizePath } from '../../../src/utils/path-validator';
+import { isPathAllowed, validateAndNormalizePath } from '../../../src/utils/path-validator.js';
 import path from 'path';
 
 describe('Path Validator', () => {

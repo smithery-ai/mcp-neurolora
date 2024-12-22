@@ -2,10 +2,10 @@ import { ProgressTracker } from '../../../src/utils/progress-tracker';
 import { clearProgress, showProgress } from '../../../src/utils/progress';
 
 // Mock progress module
-jest.mock('@utils/progress', () => ({
+jest.mock('../../../src/utils/progress', () => ({
   showProgress: jest.fn(),
   clearProgress: jest.fn(),
-}));
+}), { virtual: true });
 
 describe('Progress Tracker', () => {
   let tracker: ProgressTracker;

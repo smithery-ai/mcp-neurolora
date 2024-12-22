@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="26" failures="15" errors="0" time="1.928">
-  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T14:45:40" time="0.824" tests="11">
-    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.006">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.002">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle empty or invalid paths" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with invalid characters" time="0">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.011">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.003">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Progress Tracker" errors="0" failures="14" skipped="0" timestamp="2024-12-22T14:45:40" time="1.085" tests="14">
-    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should initialize with total steps" time="0.005">
+<testsuites name="jest tests" tests="54" failures="26" errors="0" time="5.047">
+  <testsuite name="Progress Tracker" errors="0" failures="14" skipped="0" timestamp="2024-12-22T14:50:04" time="0.842" tests="14">
+    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should initialize with total steps" time="0.002">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -41,8 +17,7 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
     <testcase classname="Progress Tracker › Basic Progress Tracking" name="should start progress tracking" time="0.001">
       <failure>TypeError: showProgress.mockClear is not a function
@@ -60,10 +35,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should update progress over time" time="0.001">
+    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should update progress over time" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -79,10 +53,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should stop progress tracking" time="0.001">
+    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should stop progress tracking" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -98,10 +71,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Options Handling" name="should respect custom width option" time="0.001">
+    <testcase classname="Progress Tracker › Options Handling" name="should respect custom width option" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -117,10 +89,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Options Handling" name="should respect custom prefix option" time="0">
+    <testcase classname="Progress Tracker › Options Handling" name="should respect custom prefix option" time="0.001">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -136,10 +107,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Edge Cases" name="should handle zero total steps" time="0">
+    <testcase classname="Progress Tracker › Edge Cases" name="should handle zero total steps" time="0.001">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -155,10 +125,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Edge Cases" name="should not start multiple intervals" time="0.001">
+    <testcase classname="Progress Tracker › Edge Cases" name="should not start multiple intervals" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -174,8 +143,7 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
     <testcase classname="Progress Tracker › Edge Cases" name="should handle stop without start" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
@@ -193,8 +161,7 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
     <testcase classname="Progress Tracker › Edge Cases" name="should handle custom stop message" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
@@ -212,8 +179,7 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
     <testcase classname="Progress Tracker › Progress Calculation" name="should calculate progress based on elapsed time" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
@@ -231,10 +197,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Progress Calculation" name="should not exceed 100% progress" time="0">
+    <testcase classname="Progress Tracker › Progress Calculation" name="should not exceed 100% progress" time="0.001">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -250,10 +215,9 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Cleanup" name="should clean up interval on stop" time="0.001">
+    <testcase classname="Progress Tracker › Cleanup" name="should clean up interval on stop" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -269,8 +233,7 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
     <testcase classname="Progress Tracker › Cleanup" name="should handle multiple stops" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
@@ -288,21 +251,175 @@
     at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
     at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
     at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="Code Analyzer Tool" errors="0" failures="1" skipped="0" timestamp="2024-12-22T14:45:40" time="1.625" tests="1">
-    <testcase classname="Code Analyzer Tool" name="should analyze code-collector directory" time="0.004">
+  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T14:50:05" time="0.153" tests="11">
+    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.003">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.002">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle empty or invalid paths" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with invalid characters" time="0">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.014">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.002">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="MCP Tools Integration Tests" errors="0" failures="1" skipped="0" timestamp="2024-12-22T14:50:06" time="1.269" tests="15">
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code has required properties" time="0.001">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler works with minimal valid input" time="0.002">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler properly handles errors" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handles multiple files" time="0.018">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers has required properties" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler works with minimal valid input" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler properly handles errors" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code has required properties" time="0.001">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler works with minimal valid input" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler properly handles errors" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code provides detailed analysis" time="0.002">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;Analysis&quot;
+Received string:    &quot;Server is not connected. Please wait for connection to be established or try reconnecting.&quot;
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:142:42)</failure>
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues has required properties" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler works with minimal valid input" time="0.001">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler properly handles errors" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests" name="collect_code and analyze_code work together" time="0.001">
+    </testcase>
+    <testcase classname="" name="Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
+      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;Error: Connection already in progress\n    at ConnectionManager.connect (/home/ubuntu/repos/mcp-neurolora/src/server.ts:120:13)\n    at createTestServer (/home/ubuntu/repos/mcp-neurolora/test/test-utils.ts:50:23)\n    at initializeToolHandler (/home/ubuntu/repos/mcp-neurolora/test/test-utils.ts:73:33)\n    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:166:30)\n    at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)\n    at new Promise (&lt;anonymous&gt;)\n    at callAsyncCircusFn (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:231:10)\n    at _callCircusTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:316:40)\n    at _runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:252:3)\n    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:126:9)\n    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:121:9)\n    at run (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:71:3)\n    at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)\n    at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)\n    at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)&quot;}</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Utils" errors="0" failures="0" skipped="0" timestamp="2024-12-22T14:50:07" time="0.116" tests="3">
+    <testcase classname="Test Utils" name="should create and cleanup test context" time="0.007">
+    </testcase>
+    <testcase classname="Test Utils" name="should create temporary file" time="0.006">
+    </testcase>
+    <testcase classname="Test Utils" name="should add and execute cleanup functions" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Tools Integration Tests" errors="0" failures="6" skipped="0" timestamp="2024-12-22T14:50:07" time="0.646" tests="6">
+    <testcase classname="Tools Integration Tests › Code Collector" name="should collect single file" time="0.017">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: &quot;collect&quot;
+Received: undefined
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-tools.js:31:27)</failure>
+    </testcase>
+    <testcase classname="Tools Integration Tests › Code Collector" name="should collect directory" time="0.001">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: &quot;collect&quot;
+Received: undefined
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-tools.js:40:27)</failure>
+    </testcase>
+    <testcase classname="Tools Integration Tests › Code Collector" name="should collect multiple files" time="0.001">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: &quot;collect&quot;
+Received: undefined
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-tools.js:52:27)</failure>
+    </testcase>
+    <testcase classname="Tools Integration Tests › Code Analyzer" name="should analyze single file" time="0.296">
+      <failure>Error: Failed to process code: 401 Incorrect API key provided: test-key. You can find your API key at https://platform.openai.com/account/api-keys.
+    at handleAnalyzeCode (/home/ubuntu/repos/mcp-neurolora/src/tools/code-analyzer/handler.ts:281:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-tools.js:58:22)</failure>
+    </testcase>
+    <testcase classname="Tools Integration Tests › Code Analyzer" name="should analyze directory" time="0.123">
+      <failure>Error: Failed to process code: 401 Incorrect API key provided: test-key. You can find your API key at https://platform.openai.com/account/api-keys.
+    at handleAnalyzeCode (/home/ubuntu/repos/mcp-neurolora/src/tools/code-analyzer/handler.ts:281:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-tools.js:67:22)</failure>
+    </testcase>
+    <testcase classname="Tools Integration Tests › Code Analyzer" name="should analyze multiple files" time="0">
+      <failure>Error: Failed to process code: The &quot;path&quot; argument must be of type string. Received an instance of Array
+    at handleAnalyzeCode (/home/ubuntu/repos/mcp-neurolora/src/tools/code-analyzer/handler.ts:281:11)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-tools.js:76:28)
+    at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:121:9)
+    at run (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Code Collector Tool" errors="0" failures="4" skipped="0" timestamp="2024-12-22T14:50:08" time="0.195" tests="4">
+    <testcase classname="Code Collector Tool › File Collection" name="should collect single TypeScript file" time="0.014">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:40:23)</failure>
+    </testcase>
+    <testcase classname="Code Collector Tool › File Collection" name="should collect directory excluding .git" time="0.001">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:51:23)</failure>
+    </testcase>
+    <testcase classname="Code Collector Tool › File Collection" name="should collect multiple files" time="0.001">
+      <failure>Error: ENOENT: no such file or directory, open &apos;/home/ubuntu/repos/mcp-neurolora/test/sample/project-structure/src/utils.ts&apos;
+    at open (node:internal/fs/promises:638:25)
+    at Object.writeFile (node:internal/fs/promises:1208:14)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:60:7)</failure>
+    </testcase>
+    <testcase classname="Code Collector Tool › File Collection" name="should respect ignore patterns" time="0.001">
+      <failure>Error: expect(received).toBeDefined()
+
+Received: undefined
+    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
+    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:85:23)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Code Analyzer Tool" errors="0" failures="1" skipped="0" timestamp="2024-12-22T14:50:08" time="0.161" tests="1">
+    <testcase classname="Code Analyzer Tool" name="should analyze code-collector directory" time="0">
       <failure>Error: Configuration error:
 
-Could not locate module @modelcontextprotocol/sdk/server/index.js mapped as:
-/home/ubuntu/repos/mcp-neurolora/node_modules/@modelcontextprotocol/$1.
+Could not locate module ../build/tools/code-collector/handler.js mapped as:
+$1.
 
 Please check your configuration for these entries:
 {
   &quot;moduleNameMapper&quot;: {
-    &quot;/^@modelcontextprotocol\/(.*)$/&quot;: &quot;/home/ubuntu/repos/mcp-neurolora/node_modules/@modelcontextprotocol/$1&quot;
+    &quot;/^(\.{1,2}\/.*)\.js$/&quot;: &quot;$1&quot;
   },
   &quot;resolver&quot;: undefined
 }
@@ -313,7 +430,9 @@ Please check your configuration for these entries:
     at Resolver._getAbsolutePathAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:596:30)
     at Resolver.getModuleIDAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:558:26)
     at Runtime._shouldMockModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:1776:22)
-    at Runtime.resolveModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:667:7)</failure>
+    at Runtime.resolveModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:667:7)
+    at importModuleDynamically (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:524:30)
+    at importModuleDynamicallyWrapper (node:internal/vm/module:436:15)</failure>
     </testcase>
   </testsuite>
 </testsuites>

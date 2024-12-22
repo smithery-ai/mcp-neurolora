@@ -1,6 +1,6 @@
 export default {
   transform: {
-    '^.+\\.tsx?$': [
+    '^.+\\.(t|j)sx?$': [
       'ts-jest',
       {
         tsconfig: 'tsconfig.json',
@@ -26,7 +26,10 @@ export default {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',
     '^@/(.*)$': '<rootDir>/$1',
-    '^@modelcontextprotocol/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/$1'
+    '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1',
+    '^@modelcontextprotocol/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/$1',
+    '\\.js$': '',
+    '^openai$': '<rootDir>/test/__mocks__/openai.ts'
   },
   extensionsToTreatAsEsm: ['.ts'],
   testTimeout: 30000,

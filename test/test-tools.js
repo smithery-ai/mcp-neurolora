@@ -10,69 +10,78 @@ function logMemory(label) {
   }
 }
 
-async function runTests() {
-  // Use process.cwd() to get the project root directory
+describe('Tools Integration Tests', () => {
   const baseDir = process.cwd();
 
-  try {
+  beforeEach(() => {
     logMemory('initial');
+  });
 
-    // Test 1: Collect single file
-    console.log('\n=== Test 1: Collect single file ===');
-    await handleCollectCode({
-      input: path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
-      outputPath: baseDir,
+  afterEach(() => {
+    logMemory('after test');
+  });
+
+  describe('Code Collector', () => {
+    it('should collect single file', async () => {
+      const result = await handleCollectCode({
+        input: path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
+        outputPath: baseDir,
+      });
+      expect(result).toBeDefined();
+      expect(result.type).toBe('collect');
     });
-    logMemory('after collect single file');
 
-    // Test 2: Collect directory
-    console.log('\n=== Test 2: Collect directory ===');
-    await handleCollectCode({
-      input: path.join(baseDir, 'src', 'tools', 'code-collector'),
-      outputPath: baseDir,
+    it('should collect directory', async () => {
+      const result = await handleCollectCode({
+        input: path.join(baseDir, 'src', 'tools', 'code-collector'),
+        outputPath: baseDir,
+      });
+      expect(result).toBeDefined();
+      expect(result.type).toBe('collect');
     });
-    logMemory('after collect directory');
 
-    // Test 3: Collect multiple files
-    console.log('\n=== Test 3: Collect multiple files ===');
-    await handleCollectCode({
-      input: [
-        path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
-        path.join(baseDir, 'src', 'tools', 'code-collector', 'types.ts'),
-      ],
-      outputPath: baseDir,
+    it('should collect multiple files', async () => {
+      const result = await handleCollectCode({
+        input: [
+          path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
+          path.join(baseDir, 'src', 'tools', 'code-collector', 'types.ts'),
+        ],
+        outputPath: baseDir,
+      });
+      expect(result).toBeDefined();
+      expect(result.type).toBe('collect');
     });
-    logMemory('after collect multiple files');
+  });
 
-    // Test 4: Analyze single file
-    console.log('\n=== Test 4: Analyze single file ===');
-    await handleAnalyzeCode({
-      input: path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
-      outputPath: baseDir,
+  describe('Code Analyzer', () => {
+    it('should analyze single file', async () => {
+      const result = await handleAnalyzeCode({
+        input: path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
+        outputPath: baseDir,
+      });
+      expect(result).toBeDefined();
+      expect(result.type).toBe('analyze');
     });
-    logMemory('after analyze single file');
 
-    // Test 5: Analyze directory
-    console.log('\n=== Test 5: Analyze directory ===');
-    await handleAnalyzeCode({
-      input: path.join(baseDir, 'src', 'tools', 'code-collector'),
-      outputPath: baseDir,
+    it('should analyze directory', async () => {
+      const result = await handleAnalyzeCode({
+        input: path.join(baseDir, 'src', 'tools', 'code-collector'),
+        outputPath: baseDir,
+      });
+      expect(result).toBeDefined();
+      expect(result.type).toBe('analyze');
     });
-    logMemory('after analyze directory');
 
-    // Test 6: Analyze multiple files
-    console.log('\n=== Test 6: Analyze multiple files ===');
-    await handleAnalyzeCode({
-      input: [
-        path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
-        path.join(baseDir, 'src', 'tools', 'code-collector', 'types.ts'),
-      ],
-      outputPath: baseDir,
+    it('should analyze multiple files', async () => {
+      const result = await handleAnalyzeCode({
+        input: [
+          path.join(baseDir, 'src', 'tools', 'code-collector', 'handler.ts'),
+          path.join(baseDir, 'src', 'tools', 'code-collector', 'types.ts'),
+        ],
+        outputPath: baseDir,
+      });
+      expect(result).toBeDefined();
+      expect(result.type).toBe('analyze');
     });
-    logMemory('after analyze multiple files');
-  } catch (error) {
-    console.error('Test failed:', error);
-  }
-}
-
-runTests().catch(console.error);
+  });
+});

@@ -6,6 +6,17 @@ import { jest } from '@jest/globals';
 // Setup environment variables for tests
 process.env.NODE_ENV = 'test';
 process.env.MCP_ENV = 'test';
+process.env.OPENAI_API_KEY = 'test-key';
+process.env.MCP_CONFIG_PATH = './test/__mocks__/mcp-config.json';
+
+// Mock timers for all tests
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+});
 process.env.CI = 'true'; // Enable CI mode for tests
 
 // Load mock config

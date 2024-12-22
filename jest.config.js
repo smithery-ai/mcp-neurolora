@@ -1,6 +1,6 @@
 export default {
   transform: {
-    '^.+\\.(t|j)sx?$': [
+    '^.+\\.tsx?$': [
       'ts-jest',
       {
         tsconfig: 'tsconfig.json',
@@ -11,9 +11,14 @@ export default {
         },
       },
     ],
+    '^.+\\.jsx?$': [
+      'babel-jest',
+      {
+        presets: ['@babel/preset-env'],
+      },
+    ],
   },
   testEnvironment: 'node',
-  testRegex: '(/test/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transformIgnorePatterns: [
     'node_modules/(?!(uuid|@modelcontextprotocol|tiktoken|@dqbd/tiktoken)/)',

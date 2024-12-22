@@ -273,6 +273,7 @@ export function setupDefaultMocks() {
   mockFs.promises.stat.mockResolvedValue({
     isFile: () => true,
     isDirectory: () => false,
+    isSymbolicLink: () => false,
     size: 1024,
   });
 

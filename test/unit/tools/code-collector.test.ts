@@ -48,9 +48,11 @@ describe('Code Collector Tool', () => {
       const outputDir = '/test/output';
 
       mockFs.promises.readdir.mockImplementationOnce(async () => ['file1.ts', 'file2.ts']);
-      mockFs.promises.stat.mockImplementation(async (path: string): Promise<{ isFile: () => boolean; isDirectory: () => boolean }> => ({
+      mockFs.promises.stat.mockImplementation(async (path: string) => ({
           isFile: () => path.endsWith('.ts'),
           isDirectory: () => !path.endsWith('.ts'),
+          isSymbolicLink: () => false,
+          size: 1024
         }));
       mockFs.promises.readFile.mockImplementation(async (path: string) => {
         if (path.endsWith('file1.ts')) {

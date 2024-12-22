@@ -19,6 +19,6 @@
     "resolveJsonModule": true,
     "composite": true
   },
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*", "test/**/*", "test/types/**/*"],
   "exclude": ["node_modules", "build", "coverage", "test-report"]
 }

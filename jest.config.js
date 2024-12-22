@@ -72,7 +72,13 @@ export default {
 
   // Настройки для тестового окружения
   setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
-  testPathIgnorePatterns: ['/node_modules/', '/build/', '/coverage/', '/test-report/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/build/',
+    '/coverage/',
+    '/test-report/',
+    '/test/__mocks__/'
+  ],
   maxWorkers: '50%',
 
   // Настройки для ESM

@@ -1,6 +1,11 @@
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { ErrorHandler, ConnectionManager } from '../src/server.js';
 import { jest, beforeAll } from '@jest/globals';
+import path from 'path';
+
+jest.mock('@modelcontextprotocol/sdk/server/index.js');
+jest.mock('../src/server.js');
+
+const { Server } = await import('@modelcontextprotocol/sdk/server/index.js');
+const { ErrorHandler, ConnectionManager } = await import('../src/server.js');
 
 beforeAll(() => {
   process.env.NODE_ENV = 'test';

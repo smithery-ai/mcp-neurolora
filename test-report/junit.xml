@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="14" failures="0" errors="0" time="6.002">
-  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:48:06" time="4.865" tests="11">
-    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.01">
+<testsuites name="jest tests" tests="11" failures="0" errors="0" time="5.74">
+  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:59:31" time="4.829" tests="11">
+    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.015">
     </testcase>
     <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.003">
     </testcase>
@@ -11,25 +11,17 @@
     </testcase>
     <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0.001">
     </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.002">
+    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0.001">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.023">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.011">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.002">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.001">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.003">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.002">
     </testcase>
     <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Utils" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:48:06" time="5.297" tests="3">
-    <testcase classname="Test Utils" name="should create and cleanup test context" time="0.02">
-    </testcase>
-    <testcase classname="Test Utils" name="should create temporary file" time="0.003">
-    </testcase>
-    <testcase classname="Test Utils" name="should add and execute cleanup functions" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

@@ -1,6 +1,12 @@
-import { handleCollectCode } from '../src/tools/code-collector/handler.js';
-import fs from 'fs/promises';
+import { jest, describe, test, expect, beforeAll, afterAll, afterEach } from '@jest/globals';
 import path from 'path';
+import { promises as fs } from 'fs';
+
+jest.mock('../src/tools/code-collector/handler.js');
+jest.mock('../src/server.js');
+
+const { handleCollectCode } = await import('../src/tools/code-collector/handler.js');
+const { ConnectionManager } = await import('../src/server.js');
 
 describe('Code Collector Tool', () => {
   // Use process.cwd() to get the project root directory

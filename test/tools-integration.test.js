@@ -1,9 +1,14 @@
-import { tools } from '../src/tools/index.js';
-import { logger } from '../src/utils/logger.js';
+import { jest, describe, test, expect, beforeAll, afterAll } from '@jest/globals';
 import path from 'path';
-import { initializeToolHandler, createTestFile } from './test-utils.js';
-import fs from 'fs/promises';
-import { describe, test, expect, beforeAll, afterAll, jest } from '@jest/globals';
+import { promises as fs } from 'fs';
+
+jest.mock('../src/tools/index.js');
+jest.mock('../src/utils/logger.js');
+jest.mock('./test-utils.js');
+
+const { tools } = await import('../src/tools/index.js');
+const { logger } = await import('../src/utils/logger.js');
+const { initializeToolHandler, createTestFile } = await import('./test-utils.js');
 
 jest.setTimeout(30000);
 

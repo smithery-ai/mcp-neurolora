@@ -3,8 +3,9 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   transformIgnorePatterns: [
-    'node_modules/(?!(@modelcontextprotocol|chalk)/)'
+    'node_modules/(?!(@modelcontextprotocol|chalk|@dqbd/tiktoken)/.*)'
   ],
+  extensionsToTreatAsEsm: ['.ts', '.tsx', '.mts'],
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
@@ -13,8 +14,7 @@ module.exports = {
         tsconfig: 'tsconfig.json'
       }
     ],
-    '^.+\\.jsx?$': ['babel-jest', { configFile: './babel.config.cjs' }],
-    '^.+\\.m?js$': ['babel-jest', { configFile: './babel.config.cjs' }]
+    '^.+\\.[jt]sx?$': ['babel-jest', { configFile: './babel.config.cjs' }]
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
@@ -22,7 +22,8 @@ module.exports = {
     '^@src/(.*)$': '<rootDir>/src/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',
-    '^openai$': '<rootDir>/test/__mocks__/openai.ts'
+    '^openai$': '<rootDir>/test/__mocks__/openai.ts',
+    '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1'
   },
   moduleDirectories: ['node_modules', 'src'],
   testMatch: [

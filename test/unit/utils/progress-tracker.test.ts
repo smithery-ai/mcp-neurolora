@@ -1,16 +1,14 @@
+import { jest } from '@jest/globals';
 import { ProgressTracker } from '../../../src/utils/progress-tracker.js';
-import { clearProgress, showProgress } from '../../../src/utils/progress.js';
 
 // Mock progress module
-jest.mock('../../../src/utils/progress.js', () => {
-  const showProgress = jest.fn();
-  const clearProgress = jest.fn();
-  return {
-    showProgress,
-    clearProgress,
-    __esModule: true
-  };
-});
+jest.mock('../../../src/utils/progress.js', () => ({
+  __esModule: true,
+  showProgress: jest.fn(),
+  clearProgress: jest.fn()
+}));
+
+const { showProgress, clearProgress } = await import('../../../src/utils/progress.js');
 
 describe('Progress Tracker', () => {
   let tracker: ProgressTracker;

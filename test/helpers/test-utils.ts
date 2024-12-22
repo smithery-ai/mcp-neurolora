@@ -1,7 +1,12 @@
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import fs from 'fs/promises';
+import { jest } from '@jest/globals';
 import path from 'path';
+import fs from 'fs/promises';
+
+jest.mock('@modelcontextprotocol/sdk/server/index.js');
+jest.mock('@modelcontextprotocol/sdk/server/stdio.js');
+
+const { Server } = await import('@modelcontextprotocol/sdk/server/index.js');
+const { StdioServerTransport } = await import('@modelcontextprotocol/sdk/server/stdio.js');
 
 /**
  * Test utilities for MCP Neurolora

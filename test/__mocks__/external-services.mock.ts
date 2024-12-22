@@ -1,3 +1,109 @@
+import { jest } from '@jest/globals';
+import type { Mock } from 'jest-mock';
+
+type MockFunction<T> = jest.Mock<ReturnType<T>, Parameters<T>>;
+
+interface OpenAICreate {
+  (): Promise<{ choices: { message: { content: string } }[] }>;
+}
+
+interface GitHubIssueCreate {
+  (): Promise<{ data: { number: number; html_url: string } }>;
+}
+
+interface GitHubIssueList {
+  (): Promise<{ data: any[] }>;
+}
+
+interface GitHubRepoGet {
+  (): Promise<{ data: { default_branch: string; owner?: { login: string }; name?: string } }>;
+}
+
+interface MockOpenAI {
+  chat: {
+    completions: {
+      create: MockFunction<OpenAICreate>;
+    };
+  };
+}
+
+interface MockGitHub {
+  rest: {
+    issues: {
+      create: MockFunction<GitHubIssueCreate>;
+      list: MockFunction<GitHubIssueList>;
+    };
+    repos: {
+      get: MockFunction<GitHubRepoGet>;
+    };
+  };
+}
+
+interface FsReadFile {
+  (path: string): Promise<string>;
+}
+
+interface FsWriteFile {
+  (path: string, data: string): Promise<void>;
+}
+
+interface FsMkdir {
+  (path: string): Promise<void>;
+}
+
+interface FsReaddir {
+  (path: string): Promise<string[]>;
+}
+
+interface FsStat {
+  (path: string): Promise<{ isFile: () => boolean; isDirectory: () => boolean; size?: number }>;
+}
+
+interface FsAccess {
+  (path: string): Promise<void>;
+}
+
+interface FsRm {
+  (path: string): Promise<void>;
+}
+
+interface MockFsPromises {
+  readFile: MockFunction<FsReadFile>;
+  writeFile: MockFunction<FsWriteFile>;
+  mkdir: MockFunction<FsMkdir>;
+  readdir: MockFunction<FsReaddir>;
+  stat: MockFunction<FsStat>;
+  access: MockFunction<FsAccess>;
+  rm: MockFunction<FsRm>;
+}
+
+interface MockFs {
+  promises: MockFsPromises;
+}
+
+interface ProgressStart {
+  (): void;
+}
+
+interface ProgressUpdate {
+  (progress: number): void;
+}
+
+interface ProgressComplete {
+  (): void;
+}
+
+interface ProgressFail {
+  (message?: string): void;
+}
+
+interface MockProgressTracker {
+  start: MockFunction<ProgressStart>;
+  update: MockFunction<ProgressUpdate>;
+  complete: MockFunction<ProgressComplete>;
+  fail: MockFunction<ProgressFail>;
+}
+
 /**
  * Mock implementations for external services and dependencies
  */
@@ -5,7 +111,7 @@
 /**
  * Mock OpenAI API
  */
-export const mockOpenAI = {
+export const mockOpenAI: MockOpenAI = {
   chat: {
     completions: {
       create: jest.fn().mockResolvedValue({
@@ -24,21 +130,21 @@ export const mockOpenAI = {
 /**
  * Mock GitHub API
  */
-export const mockGitHub = {
+export const mockGitHub: MockGitHub = {
   rest: {
     issues: {
-      create: jest.fn().mockResolvedValue({
+      create: jest.fn<Promise<{ data: { number: number; html_url: string } }>, []>().mockResolvedValue({
         data: {
           number: 1,
           html_url: 'https://github.com/test/test/issues/1',
         },
       }),
-      list: jest.fn().mockResolvedValue({
+      list: jest.fn<Promise<{ data: any[] }>, []>().mockResolvedValue({
         data: [],
       }),
     },
     repos: {
-      get: jest.fn().mockResolvedValue({
+      get: jest.fn<Promise<{ data: { default_branch: string } }>, []>().mockResolvedValue({
         data: {
           default_branch: 'main',
         },
@@ -50,7 +156,7 @@ export const mockGitHub = {
 /**
  * Mock File System
  */
-export const mockFs = {
+export const mockFs: MockFs = {
   promises: {
     readFile: jest.fn(),
     writeFile: jest.fn(),
@@ -87,7 +193,7 @@ export const mockLogger = {
 /**
  * Mock Progress Tracker
  */
-export const mockProgressTracker = {
+export const mockProgressTracker: MockProgressTracker = {
   start: jest.fn(),
   update: jest.fn(),
   complete: jest.fn(),

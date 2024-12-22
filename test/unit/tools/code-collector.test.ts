@@ -1,22 +1,32 @@
+import { jest, describe, test, expect, beforeAll, beforeEach, afterAll } from '@jest/globals';
 import { codeCollectorHandler } from '../../../src/tools/code-collector/handler.js';
-import {
-  mockFs,
-  mockProgressTracker,
-  resetMocks,
-  setupDefaultMocks,
-} from '../../__mocks__/external-services.mock.js';
-import { TestContext } from '../../helpers/test-utils.js';
+import type { Mock } from 'jest-mock';
 
-jest.mock('fs/promises', () => mockFs.promises);
+// Import mocks first
+const { mockFs, mockProgressTracker, resetMocks, setupDefaultMocks } = await import('../../__mocks__/external-services.mock.js');
+const { TestContext } = await import('../../helpers/test-utils.js');
+
+type Context = {
+  setup: () => Promise<void>;
+  cleanup: () => Promise<void>;
+};
+
+// Setup mocks
+jest.mock('fs/promises', () => ({
+  ...mockFs.promises,
+  __esModule: true
+}));
+
 jest.mock('../../../src/utils/progress-tracker.js', () => ({
-  ProgressTracker: jest.fn().mockImplementation(() => mockProgressTracker),
+  __esModule: true,
+  ProgressTracker: jest.fn().mockImplementation(() => mockProgressTracker)
 }));
 
 describe('Code Collector Tool', () => {
-  let context: TestContext;
+  let context: Context;
 
   beforeAll(async () => {
-    context = new TestContext();
+    context = new TestContext() as Context;
     await context.setup();
   });
 

@@ -1,9 +1,16 @@
-import { handleAnalyzeCode } from '../src/tools/code-analyzer/handler.js';
+import { jest, describe, test, expect, beforeAll } from '@jest/globals';
 import path from 'path';
-import { ConnectionManager } from '../src/server.js';
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
+
+jest.mock('../src/tools/code-analyzer/handler.js');
+jest.mock('../src/server.js');
+jest.mock('@modelcontextprotocol/sdk/server/index.js');
+jest.mock('@modelcontextprotocol/sdk/server/stdio.js');
+
+const { handleAnalyzeCode } = await import('../src/tools/code-analyzer/handler.js');
+const { ConnectionManager } = await import('../src/server.js');
+const { Server } = await import('@modelcontextprotocol/sdk/server/index.js');
+const { StdioServerTransport } = await import('@modelcontextprotocol/sdk/server/stdio.js');
 
 function logMemory(label) {
   const used = process.memoryUsage();

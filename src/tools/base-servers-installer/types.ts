@@ -1,15 +1,49 @@
-export interface McpServerConfig {
-  command: string;
-  args: string[];
-  disabled?: boolean;
-  alwaysAllow?: string[];
-  env?: Record<string, string>;
+import { z } from 'zod';
+
+// Zod schemas for validation
+const zodMcpServerConfig = z
+  .object({
+    command: z.string(),
+    args: z.array(z.string()),
+    disabled: z.boolean().optional(),
+    alwaysAllow: z.array(z.string()).optional(),
+    env: z.record(z.string()).optional(),
+  })
+  .strict();
+
+const zodMcpSettings = z
+  .object({
+    mcpServers: z.record(zodMcpServerConfig),
+  })
+  .strict();
+
+// Types inferred from Zod schemas
+export type McpServerConfig = z.infer<typeof zodMcpServerConfig>;
+export type McpSettings = z.infer<typeof zodMcpSettings>;
+
+// Schema for MCP SDK
+export const baseServersInstallerSchema = {
+  type: 'object',
+  properties: {
+    configPath: {
+      type: 'string',
+      description: 'Path to the MCP settings configuration file',
+    },
+  },
+  required: ['configPath'],
+  additionalProperties: false,
+} as const;
+
+// Validation functions using Zod
+export function validateMcpServerConfig(input: unknown): McpServerConfig {
+  return zodMcpServerConfig.parse(input);
 }
 
-export interface McpSettings {
-  mcpServers: Record<string, McpServerConfig>;
+export function validateMcpSettings(input: unknown): McpSettings {
+  return zodMcpSettings.parse(input);
 }
 
+// Base servers configuration
 export const BASE_SERVERS: Record<string, McpServerConfig> = {
   fetch: {
     command: 'uvx',
@@ -45,7 +79,7 @@ export const BASE_SERVERS: Record<string, McpServerConfig> = {
     command: 'uvx',
     args: ['mcp-shell-server'],
     env: {
-      ALLOW_COMMANDS: 'ls,cat,pwd,grep,wc,touch,find', // Команды уже разделены запятыми
+      ALLOW_COMMANDS: 'ls,cat,pwd,grep,wc,touch,find',
     },
     disabled: false,
     alwaysAllow: [],

@@ -38,5 +38,7 @@ Thumbs.db
 .tmp/
 FULL_CODE_*.md
 
-# Internal documentation
-PROJECT_SUMMARY.md
+# Development
+.neurolora*
+memlog/
+.clinerules*

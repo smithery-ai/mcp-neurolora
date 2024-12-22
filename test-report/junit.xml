@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="26" failures="1" errors="0" time="12.281">
+  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T13:35:26" time="0.438" tests="11">
+    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.009">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.003">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle empty or invalid paths" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with invalid characters" time="0">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.018">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.005">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.006">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="MCP Tools Integration Tests" errors="0" failures="1" skipped="0" timestamp="2024-12-22T13:35:26" time="8.906" tests="15">
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code has required properties" time="0.214">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler works with minimal valid input" time="0.154">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler properly handles errors" time="0.001">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handles multiple files" time="0.969">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers has required properties" time="0.002">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler works with minimal valid input" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler properly handles errors" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code has required properties" time="0.004">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler works with minimal valid input" time="0.175">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler properly handles errors" time="0.009">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code provides detailed analysis" time="0.038">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: &quot;Analysis&quot;
+Received string:    &quot;Server is not connected. Please wait for connection to be established or try reconnecting.&quot;
+    at Object.&lt;anonymous&gt; (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/test/tools-integration.test.js:135:42)</failure>
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues has required properties" time="0.004">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler works with minimal valid input" time="0.001">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler properly handles errors" time="0">
+    </testcase>
+    <testcase classname="MCP Tools Integration Tests" name="collect_code and analyze_code work together" time="0.034">
+    </testcase>
+    <testcase classname="" name="Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
+      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;Error: Connection already in progress\n    at ConnectionManager.connect (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/src/server.ts:115:13)\n    at createTestServer (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/test/test-utils.ts:50:23)\n    at initializeToolHandler (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/test/test-utils.ts:73:33)\n    at Object.&lt;anonymous&gt; (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/test/tools-integration.test.js:159:30)\n    at Promise.then.completed (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)\n    at new Promise (&lt;anonymous&gt;)\n    at callAsyncCircusFn (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/utils.js:231:10)\n    at _callCircusTest (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/run.js:316:40)\n    at _runTest (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/run.js:252:3)\n    at _runTestsForDescribeBlock (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/run.js:126:9)\n    at _runTestsForDescribeBlock (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/run.js:121:9)\n    at run (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/run.js:71:3)\n    at runAndTransformResultsToJestFormat (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)\n    at jestAdapter (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)\n    at runTestInternal (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)\n    at Object.worker (/Users/fadandr/Custom Projects/Custom MCP/aindreyway-mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)&quot;}</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

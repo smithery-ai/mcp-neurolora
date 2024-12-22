@@ -1,6 +1,6 @@
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { handleGitHubIssues } from './handler.js';
-import { githubIssuesSchema } from './types.js';
+import { githubIssuesSchema, validateGitHubIssuesInput } from './types.js';
 
 export const githubIssuesTool: Tool = {
   name: 'create_github_issues',
@@ -21,14 +21,14 @@ export const githubIssuesTool: Tool = {
         };
       }
 
-      const options = {
-        githubToken,
-        owner: String(args.owner),
-        repo: String(args.repo),
-        issueNumbers: args.issueNumbers as number[] | undefined,
-      };
+      // Валидируем входные данные с помощью Zod
+      const validatedInput = validateGitHubIssuesInput(args);
 
-      const result = await handleGitHubIssues(options);
+      const result = await handleGitHubIssues({
+        githubToken,
+        ...validatedInput,
+      });
+
       return {
         content: [
           {

@@ -214,22 +214,49 @@ The server provides:
 
 - Code Analysis:
 
-  - OpenAI API integration
-  - Structured feedback
+  - OpenAI API integration with configurable models
+  - Structured feedback with severity levels
   - Best practices recommendations
-  - GitHub issues generation
+  - GitHub issues generation with labels
+  - Progress tracking with timeouts
 
 - Code Collection:
 
-  - Directory traversal
-  - Syntax highlighting
-  - Navigation generation
-  - Pattern-based filtering
+  - Safe directory traversal with symlink protection
+  - Syntax highlighting for multiple languages
+  - Smart navigation generation
+  - Configurable pattern-based filtering
+  - Large file handling with size limits
+
+- Security Features:
+
+  - Protection against ReDoS attacks
+  - Safe symlink traversal with cycle detection
+  - Sensitive file protection
+  - Path sanitization in error messages
+  - Configurable timeouts and limits
+
+- Configuration System:
+
+  - Centralized configuration management
+  - Environment-specific settings
+  - Customizable file processing rules
+  - Flexible ignore patterns
+  - Resource usage controls
+
+- Error Handling:
+
+  - Specific error types for different scenarios
+  - Detailed error messages
+  - Safe async operation handling
+  - Resource cleanup guarantees
+  - Progress tracking and reporting
 
 - Base Server Management:
   - Automatic installation
   - Configuration handling
   - Version management
+  - Dependency resolution
 
 ## 📄 License
 

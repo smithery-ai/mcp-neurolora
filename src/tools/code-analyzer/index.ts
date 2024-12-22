@@ -1,18 +1,52 @@
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { handleAnalyzeCode } from './handler.js';
-import { codeAnalyzerSchema } from './types.js';
+import { codeAnalyzerSchema, validateAnalyzerInput } from './types.js';
+import { ConnectionAwareHandler } from '../../utils/connection-check.js';
+import { ConnectionManager } from '../../server.js';
 
-export const codeAnalyzerTool: Tool = {
-  name: 'analyze_code',
-  description:
-    'Analyze code using OpenAI API (requires your API key). The analysis may take a few minutes. So, wait please.',
-  inputSchema: codeAnalyzerSchema,
-  handler: async (args: Record<string, unknown>) => {
+class ToolHandler implements ConnectionAwareHandler {
+  private connectionManager: ConnectionManager | null = null;
+
+  setConnectionManager(manager: ConnectionManager) {
+    this.connectionManager = manager;
+  }
+
+  private getConnectionManager(): ConnectionManager {
+    if (!this.connectionManager) {
+      throw new Error('Connection manager not initialized');
+    }
+    return this.connectionManager;
+  }
+
+  async handle(args: Record<string, unknown>) {
+    console.error('=== Code Analyzer Tool Handler ===');
+    console.error('Arguments:', JSON.stringify(args, null, 2));
+
+    const manager = this.getConnectionManager();
+    if (!manager.isConnected()) {
+      console.error('=== Code Analyzer Tool Handler Error ===');
+      console.error('Not connected');
+      console.error('===================================');
+      return {
+        content: [
+          {
+            type: 'text',
+            text: 'Server is not connected. Please wait for connection to be established or try reconnecting.',
+          },
+        ],
+        isError: true,
+      };
+    }
+
     try {
-      const codePath = String(args.codePath);
+      // Валидируем входные данные с помощью Zod
+      const validatedInput = validateAnalyzerInput(args);
       const openaiKey = process.env.OPENAI_API_KEY || process.env.OPENAI_KEY;
 
       if (!openaiKey) {
+        console.error('=== Code Analyzer Tool Handler Error ===');
+        console.error('OpenAI API key missing');
+        console.error('===================================');
         return {
           content: [
             {
@@ -26,9 +60,13 @@ export const codeAnalyzerTool: Tool = {
 
       const analysis = await handleAnalyzeCode({
         mode: 'analyze',
-        codePath,
+        input: validatedInput.input,
+        outputPath: validatedInput.outputPath,
       });
 
+      console.error('=== Code Analyzer Tool Handler Success ===');
+      console.error('Analysis completed');
+      console.error('===================================');
       return {
         content: [
           {
@@ -43,6 +81,9 @@ export const codeAnalyzerTool: Tool = {
         ],
       };
     } catch (error: unknown) {
+      console.error('=== Code Analyzer Tool Handler Error ===');
+      console.error('Error:', error);
+      console.error('===================================');
       return {
         content: [
           {
@@ -53,5 +94,15 @@ export const codeAnalyzerTool: Tool = {
         isError: true,
       };
     }
-  },
+  }
+}
+
+const handler = new ToolHandler();
+
+export const codeAnalyzerTool: Tool & { handler: ConnectionAwareHandler } = {
+  name: 'analyze_code',
+  description:
+    'Analyze code using OpenAI API (requires your API key). Creates analysis files (LAST_RESPONSE_*.txt/json) in the project root directory. The analysis may take a few minutes.',
+  inputSchema: codeAnalyzerSchema,
+  handler,
 };

@@ -1,36 +1,37 @@
-import { createAnalysisFile } from './project-files.js';
+import { logger } from './logger.js';
 
 /**
- * Show progress bar in a single line
+ * Show progress bar
  */
 export async function showProgress(
   percentage: number,
-  options = { width: 20, prefix: 'Processing' }
+  options = { width: 20, prefix: 'Processing', silent: true }
 ): Promise<void> {
   const filled = Math.floor((options.width * percentage) / 100);
   const empty = options.width - filled;
   const bar = `[${'='.repeat(filled)}>${'.'.repeat(empty)}]`;
+  const message = `${options.prefix}... ${bar} ${percentage}% complete`;
 
-  // Move cursor up and clear line
-  process.stdout.write('\x1b[1A\x1b[2K');
-  process.stdout.write(`${options.prefix}... ${bar} ${percentage}% complete\n`);
+  // Записываем в лог
+  logger.debug(message, { component: 'Progress', percentage });
 
-  // Update file without newlines to keep single line
-  await createAnalysisFile(
-    'LAST_RESPONSE_OPENAI.txt',
-    `${options.prefix}... ${bar} ${percentage}% complete`,
-    { append: false }
-  );
+  // Выводим в консоль только если не silent
+  if (!options.silent) {
+    process.stdout.write('\x1b[1A\x1b[2K'); // Move cursor up and clear line
+    process.stdout.write(message + '\n');
+  }
 }
 
 /**
  * Clear progress and show final content
  */
-export async function clearProgress(content: string): Promise<void> {
-  // Clear progress line
-  process.stdout.write('\x1b[1A\x1b[2K');
+export async function clearProgress(content: string, silent: boolean = true): Promise<void> {
+  // Записываем в лог
+  logger.info(content, { component: 'Progress', status: 'completed' });
 
-  // Write final content
-  await createAnalysisFile('LAST_RESPONSE_OPENAI.txt', content, { append: false });
-  console.log('Analysis completed. Recommended fixes and improvements:\n');
+  // Выводим в консоль только если не silent
+  if (!silent) {
+    process.stdout.write('\x1b[1A\x1b[2K'); // Clear progress line
+    console.log(content);
+  }
 }

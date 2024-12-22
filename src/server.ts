@@ -1,78 +1,166 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+  Tool,
+} from '@modelcontextprotocol/sdk/types.js';
 import path from 'path';
 import { tools } from './tools/index.js';
+import { ConnectionAwareHandler } from './utils/connection-check.js';
+import workerPool from './utils/worker-pool.js';
+import { ENV, SERVER_CONFIG } from './config.js';
+import { getRuntimeConfig } from './runtime-modes.js';
+import { logger } from './utils/logger.js';
 
-type ToolHandler = (args: Record<string, unknown>) => Promise<{
-  content: Array<{
-    type: string;
-    text: string;
+interface ConnectionAwareTool extends Tool {
+  handler: ConnectionAwareHandler;
+}
+
+interface ToolHandler {
+  handle(args: Record<string, unknown>): Promise<{
+    content: Array<{
+      type: string;
+      text: string;
+    }>;
+    isError?: boolean;
   }>;
-  isError?: boolean;
-}>;
+}
 
 /**
  * Main MCP server class for Neurolora functionality
+ *
+ * IMPORTANT: All paths in tool arguments must be absolute paths!
+ * Example:
+ * - Correct: "/Users/username/project/file.js"
+ * - Incorrect: "src/file.js" or "./file.js"
+ *
+ * This requirement ensures consistent behavior across different environments
+ * and prevents path resolution issues.
  */
-const ENV = {
-  isLocal: process.env.MCP_ENV === 'local',
-  storagePath: process.env.STORAGE_PATH || 'data',
-  maxTokens: parseInt(process.env.MAX_TOKENS || '190000'),
-  timeoutMs: parseInt(process.env.TIMEOUT_MS || '300000'),
-};
 
 /**
  * Server configuration and state management
  */
 class ServerConfig {
-  public readonly isLocal: boolean;
   public readonly name: string;
   public readonly baseDir: string;
 
-  constructor() {
-    this.isLocal = ENV.isLocal;
-    this.name = this.isLocal ? 'local-mcp-neurolora' : '@aindreyway/mcp-neurolora';
-    this.baseDir = process.argv[1] ? path.dirname(process.argv[1]) : process.cwd();
+  private constructor(baseDir: string, name: string) {
+    this.baseDir = baseDir;
+    this.name = name;
+  }
+
+  static async create(): Promise<ServerConfig> {
+    const runtime = getRuntimeConfig();
+    const baseDir = process.argv[1] ? path.resolve(path.dirname(process.argv[1])) : process.cwd();
+
+    const config = new ServerConfig(baseDir, runtime.serverName);
+
+    // Initialize app directories
+    const { ensureAppDirectories } = await import('./utils/paths.js');
+    await ensureAppDirectories();
+
+    return config;
   }
 }
 
 /**
  * Error handler for MCP server
  */
-class ErrorHandler {
-  constructor(private readonly config: ServerConfig) {}
+export class ErrorHandler {
+  private readonly baseDir: string;
+
+  constructor(private readonly config: ServerConfig) {
+    this.baseDir = config.baseDir;
+  }
 
   public formatError(error: Error): string {
-    return this.config.isLocal
-      ? `${error.message}\n${error.stack}`
-      : 'An error occurred while processing the request';
+    return `${error.message}\n${error.stack}`;
   }
 
   public logError(error: unknown, context?: string): void {
-    const prefix = this.config.isLocal ? '[LOCAL VERSION][MCP Error]' : '[MCP Error]';
-    console.error(prefix, context ? `[${context}]` : '', error);
+    logger.error('Error occurred', error instanceof Error ? error : new Error(String(error)), {
+      context,
+      baseDir: this.baseDir,
+      nodeVersion: process.version,
+      platform: process.platform,
+      workingDirectory: process.cwd(),
+    });
   }
 }
 
 /**
  * Connection manager for MCP server
  */
-class ConnectionManager {
-  private currentTransport: any;
+export class ConnectionManager {
+  public static currentTransport: any;
+  private connectionState: 'connected' | 'disconnected' | 'connecting' = 'disconnected';
 
   constructor(
     private readonly server: Server,
     private readonly errorHandler: ErrorHandler
   ) {}
 
+  private static instance: ConnectionManager | null = null;
+
+  public static getInstance(server: Server, errorHandler: ErrorHandler): ConnectionManager {
+    if (!ConnectionManager.instance) {
+      ConnectionManager.instance = new ConnectionManager(server, errorHandler);
+    }
+    return ConnectionManager.instance;
+  }
+
   public async connect(transport: any): Promise<void> {
-    this.currentTransport = transport;
-    await this.reconnect();
+    if (this.connectionState === 'connecting') {
+      throw new Error('Connection already in progress');
+    }
+
+    // Если уже подключены и транспорт тот же, используем существующее подключение
+    if (this.connectionState === 'connected' && transport === ConnectionManager.currentTransport) {
+      console.error('[DEBUG] Using existing connection');
+      return;
+    }
+
+    // Сохраняем транспорт
+    ConnectionManager.currentTransport = transport;
+    this.connectionState = 'connecting';
+
+    try {
+      // Закрываем предыдущее соединение если есть
+      await this.server.close().catch(() => {});
+
+      // Инициализируем соединение
+      await this.server.connect(transport);
+
+      // Устанавливаем состояние подключения
+      this.connectionState = 'connected';
+
+      // Проверяем успешность подключения
+      if (!this.server.transport) {
+        this.connectionState = 'disconnected';
+        throw new Error('Failed to establish connection');
+      }
+      console.error('✅ Neurolora MCP server connected successfully');
+    } catch (error) {
+      this.connectionState = 'disconnected';
+      throw error;
+    }
+  }
+
+  public isConnected(): boolean {
+    return this.connectionState === 'connected';
   }
 
   private async reconnect(retryCount = 0, maxRetries = 3): Promise<void> {
     try {
-      await this.server.connect(this.currentTransport);
+      // Закрываем только если не подключены
+      if (this.connectionState === 'disconnected') {
+        this.connectionState = 'connecting';
+        await this.server.close().catch(() => {}); // Игнорируем ошибки закрытия
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Ждем перед переподключением
+        await this.server.connect(ConnectionManager.currentTransport);
+      }
+      this.connectionState = 'connected';
       console.error('✅ Neurolora MCP server connected successfully');
     } catch (error) {
       this.errorHandler.logError(error, 'reconnect');
@@ -87,8 +175,15 @@ class ConnectionManager {
   }
 
   public async disconnect(): Promise<void> {
-    await this.server.close();
-    console.error('Server closed successfully');
+    try {
+      await this.server.close();
+      this.connectionState = 'disconnected';
+      console.error('Server closed successfully');
+    } catch (error) {
+      this.errorHandler.logError(error, 'disconnect');
+      // Не пробрасываем ошибку, так как сервер все равно завершает работу
+      this.connectionState = 'disconnected';
+    }
   }
 }
 
@@ -98,31 +193,49 @@ export class NeuroloraServer {
   private readonly errorHandler: ErrorHandler;
   private readonly connectionManager: ConnectionManager;
 
-  constructor() {
-    this.config = new ServerConfig();
+  private constructor(config: ServerConfig) {
+    this.config = config;
     this.errorHandler = new ErrorHandler(this.config);
 
     // Initialize server
+    const serverTools = tools.map(tool => ({
+      name: tool.name,
+      description: tool.description,
+      inputSchema: tool.inputSchema,
+    }));
+
     this.server = new Server({
       name: this.config.name,
       version: '1.4.0',
       capabilities: {
-        tools: {},
+        tools: serverTools.reduce((acc, tool) => ({ ...acc, [tool.name]: tool }), {}),
       },
       timeout: ENV.timeoutMs,
     });
 
-    this.connectionManager = new ConnectionManager(this.server, this.errorHandler);
+    this.connectionManager = ConnectionManager.getInstance(this.server, this.errorHandler);
 
-    // Show debug info in local mode
-    if (this.config.isLocal) {
-      console.error('[LOCAL VERSION] Running in development mode');
-      console.error(`[LOCAL VERSION] Storage path: ${ENV.storagePath}`);
-      console.error(`[LOCAL VERSION] Max tokens: ${ENV.maxTokens}`);
-      console.error(`[LOCAL VERSION] Timeout: ${ENV.timeoutMs}ms`);
-    }
+    // Initialize connection manager for tools
+    tools.forEach(tool => {
+      const connectionAwareTool = tool as ConnectionAwareTool;
+      if (connectionAwareTool.handler?.setConnectionManager) {
+        connectionAwareTool.handler.setConnectionManager(this.connectionManager);
+      }
+    });
+
+    // Show debug info
+    logger.info('Server initialized', {
+      maxTokens: ENV.maxTokens,
+      timeout: ENV.timeoutMs,
+      version: SERVER_CONFIG.version,
+    });
 
     this.initializeHandlers();
+  }
+
+  static async create(): Promise<NeuroloraServer> {
+    const config = await ServerConfig.create();
+    return new NeuroloraServer(config);
   }
 
   private initializeHandlers(): void {
@@ -131,7 +244,26 @@ export class NeuroloraServer {
 
     // Handle tool calls
     this.server.setRequestHandler(CallToolRequestSchema, async request => {
+      console.error('\n=== Tool Call Request ===');
+      console.error('Request:', JSON.stringify(request, null, 2));
+      console.error(
+        'Available tools:',
+        tools.map(t => t.name)
+      );
+      if (!this.connectionManager.isConnected()) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: 'Server is not connected. Please wait for connection to be established or try reconnecting.',
+            },
+          ],
+          isError: true,
+        };
+      }
+
       const tool = tools.find(t => t.name === request.params.name);
+      console.error('Found tool:', tool ? tool.name : 'not found');
       if (!tool) {
         return {
           content: [{ type: 'text', text: `Unknown tool: ${request.params.name}` }],
@@ -140,12 +272,43 @@ export class NeuroloraServer {
       }
 
       try {
-        const handler = tool?.handler as ToolHandler;
-        return handler(request.params.arguments || {});
+        console.error('Tool handler:', tool.handler ? 'present' : 'missing');
+        if (!tool.handler) {
+          console.error('Tool handler is missing!');
+          return {
+            content: [{ type: 'text', text: `Tool handler not found for: ${request.params.name}` }],
+            isError: true,
+          };
+        }
+
+        const handler = tool.handler as ToolHandler;
+        console.error('Handler type:', typeof handler);
+        console.error('Handler properties:', Object.keys(handler));
+        console.error('Executing tool:', request.params.name);
+        console.error('Tool arguments:', JSON.stringify(request.params.arguments || {}, null, 2));
+
+        if (typeof handler.handle !== 'function') {
+          console.error('Tool handler is missing!');
+          return {
+            content: [{ type: 'text', text: `Tool handler not found for: ${request.params.name}` }],
+            isError: true,
+          };
+        }
+
+        const result = await handler.handle(request.params.arguments || {});
+        console.error('Tool execution completed');
+        console.error('Result:', JSON.stringify(result, null, 2));
+        console.error('=========================');
+        return result;
       } catch (error) {
         this.errorHandler.logError(error, 'tool execution');
         return {
-          content: [{ type: 'text', text: this.errorHandler.formatError(error as Error) }],
+          content: [
+            {
+              type: 'text',
+              text: 'Invalid tool arguments. Please check the documentation and try again.',
+            },
+          ],
           isError: true,
         };
       }
@@ -161,30 +324,164 @@ export class NeuroloraServer {
   }
 
   private async handleConnectionError(): Promise<void> {
-    console.error('Connection error detected, attempting to reconnect...');
+    this.errorHandler.logError(new Error('Connection closed unexpectedly'), 'connection-error');
+
+    console.error('\nAttempting to recover connection...');
     try {
       await this.server.close();
+      console.error('Server closed successfully');
+
       await new Promise(resolve => setTimeout(resolve, 1000));
-      await this.connectionManager.connect(this.connectionManager['currentTransport']);
+      console.error('Attempting reconnection...');
+
+      await this.connectionManager.connect(ConnectionManager.currentTransport);
+      console.error('Reconnection successful');
     } catch (error) {
-      this.errorHandler.logError(error, 'reconnection');
+      this.errorHandler.logError(error, 'reconnection-failed');
+      console.error('\nFailed to recover connection. Please try:');
+      console.error('1. Check if any other instances are running');
+      console.error('2. Verify MCP configuration is correct');
+      console.error('3. Restart the server');
     }
   }
 
   private async handleShutdown(signal: string): Promise<void> {
     console.error(`\nReceived ${signal}, shutting down...`);
     try {
+      // Stop services
       await this.connectionManager.disconnect();
+      await workerPool.terminate();
+
       // Allow async operations to complete before exiting
       setTimeout(() => process.exit(0), 1000);
     } catch (error) {
       this.errorHandler.logError(error, 'shutdown');
+      // Try to cleanup even on error
+      await workerPool.terminate().catch(() => {});
       process.exit(1);
     }
   }
 
+  /**
+   * Kill all existing server processes
+   */
+  private async getExec(): Promise<any> {
+    const { exec } = await import('child_process');
+    return exec;
+  }
+
+  private async cleanupExistingProcesses(): Promise<void> {
+    const exec = await this.getExec();
+
+    if (process.platform === 'win32') {
+      // На Windows используем taskkill
+      try {
+        await new Promise((resolve, reject) => {
+          exec(
+            'taskkill /F /FI "IMAGENAME eq node.exe" /FI "WINDOWTITLE eq *build/index.js*"',
+            (error: any) => {
+              // Игнорируем ошибки, так как процессов может не быть
+              resolve(null);
+            }
+          );
+        });
+      } catch (error) {
+        // Игнорируем ошибки очистки
+      }
+    } else {
+      // На Unix системах используем pkill
+      try {
+        await new Promise((resolve, reject) => {
+          exec('pkill -f "node build/index.js"', (error: any) => {
+            // Игнорируем ошибки, так как процессов может не быть
+            resolve(null);
+          });
+        });
+      } catch (error) {
+        // Игнорируем ошибки очистки
+      }
+    }
+
+    // Ждем немного, чтобы процессы успели завершиться
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  async request(request: any): Promise<any> {
+    if (request.method === 'tools/call') {
+      // Проверяем состояние подключения
+      if (!this.connectionManager.isConnected()) {
+        console.error('[DEBUG] Server not connected, attempting to reconnect...');
+        try {
+          await this.connectionManager.connect(ConnectionManager.currentTransport);
+        } catch (error) {
+          this.errorHandler.logError(error, 'reconnection-failed');
+          return {
+            result: {
+              content: [
+                {
+                  type: 'text',
+                  text: 'Server connection failed. Please try again.',
+                },
+              ],
+              isError: true,
+            },
+          };
+        }
+      }
+
+      const tool = tools.find(t => t.name === request.params.name);
+      if (!tool) {
+        return {
+          result: {
+            content: [{ type: 'text', text: `Unknown tool: ${request.params.name}` }],
+            isError: true,
+          },
+        };
+      }
+
+      try {
+        const handler = tool.handler as ToolHandler;
+        const result = await handler.handle(request.params.arguments || {});
+        return { result };
+      } catch (error) {
+        this.errorHandler.logError(error, 'tool execution');
+
+        // Если ошибка связана с подключением, пробуем переподключиться и повторить запрос
+        if (error instanceof Error && error.message.includes('connection')) {
+          console.error('[DEBUG] Connection error detected, attempting to reconnect...');
+          try {
+            await this.connectionManager.connect(ConnectionManager.currentTransport);
+            // Повторяем запрос после переподключения
+            const handler = tool.handler as ToolHandler;
+            const result = await handler.handle(request.params.arguments || {});
+            return { result };
+          } catch (retryError) {
+            this.errorHandler.logError(retryError, 'retry-failed');
+          }
+        }
+
+        return {
+          result: {
+            content: [
+              {
+                type: 'text',
+                text: 'Tool execution failed. Please check the arguments and try again.',
+              },
+            ],
+            isError: true,
+          },
+        };
+      }
+    }
+
+    throw new Error(`Unknown method: ${request.method}`);
+  }
+
   async run(transport: any): Promise<void> {
-    console.error('Neurolora MCP server running from:', this.config.baseDir);
+    logger.info('Cleaning up existing processes...');
+    await this.cleanupExistingProcesses();
+
+    logger.info('Server starting', { baseDir: this.config.baseDir });
 
     try {
       await this.connectionManager.connect(transport);

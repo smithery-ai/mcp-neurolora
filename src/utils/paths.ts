@@ -2,12 +2,17 @@ import { promises as fs } from 'fs';
 import os from 'os';
 import path from 'path';
 
-const APP_NAME = 'aindreyway-mcp-neurolora';
+const APP_NAME = 'mcp-neurolora';
+const DEV_SUFFIX = '-dev';
+
+// Development mode flag
+const isDev = process.env.NODE_ENV === 'development';
 
 /**
- * Get standard paths for file storage following OS conventions
+ * Get standard paths for file storage following MCP conventions
  */
 export function getAppPaths() {
+  const appName = isDev ? `${APP_NAME}${DEV_SUFFIX}` : APP_NAME;
   // Base paths
   const homeDir = os.homedir();
   const tempDir = os.tmpdir();
@@ -16,45 +21,43 @@ export function getAppPaths() {
   let dataDir: string;
   switch (process.platform) {
     case 'darwin':
-      // macOS: ~/Library/Application Support/aindreyway-mcp-neurolora
-      dataDir = path.join(homeDir, 'Library', 'Application Support', APP_NAME);
+      // macOS: ~/Library/Application Support/mcp-neurolora(-dev)
+      dataDir = path.join(homeDir, 'Library', 'Application Support', appName);
       break;
     case 'win32':
-      // Windows: %APPDATA%/aindreyway-mcp-neurolora
-      dataDir = path.join(
-        process.env.APPDATA || path.join(homeDir, 'AppData', 'Roaming'),
-        APP_NAME
-      );
+      // Windows: %APPDATA%/mcp-neurolora(-dev)
+      dataDir = path.join(process.env.APPDATA || path.join(homeDir, 'AppData', 'Roaming'), appName);
       break;
     default:
-      // Linux/Unix: ~/.local/share/aindreyway-mcp-neurolora
-      dataDir = path.join(homeDir, '.local', 'share', APP_NAME);
+      // Linux/Unix: ~/.local/share/mcp-neurolora(-dev)
+      dataDir = path.join(homeDir, '.local', 'share', appName);
   }
 
   // OS-specific log directory
   let logDir: string;
   switch (process.platform) {
     case 'darwin':
-      // macOS: ~/Library/Logs/aindreyway-mcp-neurolora
-      logDir = path.join(homeDir, 'Library', 'Logs', APP_NAME);
+      // macOS: ~/Library/Logs/mcp-neurolora(-dev)
+      logDir = path.join(homeDir, 'Library', 'Logs', appName);
       break;
     case 'win32':
-      // Windows: %LOCALAPPDATA%/aindreyway-mcp-neurolora/Logs
+      // Windows: %LOCALAPPDATA%/mcp-neurolora(-dev)/Logs
       logDir = path.join(
         process.env.LOCALAPPDATA || path.join(homeDir, 'AppData', 'Local'),
-        APP_NAME,
+        appName,
         'Logs'
       );
       break;
     default:
-      // Linux/Unix: ~/.local/share/aindreyway-mcp-neurolora/logs
+      // Linux/Unix: ~/.local/share/mcp-neurolora(-dev)/logs
       logDir = path.join(dataDir, 'logs');
   }
 
   // Temporary files directory (same for all OS)
-  const tempFilesDir = path.join(tempDir, APP_NAME, 'prompts');
+  const tempFilesDir = path.join(tempDir, appName, 'prompts');
 
-  // Analysis results directory (in data directory)
+  // Analysis directories
+  const promptsDir = path.join(dataDir, 'prompts');
   const analysisDir = path.join(dataDir, 'analysis');
 
   return {
@@ -64,23 +67,53 @@ export function getAppPaths() {
     dataDir, // App data directory
     logDir, // App logs directory
 
-    // Specific directories
-    tempFilesDir, // Temporary files (PROMPT_FULL_CODE_*.md)
-    analysisDir, // Analysis results (LAST_RESPONSE_*)
+    // Analysis directories
+    promptsDir, // Directory for code prompts
+    analysisDir, // Directory for analysis results
+
+    // Temporary files
+    tempFilesDir,
 
     // Helper functions
-    getPromptPath: (filename: string) => path.join(tempFilesDir, filename),
+    getPromptPath: (filename: string) => path.join(promptsDir, filename),
     getAnalysisPath: (filename: string) => path.join(analysisDir, filename),
     getLogPath: (filename: string) => path.join(logDir, filename),
   };
 }
 
 /**
- * Ensure all required directories exist
+ * Create development symlink for easier access
+ */
+export async function createDevSymlink() {
+  if (!isDev) return;
+
+  const paths = getAppPaths();
+  const symlinkPath = '.neurolora';
+
+  try {
+    // Remove existing symlink if it exists
+    try {
+      await fs.unlink(symlinkPath);
+    } catch (error) {
+      // Ignore error if symlink doesn't exist
+    }
+
+    // Create new symlink
+    await fs.symlink(paths.dataDir, symlinkPath, 'dir');
+    console.log(
+      `Created development symlink for easy access to analysis data: ${symlinkPath} -> ${paths.dataDir}`
+    );
+  } catch (error) {
+    console.error(`Failed to create development symlink: ${(error as Error).message}`);
+  }
+}
+
+/**
+ * Ensure all required directories exist and setup development environment
  */
 export async function ensureAppDirectories() {
   const paths = getAppPaths();
-  const dirsToCreate = [paths.tempFilesDir, paths.analysisDir, paths.logDir];
+  const dirsToCreate = [paths.tempFilesDir, paths.promptsDir, paths.analysisDir, paths.logDir];
 
   for (const dir of dirsToCreate) {
     try {
@@ -88,5 +121,10 @@ export async function ensureAppDirectories() {
     } catch (error) {
       throw new Error(`Failed to create directory ${dir}: ${(error as Error).message}`);
     }
+  }
+
+  // Create development symlink
+  if (isDev) {
+    await createDevSymlink();
   }
 }

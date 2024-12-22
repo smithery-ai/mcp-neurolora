@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 // Options for GitHub issues creator
 export interface GitHubIssuesOptions {
   githubToken: string;
@@ -6,7 +8,24 @@ export interface GitHubIssuesOptions {
   issueNumbers?: number[]; // номера issues для создания (если не указаны, создаются все)
 }
 
-// Schema for GitHub issues creator
+// Zod schema for validation
+const zodGitHubIssuesSchema = z
+  .object({
+    owner: z.string({
+      description: 'GitHub repository owner',
+    }),
+    repo: z.string({
+      description: 'GitHub repository name',
+    }),
+    issueNumbers: z
+      .array(z.number(), {
+        description: 'Issue numbers to create (optional, creates all issues if not specified)',
+      })
+      .optional(),
+  })
+  .strict();
+
+// Convert Zod schema to JSON Schema for MCP SDK
 export const githubIssuesSchema = {
   type: 'object',
   properties: {
@@ -29,6 +48,14 @@ export const githubIssuesSchema = {
   required: ['owner', 'repo'],
   additionalProperties: false,
 } as const;
+
+// Export type for TypeScript usage
+export type GitHubIssuesInput = z.infer<typeof zodGitHubIssuesSchema>;
+
+// Validation function using Zod
+export function validateGitHubIssuesInput(input: unknown): GitHubIssuesInput {
+  return zodGitHubIssuesSchema.parse(input);
+}
 
 // Error types
 export class GitHubError extends Error {

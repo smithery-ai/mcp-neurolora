@@ -1,0 +1,85 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build
+build/
+dist/
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage/
+tests/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+.tmp/
+FULL_CODE_*.md
+
+# Version control
+.git/
+.svn/
+.hg/
+
+# Cache
+.cache/
+__pycache__/
+*.pyc
+
+# Package files
+*.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Binary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.class
+*.o
+*.obj
+
+# Documentation
+docs/
+*.pdf
+*.doc
+*.docx
+
+# Config files
+*.config.js
+*.conf
+config.*
+.npmrc
+.yarnrc
+.boto
+
+# Security
+credentials/
+*.pem
+*.key
+*.cert
+*.crt

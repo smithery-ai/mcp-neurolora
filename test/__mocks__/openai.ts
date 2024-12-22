@@ -1,6 +1,20 @@
 import { jest } from '@jest/globals';
 
-const mockResponse = {
+interface ConfigType {
+  apiKey: string;
+}
+
+interface ChatCompletionResponse {
+  data: {
+    choices: Array<{
+      message: {
+        content: string;
+      };
+    }>;
+  };
+}
+
+const mockResponse: ChatCompletionResponse = {
   data: {
     choices: [
       {
@@ -12,13 +26,28 @@ const mockResponse = {
   }
 };
 
-export const Configuration = jest.fn();
-export const OpenAIApi = jest.fn().mockImplementation(() => ({
-  createChatCompletion: jest.fn().mockResolvedValue(mockResponse)
-}));
+interface MockApi {
+  createChatCompletion: () => Promise<ChatCompletionResponse>;
+}
 
-// Ensure the mock is properly typed
-(Configuration as jest.Mock).mockImplementation((config: { apiKey: string }) => config);
-(OpenAIApi as jest.Mock).mockImplementation(() => ({
-  createChatCompletion: jest.fn().mockResolvedValue(mockResponse)
-}));
+function createMockApi(): MockApi {
+  return {
+    createChatCompletion: () => Promise.resolve(mockResponse)
+  };
+}
+
+export class Configuration {
+  apiKey: string;
+
+  constructor(config: ConfigType) {
+    this.apiKey = config.apiKey;
+  }
+}
+
+export class OpenAIApi {
+  constructor(config: Configuration) {}
+
+  createChatCompletion(): Promise<ChatCompletionResponse> {
+    return Promise.resolve(mockResponse);
+  }
+}

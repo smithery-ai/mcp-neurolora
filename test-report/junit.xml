@@ -1,43 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="34" failures="6" errors="0" time="4.572">
-  <testsuite name="Test Utils" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:06:14" time="2.623" tests="3">
-    <testcase classname="Test Utils" name="should create and cleanup test context" time="0.031">
+<testsuites name="jest tests" tests="14" failures="0" errors="0" time="6.002">
+  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:48:06" time="4.865" tests="11">
+    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.01">
     </testcase>
-    <testcase classname="Test Utils" name="should create temporary file" time="0.008">
-    </testcase>
-    <testcase classname="Test Utils" name="should add and execute cleanup functions" time="0.016">
-    </testcase>
-  </testsuite>
-  <testsuite name="Code Analyzer Tool" errors="0" failures="1" skipped="0" timestamp="2024-12-22T15:06:14" time="2.712" tests="1">
-    <testcase classname="Code Analyzer Tool" name="should analyze code-collector directory" time="0.004">
-      <failure>Error: Configuration error:
-
-Could not locate module ../build/tools/code-collector/handler.js mapped as:
-$1.
-
-Please check your configuration for these entries:
-{
-  &quot;moduleNameMapper&quot;: {
-    &quot;/^(\.{1,2}\/.*)\.js$/&quot;: &quot;$1&quot;
-  },
-  &quot;resolver&quot;: undefined
-}
-    at createNoMappedModuleFoundError (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:759:17)
-    at Resolver.resolveStubModuleNameAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:727:19)
-    at Resolver.getMockModuleAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:493:26)
-    at Resolver._isModuleResolvedAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:638:8)
-    at Resolver._getAbsolutePathAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:596:30)
-    at Resolver.getModuleIDAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:558:26)
-    at Runtime._shouldMockModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:1776:22)
-    at Runtime.resolveModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:667:7)
-    at importModuleDynamically (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:524:30)
-    at importModuleDynamicallyWrapper (node:internal/vm/module:436:15)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:06:16" time="0.132" tests="11">
-    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.004">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.002">
+    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.003">
     </testcase>
     <testcase classname="Path Validator › isPathAllowed" name="should handle empty or invalid paths" time="0.001">
     </testcase>
@@ -45,87 +11,25 @@ Please check your configuration for these entries:
     </testcase>
     <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0.001">
     </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
+    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.002">
     </testcase>
     <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.017">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.023">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.001">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.002">
     </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.002">
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.003">
     </testcase>
     <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Code Collector Tool" errors="0" failures="4" skipped="0" timestamp="2024-12-22T15:06:14" time="2.79" tests="4">
-    <testcase classname="Code Collector Tool › File Collection" name="should collect single TypeScript file" time="0.018">
-      <failure>Error: expect(received).toBeDefined()
-
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:40:23)</failure>
+  <testsuite name="Test Utils" errors="0" failures="0" skipped="0" timestamp="2024-12-22T15:48:06" time="5.297" tests="3">
+    <testcase classname="Test Utils" name="should create and cleanup test context" time="0.02">
     </testcase>
-    <testcase classname="Code Collector Tool › File Collection" name="should collect directory excluding .git" time="0.001">
-      <failure>Error: expect(received).toBeDefined()
-
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:51:23)</failure>
+    <testcase classname="Test Utils" name="should create temporary file" time="0.003">
     </testcase>
-    <testcase classname="Code Collector Tool › File Collection" name="should collect multiple files" time="0.003">
-      <failure>Error: expect(received).toBeDefined()
-
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:68:25)</failure>
-    </testcase>
-    <testcase classname="Code Collector Tool › File Collection" name="should respect ignore patterns" time="0.002">
-      <failure>Error: expect(received).toBeDefined()
-
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:85:23)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="MCP Tools Integration Tests" errors="0" failures="1" skipped="0" timestamp="2024-12-22T15:06:14" time="3.81" tests="15">
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code has required properties" time="0.007">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler works with minimal valid input" time="0.002">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler properly handles errors" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handles multiple files" time="0.019">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers has required properties" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler works with minimal valid input" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler properly handles errors" time="0">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code has required properties" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler works with minimal valid input" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler properly handles errors" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code provides detailed analysis" time="0.002">
-      <failure>Error: expect(received).toContain(expected) // indexOf
-
-Expected substring: &quot;Analysis&quot;
-Received string:    &quot;Server is not connected. Please wait for connection to be established or try reconnecting.&quot;
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:142:42)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues has required properties" time="0">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler works with minimal valid input" time="0.001">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler properly handles errors" time="0">
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests" name="collect_code and analyze_code work together" time="0.001">
-    </testcase>
-    <testcase classname="" name="Test execution failure: could be caused by test hooks like &apos;afterAll&apos;." time="0">
-      <failure>{&quot;message&quot;:&quot;&quot;,&quot;stack&quot;:&quot;Error: Connection already in progress\n    at ConnectionManager.connect (/home/ubuntu/repos/mcp-neurolora/src/server.ts:120:13)\n    at createTestServer (/home/ubuntu/repos/mcp-neurolora/test/test-utils.ts:50:23)\n    at initializeToolHandler (/home/ubuntu/repos/mcp-neurolora/test/test-utils.ts:73:33)\n    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:166:30)\n    at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)\n    at new Promise (&lt;anonymous&gt;)\n    at callAsyncCircusFn (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:231:10)\n    at _callCircusTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:316:40)\n    at _runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:252:3)\n    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:126:9)\n    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:121:9)\n    at run (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:71:3)\n    at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)\n    at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)\n    at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)\n    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)\n    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)&quot;}</failure>
+    <testcase classname="Test Utils" name="should add and execute cleanup functions" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

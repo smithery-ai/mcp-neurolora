@@ -1,92 +1,74 @@
-<html><head><meta charset="utf-8"/><title>Test Report</title><link rel="stylesheet" type="text/css" href="/home/ubuntu/repos/mcp-neurolora/node_modules/jest-html-reporter/style/defaultTheme.css"/></head><body><div class="jesthtml-content"><header><h1 id="title">Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2024-12-22 15:06:14</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (7)</div><div class="summary-passed ">2 passed</div><div class="summary-failed ">5 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (34)</div><div class="summary-passed ">28 passed</div><div class="summary-failed ">6 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/test-utils.test.ts</div><div class="suite-time">2.623s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Test Utils</div><div class="test-title">should create and cleanup test context</div><div class="test-status">passed</div><div class="test-duration">0.031s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Test Utils</div><div class="test-title">should create temporary file</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Test Utils</div><div class="test-title">should add and execute cleanup functions</div><div class="test-status">passed</div><div class="test-duration">0.016s</div></div></div></div></div><div id="suite-2" class="suite-container"><input id="collapsible-1" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-1"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/test-analyzer.test.js</div><div class="suite-time">2.712s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="test-info"><div class="test-suitename">Code Analyzer Tool</div><div class="test-title">should analyze code-collector directory</div><div class="test-status">failed</div><div class="test-duration">0.004s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: Configuration error:
+<html><head><meta charset="utf-8"/><title>Test Report</title><link rel="stylesheet" type="text/css" href="/home/ubuntu/repos/mcp-neurolora/node_modules/jest-html-reporter/style/defaultTheme.css"/></head><body><div class="jesthtml-content"><header><h1 id="title">Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2024-12-22 15:48:06</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (7)</div><div class="summary-passed ">2 passed</div><div class="summary-failed ">5 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (14)</div><div class="summary-passed ">14 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/unit/utils/path-validator.test.ts</div><div class="suite-time">4.865s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should allow paths within project directory</div><div class="test-status">passed</div><div class="test-duration">0.01s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should not allow paths outside project directory</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle empty or invalid paths</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle paths with invalid characters</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle paths with URL-like characters</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle error cases gracefully</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should normalize valid paths</div><div class="test-status">passed</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should throw error for invalid paths</div><div class="test-status">passed</div><div class="test-duration">0.023s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should throw error for paths with URL characters</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should throw error for paths outside project directory</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should handle error cases with appropriate messages</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-2" class="suite-container"><input id="collapsible-1" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-1"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
 
-Could not locate module ../build/tools/code-collector/handler.js mapped as:
-$1.
+    Jest encountered an unexpected token
 
-Please check your configuration for these entries:
-{
-  "moduleNameMapper": {
-    "/^(\.{1,2}\/.*)\.js$/": "$1"
-  },
-  "resolver": undefined
-}
-    at createNoMappedModuleFoundError (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:759:17)
-    at Resolver.resolveStubModuleNameAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:727:19)
-    at Resolver.getMockModuleAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:493:26)
-    at Resolver._isModuleResolvedAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:638:8)
-    at Resolver._getAbsolutePathAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:596:30)
-    at Resolver.getModuleIDAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:558:26)
-    at Runtime._shouldMockModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:1776:22)
-    at Runtime.resolveModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:667:7)
-    at importModuleDynamically (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:524:30)
-    at importModuleDynamicallyWrapper (node:internal/vm/module:436:15)</pre></div></div></div></div><div id="suite-3" class="suite-container"><input id="collapsible-2" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-2"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/unit/utils/path-validator.test.ts</div><div class="suite-time">0.132s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should allow paths within project directory</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should not allow paths outside project directory</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle empty or invalid paths</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle paths with invalid characters</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle paths with URL-like characters</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; isPathAllowed</div><div class="test-title">should handle error cases gracefully</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should normalize valid paths</div><div class="test-status">passed</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should throw error for invalid paths</div><div class="test-status">passed</div><div class="test-duration">0.017s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should throw error for paths with URL characters</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should throw error for paths outside project directory</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Path Validator &gt; validateAndNormalizePath</div><div class="test-title">should handle error cases with appropriate messages</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-4" class="suite-container"><input id="collapsible-3" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-3"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js</div><div class="suite-time">2.79s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="test-info"><div class="test-suitename">Code Collector Tool &gt; File Collection</div><div class="test-title">should collect single TypeScript file</div><div class="test-status">failed</div><div class="test-duration">0.018s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBeDefined()
+    Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.
 
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:40:23)</pre></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">Code Collector Tool &gt; File Collection</div><div class="test-title">should collect directory excluding .git</div><div class="test-status">failed</div><div class="test-duration">0.001s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBeDefined()
+    Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
 
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:51:23)</pre></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">Code Collector Tool &gt; File Collection</div><div class="test-title">should collect multiple files</div><div class="test-status">failed</div><div class="test-duration">0.003s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBeDefined()
+    By default "node_modules" folder is ignored by transformers.
 
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:68:25)</pre></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">Code Collector Tool &gt; File Collection</div><div class="test-title">should respect ignore patterns</div><div class="test-status">failed</div><div class="test-duration">0.002s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBeDefined()
+    Here's what you can do:
+     • If you are trying to use ECMAScript Modules, see https://jestjs.io/docs/ecmascript-modules for how to enable it.
+     • If you are trying to use TypeScript, see https://jestjs.io/docs/getting-started#using-typescript
+     • To have some of your "node_modules" files transformed, you can specify a custom "transformIgnorePatterns" in your config.
+     • If you need a custom transformation specify a "transform" option in your config.
+     • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the "moduleNameMapper" config option.
 
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:85:23)</pre></div></div></div></div><div id="suite-5" class="suite-container"><input id="collapsible-4" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-4"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
+    You'll find more details and examples of these config options in the docs:
+    https://jestjs.io/docs/configuration
+    For information about custom transformations, see:
+    https://jestjs.io/docs/code-transformation
 
-    Configuration error:
-    
-    Could not locate module ../../../src/utils/progress.js mapped as:
-    $1.
-    
-    Please check your configuration for these entries:
-    {
-      "moduleNameMapper": {
-        "/^(\.{1,2}\/.*)\.js$/": "$1"
-      },
-      "resolver": undefined
-    }
+    Details:
 
-      3 |
-      4 | // Mock progress module
-    &gt; 5 | jest.mock('../../../src/utils/progress.js', () =&gt; {
-        |      ^
-      6 |   const showProgress = jest.fn();
-      7 |   const clearProgress = jest.fn();
-      8 |   return {
+    /home/ubuntu/repos/mcp-neurolora/node_modules/chalk/source/index.js:1
+    ({"Object.&lt;anonymous&gt;":function(module,exports,require,__dirname,__filename,jest){import ansiStyles from '#ansi-styles';
+                                                                                      ^^^^^^
 
-      at createNoMappedModuleFoundError (node_modules/jest-resolve/build/resolver.js:759:17)
-      at test/unit/utils/progress-tracker.test.ts:5:6
-</pre></div></div></div></div><div id="suite-6" class="suite-container"><input id="collapsible-5" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-5"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/unit/tools/code-collector.test.ts</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
+    SyntaxError: Cannot use import statement outside a module
 
-    Configuration error:
-    
-    Could not locate module ../../../src/utils/progress-tracker.js mapped as:
-    $1.
-    
-    Please check your configuration for these entries:
-    {
-      "moduleNameMapper": {
-        "/^(\.{1,2}\/.*)\.js$/": "$1"
-      },
-      "resolver": undefined
-    }
+    &gt; 1 | import chalk from 'chalk';
+        | ^
+      2 | import path from 'path';
+      3 | import { getRuntimeConfig } from '../runtime-modes.js';
+      4 |
 
+      at Runtime.createScriptFromCode (node_modules/jest-runtime/build/index.js:1505:14)
+      at Object.require (src/utils/logger.ts:1:1)
+      at Object.require (src/utils/progress-tracker.ts:2:1)
+      at Object.&lt;anonymous&gt; (test/unit/utils/progress-tracker.test.ts:1:1)
+</pre></div></div></div></div><div id="suite-3" class="suite-container"><input id="collapsible-2" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-2"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/unit/tools/code-collector.test.ts</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
+
+    ReferenceError: Cannot access 'external_services_mock_1' before initialization
+
+       8 | import { TestContext } from '../../helpers/test-utils';
        9 |
-      10 | jest.mock('fs/promises', () =&gt; mockFs.promises);
-    &gt; 11 | jest.mock('../../../src/utils/progress-tracker.js', () =&gt; ({
-         |      ^
+    &gt; 10 | jest.mock('fs/promises', () =&gt; mockFs.promises);
+         |                                       ^
+      11 | jest.mock('../../../src/utils/progress-tracker.js', () =&gt; ({
       12 |   ProgressTracker: jest.fn().mockImplementation(() =&gt; mockProgressTracker),
       13 | }));
-      14 |
 
-      at createNoMappedModuleFoundError (node_modules/jest-resolve/build/resolver.js:759:17)
-      at test/unit/tools/code-collector.test.ts:11:6
-</pre></div></div></div></div><div id="suite-7" class="suite-container"><input id="collapsible-6" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-6"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js</div><div class="suite-time">3.81s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: collect_code</div><div class="test-title">collect_code has required properties</div><div class="test-status">passed</div><div class="test-duration">0.007s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: collect_code</div><div class="test-title">collect_code handler works with minimal valid input</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: collect_code</div><div class="test-title">collect_code handler properly handles errors</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: collect_code</div><div class="test-title">collect_code handles multiple files</div><div class="test-status">passed</div><div class="test-duration">0.019s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: install_base_servers</div><div class="test-title">install_base_servers has required properties</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: install_base_servers</div><div class="test-title">install_base_servers handler works with minimal valid input</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: install_base_servers</div><div class="test-title">install_base_servers handler properly handles errors</div><div class="test-status">passed</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: analyze_code</div><div class="test-title">analyze_code has required properties</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: analyze_code</div><div class="test-title">analyze_code handler works with minimal valid input</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: analyze_code</div><div class="test-title">analyze_code handler properly handles errors</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: analyze_code</div><div class="test-title">analyze_code provides detailed analysis</div><div class="test-status">failed</div><div class="test-duration">0.002s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toContain(expected) // indexOf
+      at test/unit/tools/code-collector.test.ts:10:39
+      at Object.require (src/tools/code-collector/handler.ts:1:1)
+      at Object.&lt;anonymous&gt; (test/unit/tools/code-collector.test.ts:1:1)
+</pre></div></div></div></div><div id="suite-4" class="suite-container"><input id="collapsible-3" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-3"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
 
-Expected substring: "Analysis"
-Received string:    "Server is not connected. Please wait for connection to be established or try reconnecting."
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:142:42)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: create_github_issues</div><div class="test-title">create_github_issues has required properties</div><div class="test-status">passed</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: create_github_issues</div><div class="test-title">create_github_issues handler works with minimal valid input</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests &gt; Tool: create_github_issues</div><div class="test-title">create_github_issues handler properly handles errors</div><div class="test-status">passed</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">MCP Tools Integration Tests</div><div class="test-title">collect_code and analyze_code work together</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div></div></body></html>
+    src/prompts/index.ts:7:34 - error TS1343: The 'import.meta' meta-property is only allowed when the '--module' option is 'es2020', 'es2022', 'esnext', 'system', 'node16', or 'nodenext'.
+
+    7 const __filename = fileURLToPath(import.meta.url);
+                                       ~~~~~~~~~~~
+</pre></div></div></div></div><div id="suite-5" class="suite-container"><input id="collapsible-4" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-4"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/test-utils.test.ts</div><div class="suite-time warn">5.297s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Test Utils</div><div class="test-title">should create and cleanup test context</div><div class="test-status">passed</div><div class="test-duration">0.02s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Test Utils</div><div class="test-title">should create temporary file</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Test Utils</div><div class="test-title">should add and execute cleanup functions</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-6" class="suite-container"><input id="collapsible-5" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-5"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/test-analyzer.test.js</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
+
+    src/prompts/index.ts:7:34 - error TS1343: The 'import.meta' meta-property is only allowed when the '--module' option is 'es2020', 'es2022', 'esnext', 'system', 'node16', or 'nodenext'.
+
+    7 const __filename = fileURLToPath(import.meta.url);
+                                       ~~~~~~~~~~~
+</pre></div></div></div></div><div id="suite-7" class="suite-container"><input id="collapsible-6" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-6"><div class="suite-info"><div class="suite-path">/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js</div><div class="suite-time">0s</div></div></label><div class="suite-tests"><div class="test-result failed"><div class="failureMessages suiteFailure"> <pre class="failureMsg">  ● Test suite failed to run
+
+    src/prompts/index.ts:7:34 - error TS1343: The 'import.meta' meta-property is only allowed when the '--module' option is 'es2020', 'es2022', 'esnext', 'system', 'node16', or 'nodenext'.
+
+    7 const __filename = fileURLToPath(import.meta.url);
+                                       ~~~~~~~~~~~
+</pre></div></div></div></div></div></body></html>

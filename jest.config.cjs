@@ -3,7 +3,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   transformIgnorePatterns: [
-    'node_modules/(?!(@modelcontextprotocol)/)'
+    'node_modules/(?!(@modelcontextprotocol|chalk)/)'
   ],
   transform: {
     '^.+\\.tsx?$': [
@@ -13,7 +13,8 @@ module.exports = {
         tsconfig: 'tsconfig.json'
       }
     ],
-    '^.+\\.jsx?$': ['babel-jest', { configFile: './babel.config.cjs' }]
+    '^.+\\.jsx?$': ['babel-jest', { configFile: './babel.config.cjs' }],
+    '^.+\\.m?js$': ['babel-jest', { configFile: './babel.config.cjs' }]
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',

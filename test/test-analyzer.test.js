@@ -1,4 +1,4 @@
-import { handleAnalyzeCode } from '../build/tools/code-analyzer/handler.js';
+import { handleAnalyzeCode } from '../src/tools/code-analyzer/handler.js';
 
 function logMemory(label) {
   const used = process.memoryUsage();
@@ -14,9 +14,7 @@ describe('Code Analyzer Tool', () => {
 
   beforeAll(async () => {
     // Load MCP config path from environment or use default
-    const configPath =
-      process.env.MCP_CONFIG_PATH ||
-      `${process.env.HOME}/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`;
+    const configPath = process.env.MCP_CONFIG_PATH || path.join(process.cwd(), 'test', '__mocks__', 'mcp-config.json');
     const { readFile } = await import('fs/promises');
     const mcpConfig = JSON.parse(await readFile(configPath, 'utf8'));
     const mcpEnv = mcpConfig?.mcpServers?.['local-mcp-neurolora']?.env;

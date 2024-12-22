@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "local-mcp-neurolora": {
+      "env": {
+        "OPENAI_API_KEY": "test-key",
+        "MCP_ENV": "test",
+        "NODE_ENV": "test"
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { handleCollectCode } from '../build/tools/code-collector/handler.js';
-import { handleAnalyzeCode } from '../build/tools/code-analyzer/handler.js';
+import { handleCollectCode } from '../src/tools/code-collector/handler.js';
+import { handleAnalyzeCode } from '../src/tools/code-analyzer/handler.js';
 import path from 'path';
 
 function logMemory(label) {

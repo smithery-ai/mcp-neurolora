@@ -1,7 +1,7 @@
-import { tools } from '@src/tools/index';
-import { logger } from '@src/utils/logger';
+import { tools } from '../src/tools/index.js';
+import { logger } from '../src/utils/logger.js';
 import path from 'path';
-import { initializeToolHandler, createTestFile } from './test-utils';
+import { initializeToolHandler, createTestFile } from './test-utils.js';
 import fs from 'fs/promises';
 import { describe, test, expect, beforeAll, afterAll, jest } from '@jest/globals';
 
@@ -17,6 +17,13 @@ describe('MCP Tools Integration Tests', () => {
     // Create test directory and file
     await fs.mkdir(testDir, { recursive: true });
     await fs.writeFile(path.join(testDir, 'test.js'), createTestFile());
+    
+    // Wait for connection to be established
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Reset connection state between tests
+    const { ConnectionManager } = await import('../src/server.js');
+    ConnectionManager.resetInstance();
   }, 30000);
 
   afterAll(async () => {

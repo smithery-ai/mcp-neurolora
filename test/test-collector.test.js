@@ -1,4 +1,4 @@
-import { handleCollectCode } from '../build/tools/code-collector/handler.js';
+import { handleCollectCode } from '../src/tools/code-collector/handler.js';
 import fs from 'fs/promises';
 import path from 'path';
 

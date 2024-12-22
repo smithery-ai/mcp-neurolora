@@ -110,6 +110,11 @@ export class ConnectionManager {
     return ConnectionManager.instance;
   }
 
+  public static resetInstance(): void {
+    ConnectionManager.instance = null;
+    ConnectionManager.currentTransport = null;
+  }
+
   public async connect(transport: any): Promise<void> {
     if (this.connectionState === 'connecting') {
       throw new Error('Connection already in progress');

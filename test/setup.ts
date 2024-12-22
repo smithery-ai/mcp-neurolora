@@ -6,23 +6,27 @@ import { jest } from '@jest/globals';
 // Setup environment variables for tests
 process.env.NODE_ENV = 'test';
 process.env.MCP_ENV = 'test';
+process.env.CI = 'true'; // Enable CI mode for tests
 
-// Check required environment variables
-const requiredEnvVars = {
-  OPENAI_API_KEY: 'OpenAI API key is required for tests. Set OPENAI_API_KEY or mock the OpenAI API.',
-  MCP_CONFIG_PATH: 'MCP config path is required for tests. Set MCP_CONFIG_PATH or provide a test config.',
-};
+// Load mock config
+import path from 'path';
+import fs from 'fs/promises';
 
-// Only check env vars if we're not in CI environment (allow CI to handle its own env vars)
-if (process.env.CI !== 'true') {
-  Object.entries(requiredEnvVars).forEach(([key, message]) => {
-    if (!process.env[key]) {
-      console.error(`Error: ${message}`);
-      console.error('To skip this check in CI, set CI=true');
-      process.exit(1);
+async function loadMockConfig() {
+  const configPath = process.env.MCP_CONFIG_PATH || path.join(process.cwd(), 'test', '__mocks__', 'mcp-config.json');
+  try {
+    const mcpConfig = JSON.parse(await fs.readFile(configPath, 'utf8'));
+    const mcpEnv = mcpConfig?.mcpServers?.['local-mcp-neurolora']?.env;
+    if (mcpEnv) {
+      Object.assign(process.env, mcpEnv);
     }
-  });
+  } catch (error) {
+    console.warn('Failed to load mock config:', error);
+  }
 }
+
+// Load mock config before running tests
+loadMockConfig();
 
 // Mock console methods to reduce noise in tests
 global.console = {

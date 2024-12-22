@@ -22,7 +22,16 @@ export default {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     '^@src/(.*)$': '<rootDir>/src/$1',
     '^../build/(.*)$': '<rootDir>/src/$1',
+    '^../src/(.*)$': '<rootDir>/src/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@test/(.*)$': '<rootDir>/test/$1',
+    '^@/(.*)$': '<rootDir>/$1',
+    '^@modelcontextprotocol/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/$1'
   },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(@modelcontextprotocol)/)'
+  ],
   extensionsToTreatAsEsm: ['.ts'],
   testTimeout: 30000,
 

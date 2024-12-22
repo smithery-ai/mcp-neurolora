@@ -4,7 +4,7 @@ import {
   mockProgressTracker,
   resetMocks,
   setupDefaultMocks,
-} from '../../__mocks__/external-services';
+} from '../../__mocks__/external-services.mock';
 import { TestContext } from '../../helpers/test-utils';
 
 jest.mock('fs/promises', () => mockFs.promises);
@@ -36,13 +36,13 @@ describe('Code Collector Tool', () => {
       const outputDir = '/test/output';
 
       mockFs.promises.readdir.mockResolvedValueOnce(['file1.ts', 'file2.ts']);
-      mockFs.promises.stat.mockImplementation(path =>
+      mockFs.promises.stat.mockImplementation((path: string) =>
         Promise.resolve({
           isFile: () => path.endsWith('.ts'),
           isDirectory: () => !path.endsWith('.ts'),
         })
       );
-      mockFs.promises.readFile.mockImplementation(path => {
+      mockFs.promises.readFile.mockImplementation((path: string) => {
         if (path.endsWith('file1.ts')) {
           return Promise.resolve('const x = 1;');
         }
@@ -129,7 +129,7 @@ describe('Code Collector Tool', () => {
         .mockResolvedValueOnce(['dir1', 'file1.ts'])
         .mockResolvedValueOnce(['file2.ts', 'file3.ts']);
 
-      mockFs.promises.stat.mockImplementation(path =>
+      mockFs.promises.stat.mockImplementation((path: string) =>
         Promise.resolve({
           isFile: () => path.endsWith('.ts'),
           isDirectory: () => path.includes('dir1'),

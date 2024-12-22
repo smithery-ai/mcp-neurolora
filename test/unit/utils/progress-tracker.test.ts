@@ -2,10 +2,15 @@ import { ProgressTracker } from '../../../src/utils/progress-tracker';
 import { clearProgress, showProgress } from '../../../src/utils/progress';
 
 // Mock progress module
-jest.mock('../../../src/utils/progress', () => ({
-  showProgress: jest.fn(),
-  clearProgress: jest.fn(),
-}), { virtual: true });
+jest.mock('../../../src/utils/progress', () => {
+  const showProgress = jest.fn();
+  const clearProgress = jest.fn();
+  return {
+    showProgress,
+    clearProgress,
+    __esModule: true
+  };
+});
 
 describe('Progress Tracker', () => {
   let tracker: ProgressTracker;

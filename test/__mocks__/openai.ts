@@ -26,17 +26,7 @@ const mockResponse: ChatCompletionResponse = {
   }
 };
 
-interface MockApi {
-  createChatCompletion: () => Promise<ChatCompletionResponse>;
-}
-
-function createMockApi(): MockApi {
-  return {
-    createChatCompletion: () => Promise.resolve(mockResponse)
-  };
-}
-
-export class Configuration {
+class Configuration {
   apiKey: string;
 
   constructor(config: ConfigType) {
@@ -44,10 +34,17 @@ export class Configuration {
   }
 }
 
-export class OpenAIApi {
+class OpenAIApi {
   constructor(config: Configuration) {}
 
   createChatCompletion(): Promise<ChatCompletionResponse> {
     return Promise.resolve(mockResponse);
   }
 }
+
+const openai = {
+  Configuration,
+  OpenAIApi
+};
+
+export default openai;

@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="48" failures="34" errors="0" time="2.034">
-  <testsuite name="Progress Tracker" errors="0" failures="14" skipped="0" timestamp="2024-12-22T14:42:45" time="0.601" tests="14">
+<testsuites name="jest tests" tests="26" failures="15" errors="0" time="1.928">
+  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T14:45:40" time="0.824" tests="11">
+    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.006">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.002">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle empty or invalid paths" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with invalid characters" time="0">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.011">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.001">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.003">
+    </testcase>
+    <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Progress Tracker" errors="0" failures="14" skipped="0" timestamp="2024-12-22T14:45:40" time="1.085" tests="14">
     <testcase classname="Progress Tracker › Basic Progress Tracking" name="should initialize with total steps" time="0.005">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
@@ -58,7 +82,7 @@
     at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
     at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should stop progress tracking" time="0">
+    <testcase classname="Progress Tracker › Basic Progress Tracking" name="should stop progress tracking" time="0.001">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -77,7 +101,7 @@
     at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
     at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Options Handling" name="should respect custom width option" time="0">
+    <testcase classname="Progress Tracker › Options Handling" name="should respect custom width option" time="0.001">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -115,7 +139,7 @@
     at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
     at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
     </testcase>
-    <testcase classname="Progress Tracker › Edge Cases" name="should handle zero total steps" time="0.001">
+    <testcase classname="Progress Tracker › Edge Cases" name="should handle zero total steps" time="0">
       <failure>TypeError: showProgress.mockClear is not a function
     at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/unit/utils/progress-tracker.test.ts:15:33)
     at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
@@ -268,146 +292,28 @@
     at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="Path Validator" errors="0" failures="0" skipped="0" timestamp="2024-12-22T14:42:46" time="0.116" tests="11">
-    <testcase classname="Path Validator › isPathAllowed" name="should allow paths within project directory" time="0.003">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should not allow paths outside project directory" time="0.002">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle empty or invalid paths" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with invalid characters" time="0">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle paths with URL-like characters" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › isPathAllowed" name="should handle error cases gracefully" time="0.001">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should normalize valid paths" time="0">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for invalid paths" time="0.012">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths with URL characters" time="0.002">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should throw error for paths outside project directory" time="0.009">
-    </testcase>
-    <testcase classname="Path Validator › validateAndNormalizePath" name="should handle error cases with appropriate messages" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Code Analyzer Tool" errors="0" failures="1" skipped="0" timestamp="2024-12-22T14:42:45" time="0.7" tests="1">
-    <testcase classname="Code Analyzer Tool" name="should analyze code-collector directory" time="0.003">
-      <failure>ReferenceError: path is not defined
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-analyzer.test.js:17:55)
-    at Promise.then.completed (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusHook (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:281:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:95:7)
-    at _runTestsForDescribeBlock (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:121:9)
-    at run (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="Code Collector Tool" errors="0" failures="4" skipped="0" timestamp="2024-12-22T14:42:45" time="0.748" tests="4">
-    <testcase classname="Code Collector Tool › File Collection" name="should collect single TypeScript file" time="0.023">
-      <failure>Error: expect(received).toBeDefined()
+  <testsuite name="Code Analyzer Tool" errors="0" failures="1" skipped="0" timestamp="2024-12-22T14:45:40" time="1.625" tests="1">
+    <testcase classname="Code Analyzer Tool" name="should analyze code-collector directory" time="0.004">
+      <failure>Error: Configuration error:
 
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:40:23)</failure>
-    </testcase>
-    <testcase classname="Code Collector Tool › File Collection" name="should collect directory excluding .git" time="0.002">
-      <failure>Error: expect(received).toBeDefined()
+Could not locate module @modelcontextprotocol/sdk/server/index.js mapped as:
+/home/ubuntu/repos/mcp-neurolora/node_modules/@modelcontextprotocol/$1.
 
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:51:23)</failure>
-    </testcase>
-    <testcase classname="Code Collector Tool › File Collection" name="should collect multiple files" time="0.001">
-      <failure>Error: ENOENT: no such file or directory, open &apos;/home/ubuntu/repos/mcp-neurolora/test/sample/project-structure/src/utils.ts&apos;
-    at open (node:internal/fs/promises:638:25)
-    at Object.writeFile (node:internal/fs/promises:1208:14)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:60:7)</failure>
-    </testcase>
-    <testcase classname="Code Collector Tool › File Collection" name="should respect ignore patterns" time="0.001">
-      <failure>Error: expect(received).toBeDefined()
-
-Received: undefined
-    at getCollectedFileContent (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:15:27)
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/test-collector.test.js:85:23)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Utils" errors="0" failures="0" skipped="0" timestamp="2024-12-22T14:42:46" time="0.115" tests="3">
-    <testcase classname="Test Utils" name="should create and cleanup test context" time="0.006">
-    </testcase>
-    <testcase classname="Test Utils" name="should create temporary file" time="0.003">
-    </testcase>
-    <testcase classname="Test Utils" name="should add and execute cleanup functions" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="MCP Tools Integration Tests" errors="0" failures="15" skipped="0" timestamp="2024-12-22T14:42:45" time="1.761" tests="15">
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code has required properties" time="0.004">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler works with minimal valid input" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handler properly handles errors" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: collect_code" name="collect_code handles multiple files" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers has required properties" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler works with minimal valid input" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: install_base_servers" name="install_base_servers handler properly handles errors" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code has required properties" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler works with minimal valid input" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code handler properly handles errors" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: analyze_code" name="analyze_code provides detailed analysis" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues has required properties" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler works with minimal valid input" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests › Tool: create_github_issues" name="create_github_issues handler properly handles errors" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
-    </testcase>
-    <testcase classname="MCP Tools Integration Tests" name="collect_code and analyze_code work together" time="0">
-      <failure>TypeError: ConnectionManager.resetInstance is not a function
-    at Object.&lt;anonymous&gt; (/home/ubuntu/repos/mcp-neurolora/test/tools-integration.test.js:26:23)</failure>
+Please check your configuration for these entries:
+{
+  &quot;moduleNameMapper&quot;: {
+    &quot;/^@modelcontextprotocol\/(.*)$/&quot;: &quot;/home/ubuntu/repos/mcp-neurolora/node_modules/@modelcontextprotocol/$1&quot;
+  },
+  &quot;resolver&quot;: undefined
+}
+    at createNoMappedModuleFoundError (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:759:17)
+    at Resolver.resolveStubModuleNameAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:727:19)
+    at Resolver.getMockModuleAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:493:26)
+    at Resolver._isModuleResolvedAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:638:8)
+    at Resolver._getAbsolutePathAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:596:30)
+    at Resolver.getModuleIDAsync (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-resolve/build/resolver.js:558:26)
+    at Runtime._shouldMockModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:1776:22)
+    at Runtime.resolveModule (/home/ubuntu/repos/mcp-neurolora/node_modules/jest-runtime/build/index.js:667:7)</failure>
     </testcase>
   </testsuite>
 </testsuites>

@@ -28,10 +28,6 @@ export default {
     '^@/(.*)$': '<rootDir>/$1',
     '^@modelcontextprotocol/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/$1'
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(@modelcontextprotocol)/)'
-  ],
   extensionsToTreatAsEsm: ['.ts'],
   testTimeout: 30000,
 

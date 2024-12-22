@@ -1,4 +1,9 @@
 import { handleAnalyzeCode } from '../src/tools/code-analyzer/handler.js';
+import path from 'path';
+import { ConnectionManager } from '../src/server.js';
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import fs from 'fs/promises';
 
 function logMemory(label) {
   const used = process.memoryUsage();
@@ -15,17 +20,11 @@ describe('Code Analyzer Tool', () => {
   beforeAll(async () => {
     // Load MCP config path from environment or use default
     const configPath = process.env.MCP_CONFIG_PATH || path.join(process.cwd(), 'test', '__mocks__', 'mcp-config.json');
-    const { readFile } = await import('fs/promises');
-    const mcpConfig = JSON.parse(await readFile(configPath, 'utf8'));
+    const mcpConfig = JSON.parse(await fs.readFile(configPath, 'utf8'));
     const mcpEnv = mcpConfig?.mcpServers?.['local-mcp-neurolora']?.env;
     if (mcpEnv) {
       Object.assign(process.env, mcpEnv);
     }
-
-    // Инициализируем connectionManager
-    const { ConnectionManager } = await import('../src/server.js');
-    const { Server } = await import('@modelcontextprotocol/sdk/server/index.js');
-    const { StdioServerTransport } = await import('@modelcontextprotocol/sdk/server/stdio.js');
 
     const server = new Server({
       name: 'test-server',

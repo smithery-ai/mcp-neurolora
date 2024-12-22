@@ -3,33 +3,43 @@ import path from 'path';
 import fs from 'fs/promises';
 
 // Mock MCP SDK modules
-// Simple mock implementations
-const mockConnect = jest.fn().mockImplementation(() => Promise.resolve());
+// Create basic mock implementations
+const mockConnect = jest.fn(async () => Promise.resolve());
 
-const mockServer = {
-  connect: mockConnect
-};
+// Create mock classes
+class Server {
+  constructor(config: { name: string; version: string }) {
+    // Config stored if needed
+  }
 
-const mockTransport = {};
+  async connect(transport: any): Promise<void> {
+    return mockConnect();
+  }
+}
 
-// Create module mocks
+class StdioServerTransport {
+  constructor() {
+    // Transport initialization if needed
+  }
+}
+
+// Create module mocks with constructor functions
 const mockServerModule = {
-  Server: jest.fn().mockImplementation(() => mockServer),
+  Server,
   __esModule: true
 };
 
 const mockTransportModule = {
-  StdioServerTransport: jest.fn().mockImplementation(() => mockTransport),
+  StdioServerTransport,
   __esModule: true
 };
 
-// Apply mocks
+// Apply mocks before exports
 jest.mock('@modelcontextprotocol/sdk/server/index.js', () => mockServerModule);
 jest.mock('@modelcontextprotocol/sdk/server/stdio.js', () => mockTransportModule);
 
-// Export mocked constructors
-const { Server } = mockServerModule;
-const { StdioServerTransport } = mockTransportModule;
+// Export the mock classes directly
+export { Server, StdioServerTransport };
 
 /**
  * Test utilities for MCP Neurolora

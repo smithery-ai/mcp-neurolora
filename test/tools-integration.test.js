@@ -1,6 +1,11 @@
 import { jest, describe, test, expect, beforeAll, afterAll } from '@jest/globals';
-import path from 'path';
-import { promises as fs } from 'fs';
+import path from 'node:path';
+import { promises as fs } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 jest.mock('../src/tools/index.js');
 jest.mock('../src/utils/logger.js');

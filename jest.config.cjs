@@ -23,7 +23,8 @@ module.exports = {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',
     '^openai$': '<rootDir>/test/__mocks__/openai.ts',
-    '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1'
+    '^@modelcontextprotocol/sdk/(.*)$': '<rootDir>/node_modules/@modelcontextprotocol/sdk/dist/$1',
+    '^chalk$': '<rootDir>/node_modules/chalk/source/index.js'
   },
   moduleDirectories: ['node_modules', 'src'],
   testMatch: [

@@ -1,20 +1,16 @@
 import { jest } from '@jest/globals';
 import { ProgressTracker } from '../../../src/utils/progress-tracker.js';
-import * as chalk from 'chalk';
-
 // Mock chalk module
-jest.mock('chalk', () => {
-  const chalkMock = {
-    green: jest.fn((str) => str),
-    yellow: jest.fn((str) => str),
-    red: jest.fn((str) => str)
-  };
-  return {
-    __esModule: true,
-    default: chalkMock,
-    ...chalkMock
-  };
-});
+jest.mock('chalk', () => ({
+  default: Object.assign(
+    (str: string) => str,
+    {
+      green: (str: string) => str,
+      yellow: (str: string) => str,
+      red: (str: string) => str
+    }
+  )
+}));
 
 // Mock progress module
 jest.mock('../../../src/utils/progress.js', () => ({

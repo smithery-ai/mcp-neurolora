@@ -3,12 +3,21 @@
 ![MCP Server](https://img.shields.io/badge/MCP-Server-blue)
 ![Version](https://img.shields.io/badge/version-1.4.0-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+[![smithery badge](https://smithery.ai/badge/@aindreyway/mcp-neurolora)](https://smithery.ai/server/@aindreyway/mcp-neurolora)
 
 An intelligent MCP server that provides tools for code analysis using OpenAI API, code collection, and documentation generation.
 
 ## 🚀 Installation Guide
 
 Don't worry if you don't have anything installed yet! Just follow these steps or ask your assistant to help you with the installation.
+
+### Installing via Smithery
+
+To install Neurolora for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@aindreyway/mcp-neurolora):
+
+```bash
+npx -y @smithery/cli install @aindreyway/mcp-neurolora --client claude
+```
 
 ### Step 1: Install Node.js
 
